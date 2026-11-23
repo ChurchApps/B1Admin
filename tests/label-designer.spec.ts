@@ -53,6 +53,25 @@ test.describe.serial("Check-in label designer", () => {
     await page.getByRole("option", { name: "Is not blank" }).click();
   });
 
+  test("adds Age, Grade, Birth Date, and Check-in Type field blocks", async () => {
+    const newFields = [
+      { key: "person.age", label: "Age" },
+      { key: "person.grade", label: "Grade" },
+      { key: "person.birthDate", label: "Birth Date" },
+      { key: "checkinType", label: "Check-in Type" }
+    ];
+    for (const f of newFields) {
+      await expect(page.locator(`[data-testid="palette-${f.key}"]`)).toHaveText(f.label);
+      await page.locator(`[data-testid="palette-${f.key}"]`).click();
+      await expect(page.locator('[data-testid="prop-field"] input')).toHaveValue(f.key);
+    }
+    await expect(page.locator('[data-testid^="block-"]')).toHaveCount(9);
+    await expect(page.locator('[data-testid^="block-"]').filter({ hasText: "PreK" })).toBeVisible();
+    await expect(page.locator('[data-testid^="block-"]').filter({ hasText: "Member" })).toBeVisible();
+    // Bring the text block back into focus for the save/persist steps below.
+    await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
+  });
+
   test("saves the template and shows it in the list", async () => {
     await page.locator('[data-testid="template-name-input"] input').fill(TEMPLATE);
     const post = labelTemplatesPost(page);
@@ -70,6 +89,10 @@ test.describe.serial("Check-in label designer", () => {
     await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
     await expect(page.locator('[data-testid="prop-cond-field"] input')).toHaveValue("person.isBirthdayWeek");
     await expect(page.locator('[data-testid="prop-cond-operator"] input')).toHaveValue("notEmpty");
+    await expect(page.locator('[data-testid^="block-"]')).toHaveCount(9);
+    // The new blocks stack at the same spot; the last one added (Check-in Type) is on top.
+    await page.locator('[data-testid^="block-"]').filter({ hasText: "Member" }).click();
+    await expect(page.locator('[data-testid="prop-field"] input')).toHaveValue("checkinType");
     await page.getByRole("button", { name: "Cancel" }).click();
   });
 
