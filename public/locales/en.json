@@ -409,6 +409,8 @@
       "end": "End",
       "eventTitle": "Title",
       "group": "Group",
+      "location": "Location",
+      "locationHint": "Optional. Where the event happens when it is not in a booked room, e.g. City Park, shelter 3.",
       "monthly": "Monthly",
       "noGroup": "(no group)",
       "noTemplate": "(no template)",
