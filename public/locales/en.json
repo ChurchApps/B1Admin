@@ -443,6 +443,8 @@
       "blockoutTarget": "Applies To",
       "blockouts": "Blockouts",
       "capacity": "Capacity",
+      "category": "Category",
+      "categoryPlaceholder": "e.g. Sanctuary, Kitchen, AV",
       "confirmDeleteBlockout": "Are you sure you wish to delete this blockout?",
       "confirmDeleteResource": "Are you sure you wish to delete this resource?",
       "confirmDeleteRoom": "Are you sure you wish to delete this room?",

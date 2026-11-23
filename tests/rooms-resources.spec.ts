@@ -491,6 +491,119 @@ test.describe.serial("Inactive rooms and resources", () => {
   });
 });
 
+// #1650: an optional Category groups rooms and resources under headings in the booking pickers and filters the list.
+test.describe.serial("Room and resource categories", () => {
+  const WING = "Zacchaeus Wing";
+  const GEAR = "Zacchaeus Gear";
+  const STAGE = "Zacchaeus Category Stage";
+  const CHAPEL = "Zacchaeus Category Chapel";
+  const MIC = "Zacchaeus Category Mic";
+  let page: Page;
+
+  const roomRow = (name: string) => page.locator('[data-testid="rooms-table"] tbody tr').filter({ hasText: name });
+
+  // Text of each row in the open listbox, headings included, in display order.
+  const listboxOrder = async () => page.locator('[role="listbox"] > li').evaluateAll((els) => els.map((el) => ({
+    heading: el.classList.contains("MuiListSubheader-root"),
+    text: (el.textContent || "").trim()
+  })));
+
+  const expectGrouped = async (heading: string, categorized: string, uncategorized: string) => {
+    await page.locator('[role="listbox"]').waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator('[role="listbox"] .MuiListSubheader-root').filter({ hasText: heading })).toBeVisible();
+    const rows = await listboxOrder();
+    const h = rows.findIndex((r) => r.heading && r.text === heading);
+    const c = rows.findIndex((r) => !r.heading && r.text.startsWith(categorized));
+    const u = rows.findIndex((r) => !r.heading && r.text.startsWith(uncategorized));
+    expect(h).toBeGreaterThanOrEqual(0);
+    expect(c).toBeGreaterThan(h);
+    // Uncategorized items trail every category with no heading of their own.
+    expect(u).toBeGreaterThan(c);
+    expect(rows.slice(u).some((r) => r.heading)).toBe(false);
+  };
+
+  const closeListbox = async () => {
+    await page.keyboard.press("Escape");
+    await page.locator('[role="listbox"]').waitFor({ state: "hidden", timeout: 5000 });
+  };
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    const API = process.env.API_BASE || "http://localhost:8084";
+    const request = await playwright.request.newContext();
+    const body = await (await request.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const jwt = ((body.userChurches || []).find((c: any) => c.church?.id === "CHU00000001") || body.userChurches[0]).jwt;
+    const auth = { headers: { Authorization: "Bearer " + jwt } };
+    for (const [path, names] of [["/content/rooms", [STAGE, CHAPEL]], ["/content/resources", [MIC]]] as const) {
+      for (const row of ((await (await request.get(`${API}${path}`, auth)).json()) || []).filter((r: any) => (names as readonly string[]).includes(r.name))) await request.delete(`${API}${path}/${row.id}`, auth);
+    }
+    await request.post(`${API}/content/rooms`, { ...auth, data: [{ name: STAGE, capacity: 40 }, { name: CHAPEL, capacity: 20 }] });
+    await request.post(`${API}/content/resources`, { ...auth, data: [{ name: MIC, quantity: 1, categoryName: GEAR }] });
+    await request.dispose();
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    await page?.context().close();
+  });
+
+  test("a room's category is set in the edit form and listed in the Category column", async () => {
+    await navigateToRoomsResources(page);
+    await roomRow(STAGE).locator('[data-testid^="edit-room-"]').click();
+    await page.locator('[data-testid="room-category-select"]').click();
+    await page.locator('[data-testid="add-new-option"]').click();
+    await page.locator('[data-testid="room-category-input"] input').fill(WING);
+    await page.locator('[data-testid="save-room-button"]').click();
+    await expect(roomRow(STAGE)).toContainText(WING, { timeout: 15000 });
+    await expect(roomRow(CHAPEL)).not.toContainText(WING);
+  });
+
+  test("a category chip filters the Rooms list", async () => {
+    const chip = page.locator('[data-testid="room-category-chip"]').filter({ hasText: WING });
+    await expect(chip).toBeVisible();
+    await chip.click();
+    await expect(roomRow(STAGE)).toBeVisible();
+    await expect(roomRow(CHAPEL)).toHaveCount(0);
+    await chip.click();
+    await expect(roomRow(CHAPEL)).toBeVisible();
+  });
+
+  test("the event editor groups rooms and resources under their category headings", async () => {
+    await navigateToAvailability(page);
+    await page.locator('[data-testid="availability-book-button"]').click();
+    await page.locator('[data-testid="new-event-rooms-select"] [role="combobox"]').first().click();
+    await expectGrouped(WING, STAGE, CHAPEL);
+    await closeListbox();
+    await page.locator('[data-testid="new-event-resources-select"] [role="combobox"]').first().click();
+    await page.locator('[role="listbox"]').waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator('[role="listbox"] .MuiListSubheader-root').filter({ hasText: GEAR })).toBeVisible();
+    await closeListbox();
+    await page.locator('[data-testid="new-event-cancel-button"]').click();
+  });
+
+  test("the template editor groups rooms under their category headings", async () => {
+    await navigateToRoomsResources(page);
+    await openTab(page, "templates");
+    await page.locator('[data-testid="add-room-resource"]').click();
+    await page.locator('[data-testid="template-rooms-select"] [role="combobox"]').first().click();
+    await expectGrouped(WING, STAGE, CHAPEL);
+    await closeListbox();
+  });
+
+  test("cleanup: deletes the rooms and resource", async () => {
+    await navigateToRoomsResources(page);
+    for (const name of [STAGE, CHAPEL]) {
+      await deleteViaEdit(page, roomRow(name).locator('[data-testid^="edit-room-"]'), "delete-room-button");
+      await expect(roomRow(name)).toHaveCount(0, { timeout: 15000 });
+    }
+    await openTab(page, "resources");
+    const micRow = page.locator('[data-testid="resources-table"] tbody tr').filter({ hasText: MIC });
+    await deleteViaEdit(page, micRow.locator('[data-testid^="edit-resource-"]'), "delete-resource-button");
+    await expect(micRow).toHaveCount(0, { timeout: 15000 });
+  });
+});
+
 // #1659: the Resources list shows the quantity as entered; a blank quantity stays blank, and clearing one saves.
 test.describe.serial("Resource quantity left blank", () => {
   const API = process.env.API_BASE || "http://localhost:8084";
@@ -502,7 +615,8 @@ test.describe.serial("Resource quantity left blank", () => {
   let blankId = "";
   let countedId = "";
 
-  const quantityCell = (name: string) => page.locator('[data-testid="resources-table"] tbody tr').filter({ hasText: name }).locator("td").nth(1);
+  // Name, Category, Quantity: the quantity is the third cell.
+  const quantityCell = (name: string) => page.locator('[data-testid="resources-table"] tbody tr').filter({ hasText: name }).locator("td").nth(2);
 
   test.beforeAll(async ({ browser, playwright }) => {
     const request = await playwright.request.newContext();

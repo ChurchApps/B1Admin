@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { type GroupInterface } from "@churchapps/helpers";
 import { FormControlLabel, MenuItem, Switch, TextField, Typography } from "@mui/material";
+import { ComboBox } from "../../components";
 import { FormCard } from "../../components/ui";
 import { useConfirmDelete } from "../../hooks";
 import { type ResourceInterface } from "../interfaces";
@@ -9,6 +10,7 @@ import { type ResourceInterface } from "../interfaces";
 type Props = {
   resource: ResourceInterface;
   groups: GroupInterface[];
+  categories: string[];
   updatedCallback: () => void;
 };
 
@@ -21,7 +23,7 @@ export function ResourceEdit(props: Props) {
 
   const handleSave = () => {
     setSaving(true);
-    ApiHelper.post("/resources", [resource], "ContentApi").then(() => {
+    ApiHelper.post("/resources", [{ ...resource, categoryName: resource.categoryName?.trim() || undefined }], "ContentApi").then(() => {
       setSaving(false);
       props.updatedCallback();
     }).catch(() => setSaving(false));
@@ -69,6 +71,14 @@ export function ResourceEdit(props: Props) {
           value={resource.description || ""}
           onChange={(e) => setResource({ ...resource, description: e.target.value })}
           data-testid="resource-description-input"
+        />
+        <ComboBox
+          label={Locale.label("calendars.rooms.category")}
+          placeholder={Locale.label("calendars.rooms.categoryPlaceholder")}
+          options={props.categories}
+          value={resource.categoryName || ""}
+          onChange={(value) => setResource({ ...resource, categoryName: value })}
+          testId="resource-category"
         />
         <TextField
           fullWidth
