@@ -120,6 +120,30 @@ export const PlanItem = React.memo((props: Props) => {
     }
   };
 
+  // One-step delete from the row (ChurchAppsSupport#1678); the server removes a section's items with it.
+  const deletingItem = React.useRef(false);
+  const handleDeleteItem = async () => {
+    if (deletingItem.current || !props.planItem.id) return;
+    const name = props.planItem.label || "";
+    const message = isHeader
+      ? (Locale.label("plans.planItem.deleteSectionConfirm") || "Delete the section \"{name}\" and the items in it? This cannot be undone.").replace("{name}", name)
+      : (Locale.label("plans.planItem.deleteItemConfirm") || "Delete \"{name}\"? This cannot be undone.").replace("{name}", name);
+    const confirmed = await confirm(message, {
+      title: isHeader ? (Locale.label("plans.planItem.deleteSection") || "Delete Section") : (Locale.label("plans.planItem.deleteItem") || "Delete Item"),
+      "data-testid": "confirm-delete-item-dialog"
+    });
+    if (!confirmed) return;
+    deletingItem.current = true;
+    try {
+      await ApiHelper.delete("/planItems/" + props.planItem.id, "DoingApi");
+      props.onChange?.();
+    } catch {
+      setErrorMessage(Locale.label("common.saveError"));
+    } finally {
+      deletingItem.current = false;
+    }
+  };
+
   const showCollapse = canCollapse && !props.readOnly;
   const handleCollapseClick = async () => {
     const confirmed = await confirm(Locale.label("plans.lessonDialog.restoreSectionConfirm"), {
@@ -300,6 +324,7 @@ export const PlanItem = React.memo((props: Props) => {
       positionLabel={positionLabel}
       onAddClick={(e) => setAnchorEl(e.currentTarget)}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
+      onDeleteClick={props.planItem.id ? handleDeleteItem : undefined}
       selectMode={selecting}
       onSelectModeChange={props.readOnly ? undefined : handleSelectModeChange}
       selectedCount={selectedIds.length}
@@ -366,6 +391,7 @@ export const PlanItem = React.memo((props: Props) => {
       onLabelClick={onLabelClick}
       onEditClick={() => props.setEditPlanItem?.(props.planItem)}
       onDuplicateClick={handleDuplicate}
+      onDeleteClick={props.planItem.id && !isFolded ? handleDeleteItem : undefined}
       onSaveDescription={handleSaveDescription}
       onRestoreOriginal={handleRestoreOriginal}
       mediaLookup={props.mediaLookup}
@@ -412,7 +438,7 @@ export const PlanItem = React.memo((props: Props) => {
           <Alert severity="error" onClose={() => setErrorMessage(null)}>{errorMessage}</Alert>
         </Snackbar>
       )}
-      {(showCollapse || (isHeader && !props.readOnly)) && ConfirmDialogElement}
+      {!props.readOnly && ConfirmDialogElement}
       {props.planItem?.itemType === "header" && !props.readOnly && (
         <Menu id="header-menu" anchorEl={anchorEl} open={open} onClose={handleClose}>
           <MenuItem onClick={addSong}>

@@ -14,6 +14,7 @@ interface Props {
   positionLabel?: { text: string; assigned: boolean };
   onAddClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   onEditClick: () => void;
+  onDeleteClick?: () => void;
   children?: React.ReactNode;
   /** Wraps just the header row (not the children), e.g. to make it a drop target. */
   wrapRow?: (row: React.ReactNode) => React.ReactNode;
@@ -36,6 +37,7 @@ export const PlanItemHeader: React.FC<Props> = ({
   positionLabel,
   onAddClick,
   onEditClick,
+  onDeleteClick,
   children,
   wrapRow,
   selectMode,
@@ -144,6 +146,18 @@ export const PlanItemHeader: React.FC<Props> = ({
               sx={{ border: 0, cursor: "pointer", color: "primary.main", background: "transparent" }}>
               <EditIcon />
             </Box>
+            {onDeleteClick && (
+              <Box
+                component="button"
+                type="button"
+                className="actionButton alwaysVisible"
+                onClick={onDeleteClick}
+                aria-label={Locale.label("plans.planItem.deleteSection") || "Delete Section"}
+                title={Locale.label("plans.planItem.deleteSection") || "Delete Section"}
+                sx={{ border: 0, cursor: "pointer", color: "error.main", background: "transparent" }}>
+                <DeleteIcon />
+              </Box>
+            )}
           </>
         )}
         <ScheduleIcon sx={{ fontSize: 18, color: "text.secondary", visibility: sectionDuration > 0 ? "visible" : "hidden", display: { xs: "none", sm: "inline-block" } }} />

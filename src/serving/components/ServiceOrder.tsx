@@ -12,6 +12,7 @@ import { LessonSelector } from "./LessonSelector";
 import { LessonHeaderSelector } from "./LessonHeaderSelector";
 import { PlanItem } from "./PlanItem";
 import { SaveTemplateDialog } from "./SaveTemplateDialog";
+import { CopyServiceOrderDialog } from "./CopyServiceOrderDialog";
 import { LessonTrimConfirm, fillLabel } from "./LessonTrimConfirm";
 import { LessonPreview } from "./LessonPreview";
 import { DraggableWrapper } from "../../components/DraggableWrapper";
@@ -82,6 +83,7 @@ export const ServiceOrder = memo((props: Props) => {
   const [exclusions, setExclusions] = React.useState<PlanItemTimeInterface[]>([]);
   const [selectedServiceTimeId, setSelectedServiceTimeId] = React.useState<string>("");
   const [showSaveTemplate, setShowSaveTemplate] = React.useState(false);
+  const [showCopyOrder, setShowCopyOrder] = React.useState(false);
   const [showLessonTrim, setShowLessonTrim] = React.useState(false);
   const [infoMessage, setInfoMessage] = React.useState<string | null>(null);
   const [mediaLookup, setMediaLookup] = React.useState<Record<string, ProviderMediaInfo>>({});
@@ -201,6 +203,39 @@ export const ServiceOrder = memo((props: Props) => {
   }, [props.plan, props.onPlanUpdate]);
 
   const hasAssociatedContent = !!(props.plan?.providerId && props.plan?.providerPlanId);
+
+  // Earlier plans of the same ministry whose order of service can be pulled into this one (ChurchAppsSupport#1678).
+  const ministryPlansQuery = useQuery<PlanInterface[]>({
+    queryKey: ["/plans", "DoingApi"],
+    enabled: canEdit && !!props.plan?.ministryId,
+    placeholderData: []
+  });
+  const earlierPlans = useMemo(() => {
+    if (!props.plan?.serviceDate) return [];
+    const current = new Date(props.plan.serviceDate).getTime();
+    return (ministryPlansQuery.data || [])
+      .filter((p) => p.id !== props.plan.id && p.ministryId === props.plan.ministryId && p.serviceDate && new Date(p.serviceDate).getTime() < current)
+      .sort((a, b) => new Date(b.serviceDate as Date).getTime() - new Date(a.serviceDate as Date).getTime())
+      .slice(0, 50);
+  }, [ministryPlansQuery.data, props.plan?.id, props.plan?.ministryId, props.plan?.serviceDate]);
+
+  const handleCopyServiceOrder = useCallback(async (sourcePlanId: string) => {
+    const existingIds = new Set(planItems.map((pi) => pi.id));
+    const lastSort = planItems.reduce((max, pi) => Math.max(max, pi.sort || 0), 0);
+    try {
+      await ApiHelper.post("/plans/copy/" + sourcePlanId, { targetPlanId: props.plan.id, ministryId: props.plan.ministryId, copyMode: "none", copyServiceOrder: true }, "DoingApi");
+      // Copied sections keep the source plan's sort, so move them after what this plan already has.
+      if (existingIds.size > 0) {
+        const items: PlanItemInterface[] = await ApiHelper.get("/planItems/plan/" + props.plan.id, "DoingApi");
+        const added = (items || []).filter((pi) => !existingIds.has(pi.id)).sort((a, b) => (a.sort || 0) - (b.sort || 0));
+        if (added.length > 0) await ApiHelper.post("/planItems", added.map((pi, i) => ({ ...pi, children: undefined, sort: lastSort + i + 1 })), "DoingApi");
+      }
+    } catch (error) {
+      console.error("Error copying order of service:", error);
+      setErrorMessage(Locale.label("common.saveError"));
+    }
+    loadData();
+  }, [planItems, props.plan?.id, props.plan?.ministryId, loadData]);
 
   const planTypeQuery = useQuery<PlanTypeInterface>({
     queryKey: ["/planTypes/" + props.plan?.planTypeId, "DoingApi"],
@@ -445,6 +480,9 @@ export const ServiceOrder = memo((props: Props) => {
           {!hasAssociatedContent && (
             <TextAction small onClick={() => setShowAssociateLessonSelector(true)}>{Locale.label("plans.serviceOrder.associateLesson") || "Link Lesson"}</TextAction>
           )}
+          {earlierPlans.length > 0 && (
+            <TextAction small onClick={() => setShowCopyOrder(true)} data-testid="copy-service-order-button">{Locale.label("plans.planEdit.copyPrevious") || "Copy from Previous Plan"}</TextAction>
+          )}
           <TextAction small onClick={() => setShowSaveTemplate(true)}>{Locale.label("plans.templates.saveTitle") || "Save as Template"}</TextAction>
         </VerbRow>
         <Menu
@@ -467,7 +505,9 @@ export const ServiceOrder = memo((props: Props) => {
         </Menu>
       </>
     ),
-    [addHeader, addItem, addSong, canEdit, addMenuAnchor, hasAssociatedContent, handleAddContent]
+    [
+      addHeader, addItem, addSong, canEdit, addMenuAnchor, hasAssociatedContent, handleAddContent, earlierPlans.length
+    ]
   );
 
   const handleDrop = useCallback(
@@ -659,6 +699,9 @@ export const ServiceOrder = memo((props: Props) => {
         />
       )}
 
+      {showCopyOrder && canEdit && (
+        <CopyServiceOrderDialog plans={earlierPlans} onCopy={handleCopyServiceOrder} onClose={() => setShowCopyOrder(false)} />
+      )}
       {showSaveTemplate && canEdit && (
         <SaveTemplateDialog plan={props.plan} onClose={() => setShowSaveTemplate(false)} />
       )}
