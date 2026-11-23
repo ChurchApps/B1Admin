@@ -6,14 +6,11 @@ import { type FundInterface } from "@churchapps/helpers";
 import { FormCard } from "../../components/ui";
 import { useErrorSummary, useConfirmDelete } from "../../hooks";
 
-// description is not in the published @churchapps/helpers FundInterface yet.
-type FundWithDescription = FundInterface & { description?: string | null };
-
 // Matches the Api's funds.description column.
 const DESCRIPTION_MAX = 500;
 
 interface Props {
-  fund: FundWithDescription;
+  fund: FundInterface;
   updatedFunction: () => void;
 }
 
@@ -39,7 +36,7 @@ export const FundEdit: React.FC<Props> = (props) => {
   }, [props.fund, reset]);
 
   const onValid = (values: FundFormValues) => {
-    const fund: FundWithDescription = { ...props.fund, name: values.fundName.trim(), description: values.description.trim() || null, taxDeductible: values.taxDeductible, visible: values.visible };
+    const fund: FundInterface = { ...props.fund, name: values.fundName.trim(), description: values.description.trim() || null, taxDeductible: values.taxDeductible, visible: values.visible };
     ApiHelper.post("/funds", [fund], "GivingApi").then(() => props.updatedFunction());
   };
 

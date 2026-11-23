@@ -376,9 +376,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/apphelper@npm:^1.11.6":
-  version: 1.11.6
-  resolution: "@churchapps/apphelper@npm:1.11.6"
+"@churchapps/apphelper@npm:^1.12.0":
+  version: 1.12.0
+  resolution: "@churchapps/apphelper@npm:1.12.0"
   dependencies:
     "@emotion/cache": "npm:^11.14.0"
     "@emotion/react": "npm:^11.14.0"
@@ -440,7 +440,7 @@ __metadata:
       optional: true
     react-google-recaptcha:
       optional: true
-  checksum: 10c0/83bf9267797e87e1efa52f7f11a49a670976f6c20e1a5da2c0b1b50d1b7b492da82f311e33fe6f7b17ba99a79ee6338276b32286e05f070dd0f1553ba2831b7f
+  checksum: 10c0/c2e2c52c3e791cf966a33d087a0b2999c076c58c7980c2e25f1cb5459d0a1b1fff2a47cba9d10abc02d16a018de775513887786567e704255d5c776672b74217
   languageName: node
   linkType: hard
 
@@ -451,9 +451,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@churchapps/helpers@npm:^2.16.1":
-  version: 2.16.1
-  resolution: "@churchapps/helpers@npm:2.16.1"
+"@churchapps/helpers@npm:^2.17.0":
+  version: 2.17.0
+  resolution: "@churchapps/helpers@npm:2.17.0"
   dependencies:
     dayjs: "npm:^1.11.20"
   peerDependencies:
@@ -461,7 +461,7 @@ __metadata:
   peerDependenciesMeta:
     rrule:
       optional: true
-  checksum: 10c0/09fecb251965278239b0830229ca5611020e6b0b1961be282927ab0c1200110d0be695b6a69612ec735123702a09d63195f6b02745b1bfdc5ffa48bc926d0afd
+  checksum: 10c0/6b383454724494d5bf0dccb6d0bd0aeb03ea652575cbb07f7d58aaff25f679a824c2aa26a6387ceb0685c140dfdb5ce8eef30fc0af0c405d774392e2a7aa3a4d
   languageName: node
   linkType: hard
 
@@ -2690,9 +2690,9 @@ __metadata:
   resolution: "b1admin@workspace:."
   dependencies:
     "@babel/core": "npm:^8.0.1"
-    "@churchapps/apphelper": "npm:^1.11.6"
+    "@churchapps/apphelper": "npm:^1.12.0"
     "@churchapps/content-providers": "npm:^0.17.0"
-    "@churchapps/helpers": "npm:^2.16.1"
+    "@churchapps/helpers": "npm:^2.17.0"
     "@eslint/js": "npm:^10.0.1"
     "@mui/icons-material": "npm:^7.3.11"
     "@mui/material": "npm:^7.3.11"
