@@ -6613,6 +6613,8 @@
       "dueDays": "Due in (days)",
       "dueDaysHelp": "Sets a due date when a card enters this step. Leave blank for no due date.",
       "editStep": "Edit Step",
+      "instructions": "Instructions",
+      "instructionsHelp": "Shown at the top of each card in this step, so whoever has the card knows what to do. Leave blank for none.",
       "stepName": "Step Name"
     },
     "workflowsPage": {
