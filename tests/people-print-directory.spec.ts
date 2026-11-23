@@ -194,6 +194,14 @@ test.describe("Print directory member order and contact lines", () => {
     expect(buildHouseholds(people)[0].displayName).toBe("Donald & Carol Clark");
   });
 
+  test("names a parent and child household The {surname} Family, not as a couple", () => {
+    const people = [
+      person({ id: "e", first: "Elena", last: "Printhead", householdId: "h", householdRole: "Head" }),
+      person({ id: "m", first: "Milo", last: "Printchild", householdId: "h", householdRole: "Child" })
+    ];
+    expect(buildHouseholds(people, new Map([["h", "Printhead"]]))[0].displayName).toBe("The Printhead Family");
+  });
+
   test("puts older children first", () => {
     const people = [
       person({ id: "a", first: "Young", last: "Clark", householdId: "h", householdRole: "Child", birthDate: "2015-01-01" }),
@@ -248,6 +256,41 @@ peopleTest.describe("Print directory per-member contact details", () => {
     await expect(page.locator(".household-name")).toHaveText("Donald & Carol Clark");
     await expect(page.getByTestId("print-directory-phone-line")).toHaveText(["555-010-1000", "Donald: 555-010-2000", "Carol: 555-010-3000"]);
     await expect(page.getByTestId("print-directory-email-line")).toHaveText(["Donald: donald@example.com", "Carol: carol@example.com"]);
+  });
+});
+
+peopleTest.describe("Print directory member surnames", () => {
+  const parentAndChild = [
+    person({ id: "p-elena", first: "Elena", last: "Printhead", householdId: "h-print", householdRole: "Head", birthDate: "1985-03-01T00:00:00.000Z" }),
+    person({ id: "p-milo", first: "Milo", last: "Printchild", householdId: "h-print", householdRole: "Child", birthDate: "2015-06-01T00:00:00.000Z" })
+  ];
+
+  peopleTest.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+    await page.route("**/membership/people", async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      if (/\/people\/.+/.test(route.request().url())) return route.continue();
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(parentAndChild) });
+    });
+    await page.route("**/membership/households", async (route) => {
+      if (route.request().method() !== "GET") return route.continue();
+      if (/\/households\/.+/.test(route.request().url())) return route.continue();
+      await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify([{ id: "h-print", name: "Printhead" }]) });
+    });
+    await page.goto("/people/print-directory");
+    await expect(page.locator(".household-name")).toContainText("Printhead", { timeout: 15000 });
+  });
+
+  peopleTest("shows a member's own surname under the photo when it differs from the household's", async ({ page }) => {
+    if (process.env.PR_SCREENSHOT) await page.screenshot({ path: process.env.PR_SCREENSHOT, fullPage: true });
+    await expect(page.locator(".household-name")).toHaveText("The Printhead Family");
+    await expect(page.locator(".member-photo-name")).toHaveText(["Elena", "Milo Printchild"]);
+  });
+
+  peopleTest("shows a member's own surname in the names line when photos are off", async ({ page }) => {
+    await page.getByTestId("print-directory-option-photos").click();
+    await expect(page.locator(".member-photos")).toHaveCount(0);
+    await expect(page.getByTestId("print-directory-members")).toHaveText("Elena & Milo Printchild");
   });
 });
 
