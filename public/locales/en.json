@@ -76,6 +76,7 @@
     "checkinType": {
       "guest": "Guest",
       "header": "Type",
+      "member": "Member",
       "volunteer": "Volunteer",
       "volunteers": "volunteers"
     },

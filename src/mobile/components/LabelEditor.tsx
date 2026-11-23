@@ -111,6 +111,12 @@ const PICKUP_FIELDS = FIELD_DEFS.filter((f) => f.types.includes("pickup")).map((
 const CANVAS_W = 560;
 
 const FIELD_LABEL_KEYS: Record<string, string> = Object.fromEntries(FIELD_DEFS.map((f) => [f.key, "attendance.labels." + f.labelKey]));
+// Check-in Type values the kiosk puts in the label context ("Member", "Guest", "Volunteer").
+const CHECKIN_TYPE_VALUES = [
+  { value: "Member", labelKey: "attendance.checkinType.member" },
+  { value: "Guest", labelKey: "attendance.checkinType.guest" },
+  { value: "Volunteer", labelKey: "attendance.checkinType.volunteer" }
+];
 const fieldLabel = (f: string) => (FIELD_LABEL_KEYS[f] ? Locale.label(FIELD_LABEL_KEYS[f]) : f);
 
 type Props = { template: LabelTemplateInterface; updatedCallback: () => void };
@@ -271,7 +277,13 @@ export function LabelEditor(props: Props) {
             <MenuItem value="notEquals">{Locale.label("attendance.labels.opDoesNotEqual")}</MenuItem>
           </TextField>
         )}
-        {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && (
+        {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && selected.condition.field === "checkinType" && (
+          // The kiosk compares against the stable English value, so offer the three values instead of free text.
+          <TextField fullWidth select label={Locale.label("attendance.labels.value")} value={selected.condition.value || ""} onChange={(e) => update({ condition: { ...selected.condition!, value: e.target.value } })} data-testid="prop-cond-value">
+            {CHECKIN_TYPE_VALUES.map((v) => <MenuItem key={v.value} value={v.value}>{Locale.label(v.labelKey, v.value)}</MenuItem>)}
+          </TextField>
+        )}
+        {selected.condition && (selected.condition.operator === "equals" || selected.condition.operator === "notEquals") && selected.condition.field !== "checkinType" && (
           <TextField fullWidth label={Locale.label("attendance.labels.value")} value={selected.condition.value || ""} onChange={(e) => update({ condition: { ...selected.condition!, value: e.target.value } })} data-testid="prop-cond-value" />
         )}
         <Button variant="outlined" startIcon={<DeleteIcon />} onClick={() => { setBlocks(blocks.filter((b) => b.id !== selectedId)); setSelectedId(null); }} sx={{ textTransform: "none" }} data-testid="delete-block-button">

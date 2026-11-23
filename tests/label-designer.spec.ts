@@ -68,6 +68,14 @@ test.describe.serial("Check-in label designer", () => {
     await expect(page.locator('[data-testid^="block-"]')).toHaveCount(9);
     await expect(page.locator('[data-testid^="block-"]').filter({ hasText: "PreK" })).toBeVisible();
     await expect(page.locator('[data-testid^="block-"]').filter({ hasText: "Member" })).toBeVisible();
+    // A Check-in Type condition offers the kiosk's stable values instead of free text.
+    await page.locator('[data-testid="prop-cond-field"]').getByLabel("Condition").click();
+    await page.getByRole("option", { name: "Check-in Type" }).click();
+    await page.locator('[data-testid="prop-cond-operator"]').getByLabel("Operator").click();
+    await page.getByRole("option", { name: "Equals", exact: true }).click();
+    await page.locator('[data-testid="prop-cond-value"]').getByLabel("Value").click();
+    await page.getByRole("option", { name: "Volunteer" }).click();
+    await expect(page.locator('[data-testid="prop-cond-value"] input')).toHaveValue("Volunteer");
     // Bring the text block back into focus for the save/persist steps below.
     await page.locator('[data-testid^="block-"]').filter({ hasText: "Zacchaeus Block" }).click();
   });
