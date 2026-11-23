@@ -6,32 +6,40 @@ import { type FundInterface } from "@churchapps/helpers";
 import { FormCard } from "../../components/ui";
 import { useErrorSummary, useConfirmDelete } from "../../hooks";
 
+// description is not in the published @churchapps/helpers FundInterface yet.
+type FundWithDescription = FundInterface & { description?: string | null };
+
+// Matches the Api's funds.description column.
+const DESCRIPTION_MAX = 500;
+
 interface Props {
-  fund: FundInterface;
+  fund: FundWithDescription;
   updatedFunction: () => void;
 }
 
 interface FundFormValues {
   fundName: string;
+  description: string;
   taxDeductible: boolean;
   visible: boolean;
 }
 
 export const FundEdit: React.FC<Props> = (props) => {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
-  const { control, register, handleSubmit, reset, watch, formState } = useForm<FundFormValues>({ defaultValues: { fundName: "", taxDeductible: true, visible: true } });
+  const { control, register, handleSubmit, reset, watch, formState } = useForm<FundFormValues>({ defaultValues: { fundName: "", description: "", taxDeductible: true, visible: true } });
   const e = formState.errors;
-  const summaryErrors = useErrorSummary(formState.errors, ["fundName"]);
+  const summaryErrors = useErrorSummary(formState.errors, ["fundName", "description"]);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const taxDeductible = watch("taxDeductible");
+  const description = watch("description") ?? "";
 
   React.useEffect(() => {
-    reset({ fundName: props.fund?.name ?? "", taxDeductible: props.fund?.taxDeductible ?? true, visible: props.fund?.visible ?? true });
+    reset({ fundName: props.fund?.name ?? "", description: props.fund?.description ?? "", taxDeductible: props.fund?.taxDeductible ?? true, visible: props.fund?.visible ?? true });
   }, [props.fund, reset]);
 
   const onValid = (values: FundFormValues) => {
-    const fund = { ...props.fund, name: values.fundName.trim(), taxDeductible: values.taxDeductible, visible: values.visible };
+    const fund: FundWithDescription = { ...props.fund, name: values.fundName.trim(), description: values.description.trim() || null, taxDeductible: values.taxDeductible, visible: values.visible };
     ApiHelper.post("/funds", [fund], "GivingApi").then(() => props.updatedFunction());
   };
 
@@ -54,6 +62,17 @@ export const FundEdit: React.FC<Props> = (props) => {
         help="docs/b1-admin/donations/">
         <ErrorMessages errors={summaryErrors} />
         <TextField fullWidth label={Locale.label("common.name")} placeholder={Locale.label("placeholders.fund.name")} data-testid="fund-name-input" aria-label={Locale.label("donations.fundEdit.ariaFundName")} error={!!e.fundName} helperText={e.fundName?.message} {...register("fundName", { required: Locale.label("donations.fundEdit.errBlank") })} />
+        <TextField
+          fullWidth
+          multiline
+          minRows={2}
+          label={Locale.label("donations.fundEdit.description")}
+          data-testid="fund-description-input"
+          aria-label={Locale.label("donations.fundEdit.description")}
+          inputProps={{ maxLength: DESCRIPTION_MAX }}
+          error={!!e.description}
+          helperText={e.description?.message || `${Locale.label("donations.fundEdit.descriptionHelp")} (${description.length}/${DESCRIPTION_MAX})`}
+          {...register("description", { maxLength: { value: DESCRIPTION_MAX, message: Locale.label("donations.fundEdit.errDescriptionLength") } })} />
         <FormControlLabel
           control={
             <Controller name="taxDeductible" control={control} render={({ field }) => (
