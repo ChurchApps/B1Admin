@@ -2496,6 +2496,19 @@
       "mobile": "Mobile",
       "work": "Work"
     },
+    "possibleDuplicates": {
+      "added": "Added {date}",
+      "count": "{count} possible duplicates.",
+      "countOne": "1 possible duplicate.",
+      "hint": "Merge keeps the record added first and moves everything from the other record onto it.",
+      "matchEmail": "email",
+      "matchNameBirthDate": "name and birthdate",
+      "matchPhone": "phone",
+      "matchedOn": "Same {fields}",
+      "none": "No possible duplicates found",
+      "noneHint": "People with the same first name and email or phone, or the same name and birthdate, show up here.",
+      "title": "Possible duplicates"
+    },
     "pickup": {
       "add": "Add",
       "confirmDelete": "Are you sure you want to remove this pickup person?",
