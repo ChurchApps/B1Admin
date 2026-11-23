@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { type ReactNode, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Stack, TextField, Typography } from "@mui/material";
@@ -34,6 +34,8 @@ interface Props {
   onClear: () => void;
   selectedId?: string;
   canManage: boolean;
+  // Built-in views shown after Everyone, such as Possible duplicates.
+  builtInChips?: ReactNode;
 }
 
 export const SavedLists = (props: Props) => {
@@ -80,11 +82,12 @@ export const SavedLists = (props: Props) => {
 
   return (
     <>
-      {lists.length > 0 && (
+      {(lists.length > 0 || !!props.builtInChips) && (
         <Stack direction="row" useFlexGap flexWrap="wrap" alignItems="center" spacing={1} role="group" aria-label={Locale.label("people.directory.savedLists")}>
           <FilterChip selected={!props.selectedId} onClick={props.onClear} data-testid="saved-list-everyone">
             {Locale.label("people.directory.everyone")}
           </FilterChip>
+          {props.builtInChips}
           {categories.flatMap((category) => [
             category ? <Typography key={"cat-" + category} variant="caption" color="text.secondary" sx={{ fontWeight: 600, ml: 1 }}>{category}</Typography> : null,
             ...grouped[category].map((list) => (
