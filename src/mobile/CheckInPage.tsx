@@ -9,6 +9,7 @@ import { GalleryModal } from "../components/gallery";
 import { EnvironmentHelper } from "../helpers";
 import { useRequirePermission } from "../hooks";
 import { KioskThemeEdit } from "./KioskThemeEdit";
+import { CheckinAnnouncementEdit } from "./CheckinAnnouncementEdit";
 import { MobileChrome } from "./components/MobileChrome";
 
 type FieldMode = "off" | "optional" | "required";
@@ -250,6 +251,7 @@ export const CheckInPage: React.FC = () => {
       )}
 
       {showGallery && <GalleryModal aspectRatio={16 / 9} onSelect={(url) => { setImageUrl(url); setShowGallery(false); }} onCancel={() => setShowGallery(false)} />}
+      <CheckinAnnouncementEdit />
       <KioskThemeEdit />
       <Snackbar open={showSaved} autoHideDuration={3000} onClose={() => setShowSaved(false)} message={Locale.label("common.saved")} anchorOrigin={{ vertical: "bottom", horizontal: "center" }} />
     </MobileChrome>
