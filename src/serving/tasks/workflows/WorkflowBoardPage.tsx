@@ -1,6 +1,6 @@
-import { Box, Button, Typography, Select, MenuItem, Menu } from "@mui/material";
+import { Box, Button, Typography, Select, MenuItem } from "@mui/material";
 import React from "react";
-import { ApiHelper, Locale, Loading } from "@churchapps/apphelper";
+import { ApiHelper, Locale, Loading, UserHelper } from "@churchapps/apphelper";
 import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Add as AddIcon, ArrowBack as BackIcon, Bolt as TriggersIcon, CheckCircle as CompleteIcon, EditOutlined as EditIcon, Snooze as SnoozeIcon, Person as PersonIcon, Close as ClearIcon, ViewKanbanOutlined as BoardIcon } from "@mui/icons-material";
@@ -13,7 +13,8 @@ import { ContentPicker } from "../components/ContentPicker";
 import { BulkBar, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, StatusBadge, ViewToggle, formWidthSx } from "../../../components/ui";
 import { type WorkflowBoardInterface, type WorkflowStepInterface, type TaskInterface, type WorkflowInterface, type WorkflowCategoryInterface } from "@churchapps/helpers";
 import { canViewWorkflows, canEditCards, canManageWorkflows } from "./permissions";
-import { latestArrivalFirst } from "../taskOrder";
+import { cardSorts, type CardSort } from "../taskOrder";
+import { SnoozeMenu } from "./components/SnoozeMenu";
 
 export const WorkflowBoardPage = () => {
   const params = useParams();
@@ -26,6 +27,8 @@ export const WorkflowBoardPage = () => {
   const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set());
   const [snoozeAnchor, setSnoozeAnchor] = React.useState<null | HTMLElement>(null);
   const [showBulkReassign, setShowBulkReassign] = React.useState(false);
+  const [sort, setSort] = React.useState<CardSort>("newest");
+  const [assigneeFilter, setAssigneeFilter] = React.useState("");
 
   const canView = canViewWorkflows();
   const canEdit = canEditCards();
@@ -91,7 +94,7 @@ export const WorkflowBoardPage = () => {
 
   const bulkComplete = async () => { await ApiHelper.post("/tasks/bulk/complete", { ids: ids() }, "DoingApi"); afterBulk(); };
   const bulkMove = async (stepId: string) => { await ApiHelper.post("/tasks/bulk/moveStep", { ids: ids(), stepId }, "DoingApi"); afterBulk(); };
-  const bulkSnooze = async (days: number) => { setSnoozeAnchor(null); await ApiHelper.post("/tasks/bulk/snooze", { ids: ids(), days }, "DoingApi"); afterBulk(); };
+  const bulkSnooze = async (body: { days?: number; until?: string }) => { setSnoozeAnchor(null); await ApiHelper.post("/tasks/bulk/snooze", { ids: ids(), ...body }, "DoingApi"); afterBulk(); };
   const bulkReassign = async (contentType: string, contentId: string, label: string) => {
     setShowBulkReassign(false);
     await ApiHelper.post("/tasks/bulk/reassign", { ids: ids(), assignedToType: contentType, assignedToId: contentId, assignedToLabel: label }, "DoingApi");
@@ -101,10 +104,18 @@ export const WorkflowBoardPage = () => {
   if (!canView) return <Box sx={{ p: 4 }}><Typography>{Locale.label("common.noAccess")}</Typography></Box>;
   if (board.isLoading) return <Loading />;
   const steps = board.data?.steps || [];
-  const cards = board.data?.cards || [];
+  const allCards = board.data?.cards || [];
+  const myPersonId = UserHelper.currentUserChurch?.person?.id;
+  const assigneeKey = (c: TaskInterface) => (c.assignedToId ? (c.assignedToType || "") + ":" + c.assignedToId : "unassigned");
+  const assignees = Array.from(new Map(allCards.filter((c) => c.assignedToId).map((c) => [assigneeKey(c), c.assignedToLabel || ""])).entries()).sort((a, b) => a[1].localeCompare(b[1]));
+  const cards = allCards.filter((c) => {
+    if (!assigneeFilter) return true;
+    if (assigneeFilter === "me") return c.assignedToType === "person" && !!myPersonId && c.assignedToId === myPersonId;
+    return assigneeKey(c) === assigneeFilter;
+  });
   const routes = board.data?.routes || [];
   const actions = board.data?.actions || [];
-  const cardsForStep = (stepId: string) => cards.filter((c) => c.stepId === stepId).sort(latestArrivalFirst);
+  const cardsForStep = (stepId: string) => cards.filter((c) => c.stepId === stepId).sort(cardSorts[sort]);
   const routesForStep = (stepId: string) => routes.filter((r) => r.stepId === stepId);
   const actionsForStep = (stepId: string) => actions.filter((a) => a.stepId === stepId);
 
@@ -193,6 +204,22 @@ export const WorkflowBoardPage = () => {
             <Typography variant="body2" color="text.secondary">
               {steps.length} {Locale.label("tasks.workflowBoard.stepsCount", "steps")} · {cards.length} {Locale.label("tasks.workflowBoard.cardsCount", "cards")}
             </Typography>
+            {onBoard && allCards.length > 0 && (
+              <>
+                <Select size="small" value={sort} onChange={(e) => setSort(e.target.value as CardSort)} inputProps={{ "aria-label": Locale.label("tasks.workflowBoard.sortBy") }} data-testid="board-sort-select" sx={{ minWidth: 150 }}>
+                  <MenuItem value="newest">{Locale.label("tasks.workflowBoard.sortNewest")}</MenuItem>
+                  <MenuItem value="oldest">{Locale.label("tasks.workflowBoard.sortOldest")}</MenuItem>
+                  <MenuItem value="firstName">{Locale.label("tasks.workflowBoard.sortFirstName")}</MenuItem>
+                  <MenuItem value="lastName">{Locale.label("tasks.workflowBoard.sortLastName")}</MenuItem>
+                </Select>
+                <Select size="small" displayEmpty value={assigneeFilter} onChange={(e) => { setAssigneeFilter(e.target.value); clearSelection(); }} inputProps={{ "aria-label": Locale.label("tasks.workflowCard.assignedTo") }} data-testid="board-assignee-filter" sx={{ minWidth: 150 }}>
+                  <MenuItem value="">{Locale.label("tasks.workflowBoard.allCards")}</MenuItem>
+                  {myPersonId && <MenuItem value="me">{Locale.label("tasks.workflowBoard.myCards")}</MenuItem>}
+                  <MenuItem value="unassigned">{Locale.label("tasks.workflowBoard.unassigned")}</MenuItem>
+                  {assignees.map(([key, label]) => <MenuItem key={key} value={key}>{label || Locale.label("tasks.workflowBoard.unassigned")}</MenuItem>)}
+                </Select>
+              </>
+            )}
           </ResultsBar>
         </Box>
 
@@ -210,13 +237,9 @@ export const WorkflowBoardPage = () => {
             <Button size="small" startIcon={<ClearIcon />} data-testid="bulk-clear-button" onClick={clearSelection}>{Locale.label("tasks.workflowBoard.clearSelection")}</Button>
           </BulkBar>
         )}
-        <Menu anchorEl={snoozeAnchor} open={Boolean(snoozeAnchor)} onClose={() => setSnoozeAnchor(null)}>
-          <MenuItem onClick={() => bulkSnooze(1)}>{Locale.label("tasks.workflowCard.snooze1Day")}</MenuItem>
-          <MenuItem onClick={() => bulkSnooze(3)}>{Locale.label("tasks.workflowCard.snooze3Days")}</MenuItem>
-          <MenuItem onClick={() => bulkSnooze(7)}>{Locale.label("tasks.workflowCard.snooze1Week")}</MenuItem>
-        </Menu>
+        <SnoozeMenu anchorEl={snoozeAnchor} onClose={() => setSnoozeAnchor(null)} onSnooze={bulkSnooze} />
 
-        {openCard && <WorkflowCardDrawer card={cards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
+        {openCard && <WorkflowCardDrawer card={allCards.find((c) => c.id === openCard.id) || openCard} steps={steps} routes={board.data?.routes || []} onClose={() => setOpenCard(null)} onChanged={refetch} />}
         {showBulkReassign && <ContentPicker onClose={() => setShowBulkReassign(false)} onSelect={bulkReassign} />}
       </PageContainer>
     </>
