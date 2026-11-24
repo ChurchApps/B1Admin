@@ -64,7 +64,7 @@ test("an attendee type saves and reloads its min and max age", async ({ page }) 
 test("Copy setup brings another event's settings, types, selections, and codes as new rows", async ({ page }) => {
   const sourceTitle = "Setup Source " + Date.now();
   const sourceId = await createEvent(sourceTitle, { capacity: 30, waitlistEnabled: true, tags: "camp, youth" });
-  const typesRes = await ctx.post(`${API_BASE}/content/registrations/types`, { ...auth, data: [{ eventId: sourceId, name: "Camper", price: 50, capacity: 20, minAgeYears: 8, maxAgeYears: 12, sort: 1, active: true }] });
+  const typesRes = await ctx.post(`${API_BASE}/content/registrations/types`, { ...auth, data: [{ eventId: sourceId, name: "Camper", price: 50, depositAmount: 20, capacity: 20, minAgeYears: 8, maxAgeYears: 12, sort: 1, active: true }] });
   const sourceTypeId = (await typesRes.json())[0].id as string;
   await ctx.post(`${API_BASE}/content/registrations/selections`, { ...auth, data: [{ eventId: sourceId, name: "Camp Shirt", price: 12, sort: 1, active: true }] });
   await ctx.post(`${API_BASE}/content/registrations/coupons`, { ...auth, data: [{ eventId: sourceId, code: "SIBLING", discountType: "amount", value: 10, active: true }] });
@@ -83,7 +83,7 @@ test("Copy setup brings another event's settings, types, selections, and codes a
 
   const types = await (await ctx.get(`${API_BASE}/content/registrations/types/event/${targetId}?churchId=${CHURCH_ID}`, auth)).json();
   expect(types).toHaveLength(1);
-  expect(types[0]).toMatchObject({ name: "Camper", eventId: targetId, minAgeYears: 8, maxAgeYears: 12 });
+  expect(types[0]).toMatchObject({ name: "Camper", eventId: targetId, depositAmount: 20, minAgeYears: 8, maxAgeYears: 12 });
   expect(types[0].id).not.toBe(sourceTypeId);
   const selections = await (await ctx.get(`${API_BASE}/content/registrations/selections/event/${targetId}?churchId=${CHURCH_ID}`, auth)).json();
   expect(selections.map((s: { name: string }) => s.name)).toEqual(["Camp Shirt"]);
