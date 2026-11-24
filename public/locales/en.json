@@ -5092,6 +5092,7 @@
       "groupBadgeHide": "Hidden",
       "groupBadgeShow": "Show the group on each event",
       "groupCalendar": "Group Calendar",
+      "itemCount": "Number of Events",
       "layout": "Layout",
       "layoutAutoscroll": "Scrolling (automatic)",
       "layoutGrid": "Grid",
@@ -6536,6 +6537,7 @@
       "apply": "Apply",
       "field": "Field",
       "newProfile": "New Profile",
+      "removePhoto": "Remove photo",
       "requestedChanges": "Requested Changes",
       "submittedByFor": "Submitted by {requester} for {person}",
       "value": "Value"
