@@ -527,7 +527,7 @@ export const RegistrationDetailsPage = () => {
         />
       )}
       {viewDetailId && (
-        <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} registrantName={getMissingRegistrantName(registrations.find((r) => r.id === viewDetailId) || {})} canEdit={canEdit} onSaved={() => loadData(false)} onClose={() => setViewDetailId("")} />
+        <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} registrantName={getMissingRegistrantName(registrations.find((r) => r.id === viewDetailId) || {})} canEdit={canEdit} onSaved={() => loadData(false)} onChanged={() => loadData(false)} onClose={() => setViewDetailId("")} />
       )}
       {viewSubmissionId && (
         <Dialog open onClose={() => setViewSubmissionId("")} maxWidth="md" fullWidth>
