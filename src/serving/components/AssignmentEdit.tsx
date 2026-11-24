@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { Box, Table, TableBody, TableCell, TableContainer, TableRow, Avatar, IconButton, TextField, Tooltip, Typography } from "@mui/material";
-import { Tune as TuneIcon } from "@mui/icons-material";
+import { EventRepeat as EventRepeatIcon, Tune as TuneIcon } from "@mui/icons-material";
 import { type AssignmentInterface, type BlockoutDateInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
-import { ApiHelper, Locale, PersonHelper } from "@churchapps/apphelper";
-import { FormCard } from "../../components/ui";
+import { ApiHelper, DateHelper, Locale, PersonHelper } from "@churchapps/apphelper";
+import { FormCard, StatusBadge } from "../../components/ui";
 import { PersonAdd } from "../../components";
 import { useConfirmDelete } from "../../hooks";
 import { SchedulingPreferenceEdit } from "./SchedulingPreferenceEdit";
 import { UnavailableBadge } from "./UnavailableBadge";
 import { findBlockout } from "../helpers/blockoutHelper";
+
+interface SameDayAssignment { personId: string; planName?: string; positionName?: string }
+interface PickerContext { lastServed: { personId: string; serviceDate: string }[]; sameDay: SameDayAssignment[] }
 
 interface Props {
   assignment: AssignmentInterface;
@@ -23,6 +26,7 @@ interface Props {
 export const AssignmentEdit = (props: Props) => {
   const [groupMembers, setGroupMembers] = React.useState<GroupMemberInterface[]>([]);
   const [searchText, setSearchText] = React.useState("");
+  const [pickerContext, setPickerContext] = React.useState<PickerContext>({ lastServed: [], sameDay: [] });
   const [preferencePerson, setPreferencePerson] = React.useState<{ id: string; name: string } | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   // Positions without a Volunteer Group can be filled by anyone in the church.
@@ -42,6 +46,11 @@ export const AssignmentEdit = (props: Props) => {
     ApiHelper.get("/groupmembers?groupId=" + props.position.groupId, "MembershipApi").then((data: GroupMemberInterface[]) => {
       setGroupMembers(data);
     });
+    if (props.position.id) {
+      ApiHelper.get("/assignments/picker/" + props.position.id, "DoingApi")
+        .then((data: PickerContext) => setPickerContext({ lastServed: data?.lastServed || [], sameDay: data?.sameDay || [] }))
+        .catch(() => setPickerContext({ lastServed: [], sameDay: [] }));
+    }
   };
 
   const selectPersonId = (personId: string) => {
@@ -58,13 +67,23 @@ export const AssignmentEdit = (props: Props) => {
     const rows: JSX.Element[] = [];
     // Someone already in this position can't fill a second spot in it.
     const assigned = props.assignedPersonIds || [];
-    // Blocked-out members stay selectable but sort last, flagged.
+    // Blocked-out and already-serving members stay selectable but sort after everyone free,
+    // then least recently served first, as auto-schedule ranks them.
     const blockoutFor = (gm: GroupMemberInterface) => findBlockout(props.blockoutDates, gm.personId, props.serviceDate);
+    const lastServed = new Map(pickerContext.lastServed.map((l) => [l.personId, DateHelper.toDate(l.serviceDate)]));
     const term = searchText.trim().toLowerCase();
     const available = groupMembers.filter((gm) => !assigned.includes(gm.personId))
       .filter((gm) => !term || (gm.person?.name?.display || "").toLowerCase().includes(term))
-      .map((gm) => ({ gm, blockout: blockoutFor(gm) }))
-      .sort((a, b) => (a.blockout ? 1 : 0) - (b.blockout ? 1 : 0));
+      .map((gm) => ({
+        gm,
+        blockout: blockoutFor(gm),
+        sameDay: pickerContext.sameDay.filter((s) => s.personId === gm.personId),
+        lastServed: lastServed.get(gm.personId)
+      }))
+      .sort((a, b) => {
+        const rank = (r: typeof a) => (r.blockout ? 2 : r.sameDay.length > 0 ? 1 : 0);
+        return rank(a) - rank(b) || (a.lastServed?.getTime() || 0) - (b.lastServed?.getTime() || 0);
+      });
     if (available.length === 0) {
       rows.push(
         <TableRow key="0">
@@ -75,7 +94,7 @@ export const AssignmentEdit = (props: Props) => {
     }
 
     for (let i = 0; i < available.length; i++) {
-      const { gm, blockout } = available[i];
+      const { gm, blockout, sameDay, lastServed: served } = available[i];
       const personName = gm.person?.name?.display || Locale.label("person.unknown");
       rows.push(
         <TableRow key={i}>
@@ -90,6 +109,21 @@ export const AssignmentEdit = (props: Props) => {
               {personName}
             </button>
             {blockout && <Box component="span" sx={{ ml: 1 }}><UnavailableBadge blockout={blockout} /></Box>}
+            {sameDay.length > 0 && (
+              <Tooltip title={sameDay.map((s) => [s.positionName, s.planName].filter(Boolean).join(" — ")).join(", ")}>
+                <Box component="span" sx={{ ml: 1, display: "inline-flex" }}>
+                  <StatusBadge tone="warning" data-testid="serving-that-day-badge">
+                    <EventRepeatIcon sx={{ fontSize: 14 }} />
+                    {Locale.label("plans.assignmentEdit.servingThatDay", "Serving that day")}
+                  </StatusBadge>
+                </Box>
+              </Tooltip>
+            )}
+            <Typography variant="caption" component="div" sx={{ color: "var(--text-muted)" }} data-testid={"last-served-" + gm.personId}>
+              {served
+                ? Locale.label("plans.assignmentEdit.lastServed", "Last served {date}").replace("{date}", DateHelper.prettyDate(served))
+                : Locale.label("plans.assignmentEdit.neverServed", "Hasn't served yet")}
+            </Typography>
           </TableCell>
           <TableCell align="right" className="rowActions">
             <Tooltip title={Locale.label("plans.schedulingPreference.title") || "Scheduling Preferences"}>
