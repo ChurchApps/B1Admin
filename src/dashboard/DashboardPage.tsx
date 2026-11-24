@@ -1,17 +1,18 @@
 import { Stack, Box } from "@mui/material";
-import { NotificationsActive as AttentionIcon, EventAvailable as ApprovalsIcon, GroupAdd as JoinRequestIcon } from "@mui/icons-material";
+import { NotificationsActive as AttentionIcon, EventAvailable as ApprovalsIcon, GroupAdd as JoinRequestIcon, Inventory2 as BatchIcon } from "@mui/icons-material";
 import { QuickActionItem, SundayService } from "./components";
 import { MyWork } from "./components/MyWork";
 import { Locale } from "@churchapps/apphelper";
 import { PageContainer } from "../components/ui/PageContainer";
 import { CardWithHeader } from "../components/ui/CardWithHeader";
 import { Surface } from "../components/ui/Surface";
-import { usePendingApprovalsCount, usePendingJoinRequestsCount } from "../hooks";
+import { usePendingApprovalsCount, usePendingJoinRequestsCount, useOpenBatchesCount } from "../hooks";
 
 export const DashboardPage = () => {
   const pendingApprovals = usePendingApprovalsCount();
   const pendingJoinRequests = usePendingJoinRequestsCount();
-  const needsAttention = pendingApprovals > 0 || pendingJoinRequests > 0;
+  const openBatches = useOpenBatchesCount();
+  const needsAttention = pendingApprovals > 0 || pendingJoinRequests > 0 || openBatches > 0;
 
   return (
     <PageContainer>
@@ -27,6 +28,9 @@ export const DashboardPage = () => {
                 )}
                 {pendingJoinRequests > 0 && (
                   <QuickActionItem icon={<JoinRequestIcon fontSize="small" />} title={Locale.label(pendingJoinRequests === 1 ? "dashboard.needsAttention.joinRequestsSingular" : "dashboard.needsAttention.joinRequests").replace("{count}", String(pendingJoinRequests))} linkUrl="/groups/pending" />
+                )}
+                {openBatches > 0 && (
+                  <QuickActionItem icon={<BatchIcon fontSize="small" />} title={Locale.label(openBatches === 1 ? "dashboard.needsAttention.openBatchesSingular" : "dashboard.needsAttention.openBatches").replace("{count}", String(openBatches))} linkUrl="/donations/batches" />
                 )}
               </Stack>
             </CardWithHeader>

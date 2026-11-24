@@ -2,8 +2,8 @@ import React from "react";
 import { ApiHelper, ArrayHelper, DateHelper, Loading, Locale, Permissions, UserHelper, type PersonInterface } from "@churchapps/apphelper";
 import { type AssignmentInterface, type BlockoutDateInterface, type GroupMemberInterface, type PositionInterface } from "@churchapps/helpers";
 import { Alert, Box, Dialog, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip } from "@mui/material";
-import { ArrowBack as BackIcon, AutoFixHigh as AutoIcon, Close as CloseIcon, Clear as ClearIcon, MailOutline as EmailIcon, Sms as SmsIcon } from "@mui/icons-material";
-import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, Surface } from "../components/ui";
+import { ArrowBack as BackIcon, AutoFixHigh as AutoIcon, Block as DeclinedIcon, Close as CloseIcon, Clear as ClearIcon, HourglassEmpty as PendingIcon, MailOutline as EmailIcon, Sms as SmsIcon } from "@mui/icons-material";
+import { EmptyState, ExportButton, HeaderPrimaryButton, HeaderSecondaryButton, HeaderTextButton, PageContainer, PageHeader, PillTabs, StatusBadge, Surface } from "../components/ui";
 import { hasPlansEditAccess } from "../helpers";
 import { useConfirmDelete, useTextingEnabled } from "../hooks";
 import { AssignmentEdit } from "./components/AssignmentEdit";
@@ -61,8 +61,27 @@ const formatShortDate = (dateStr: string) => {
   return DateHelper.toDate(dateStr).toLocaleDateString(DateHelper.locale, { month: "short", day: "numeric" });
 };
 
-const cellFilled = (cell: GridCell) => cell.slots.reduce((s, slot) => s + slot.assignments.length, 0);
-const cellPersonIds = (cell: GridCell) => cell.slots.flatMap((slot) => slot.assignments.map((a) => a.personId));
+// A declined assignment stays on the grid so staff can see who said no, but its slot counts as open.
+const isDeclined = (a: CellAssignment) => a.status === "Declined";
+const isPending = (a: CellAssignment) => a.status !== "Accepted" && !isDeclined(a);
+const activeCount = (slot: CellSlot) => slot.assignments.filter((a) => !isDeclined(a)).length;
+const cellFilled = (cell: GridCell) => cell.slots.reduce((s, slot) => s + activeCount(slot), 0);
+const cellAssignments = (cell: GridCell) => cell.slots.flatMap((slot) => slot.assignments);
+const cellPersonIds = (cell: GridCell) => cellAssignments(cell).map((a) => a.personId);
+
+const statusLabel = (a: CellAssignment) => isDeclined(a)
+  ? Locale.label("plans.servingOverviewPage.declined", "Declined")
+  : isPending(a) ? Locale.label("plans.servingOverviewPage.pending", "Pending") : "";
+
+// Shape and text, not just color: an icon with a spoken/hover label, and declined names struck through.
+const StatusMark: React.FC<{ assignment: CellAssignment }> = ({ assignment }) => {
+  const label = statusLabel(assignment);
+  if (!label) return null;
+  const Icon = isDeclined(assignment) ? DeclinedIcon : PendingIcon;
+  return <Icon titleAccess={label} data-testid={isDeclined(assignment) ? "assignment-declined" : "assignment-pending"} sx={{ fontSize: 14, ml: 0.25, verticalAlign: "-2px", color: isDeclined(assignment) ? "var(--b1-danger)" : "text.secondary" }} />;
+};
+
+const nameSx = (a: CellAssignment) => (isDeclined(a) ? { textDecoration: "line-through", color: "text.secondary" } : undefined);
 
 const getDefaultDates = () => {
   const start = new Date();
@@ -110,6 +129,19 @@ export const ServingOverviewPage = () => {
     }
   });
 
+  // /plans/overview leaves declined assignments out, so load them for the same plans to show who declined.
+  const planIds = React.useMemo(() => Array.from(new Set((overviewData.data || []).map(r => r.planId).filter(Boolean))).sort(), [overviewData.data]);
+  const declined = useQuery<AssignmentInterface[]>({
+    queryKey: ["/assignments/plan/ids", "DoingApi", planIds],
+    enabled: planIds.length > 0,
+    placeholderData: [],
+    queryFn: async () => {
+      const all: AssignmentInterface[] = await ApiHelper.get("/assignments/plan/ids?planIds=" + planIds.join(","), "DoingApi");
+      return (all || []).filter(a => a.status === "Declined" && !!a.personId);
+    }
+  });
+  const refreshGrid = () => { overviewData.refetch(); declined.refetch(); };
+
   const blockouts = useQuery<BlockoutDateInterface[]>({
     queryKey: ["/blockoutDates/upcoming", "DoingApi"],
     placeholderData: [],
@@ -124,8 +156,9 @@ export const ServingOverviewPage = () => {
   const personIds = React.useMemo(() => {
     const ids = new Set<string>();
     (overviewData.data || []).forEach(r => { if (r.personId) ids.add(r.personId); });
+    (declined.data || []).forEach(a => { if (a.personId) ids.add(a.personId); });
     return Array.from(ids);
-  }, [overviewData.data]);
+  }, [overviewData.data, declined.data]);
 
   const people = useQuery<PersonInterface[]>({
     queryKey: ["/people/ids", "MembershipApi", personIds],
@@ -152,6 +185,7 @@ export const ServingOverviewPage = () => {
   const { dates, rows } = React.useMemo(() => {
     const dateSet = new Set<string>();
     const positionMap = new Map<string, GridRow>();
+    const slotsById = new Map<string, CellSlot>();
 
     (overviewData.data || []).forEach(r => {
       const dateKey = r.serviceDate?.split("T")[0] || r.serviceDate;
@@ -173,14 +207,20 @@ export const ServingOverviewPage = () => {
         slot = { positionId: r.positionId, planId: r.planId, groupId: r.groupId, needed: r.needed || 0, assignments: [] };
         cell.slots.push(slot);
         cell.needed += r.needed || 0;
+        slotsById.set(r.positionId, slot);
       }
       if (r.personId) slot.assignments.push({ assignmentId: r.assignmentId, personId: r.personId, status: r.status });
+    });
+
+    (declined.data || []).forEach(a => {
+      const slot = a.positionId ? slotsById.get(a.positionId) : undefined;
+      if (slot && a.personId && !slot.assignments.some(x => x.assignmentId === a.id)) slot.assignments.push({ assignmentId: a.id || null, personId: a.personId, status: "Declined" });
     });
 
     const sortedDates = Array.from(dateSet).sort();
     const gridRows = Array.from(positionMap.values());
     return { dates: sortedDates, rows: gridRows };
-  }, [overviewData.data]);
+  }, [overviewData.data, declined.data]);
 
   const displayRows = React.useMemo(() => {
     if (!gapsOnly) return rows;
@@ -193,7 +233,7 @@ export const ServingOverviewPage = () => {
       const obj: Record<string, string> = { Position: row.position };
       dates.forEach(d => {
         const cell = row.cells[d];
-        const names = cell ? cellPersonIds(cell).sort(byName).map(id => getDisplayName(id)) : [];
+        const names = cell ? [...cellAssignments(cell)].sort((a, b) => byName(a.personId, b.personId)).map(a => statusLabel(a) ? `${getDisplayName(a.personId)} (${statusLabel(a)})` : getDisplayName(a.personId)) : [];
         obj[formatShortDate(d)] = names.join("; ");
       });
       return obj;
@@ -217,7 +257,7 @@ export const ServingOverviewPage = () => {
     const ok = await confirm(Locale.label("plans.servingOverviewPage.removeConfirm").replace("{name}", personName), { confirmLabel: Locale.label("plans.servingOverviewPage.remove") });
     if (!ok) return;
     await ApiHelper.delete("/assignments/" + assignmentId, "DoingApi");
-    overviewData.refetch();
+    refreshGrid();
   };
 
   const handleAutoSchedule = async () => {
@@ -253,7 +293,7 @@ export const ServingOverviewPage = () => {
           if (res?.created > 0) filled++;
         } catch { /* plan skipped (e.g. no edit access) */ }
       }
-      await overviewData.refetch();
+      await Promise.all([overviewData.refetch(), declined.refetch()]);
       setSnack(Locale.label("plans.servingOverviewPage.autoScheduleResult").replace("{filled}", String(filled)).replace("{total}", String(total)));
     } finally {
       setBusy(false);
@@ -322,6 +362,12 @@ export const ServingOverviewPage = () => {
               </FormControl>
             </Stack>
             {displayRows.length === 0 && <EmptyState variant="plain" title={Locale.label("plans.servingOverviewPage.noData")} />}
+            {displayRows.length > 0 && (
+              <Stack direction="row" spacing={2} useFlexGap flexWrap="wrap" sx={{ color: "text.secondary", fontSize: 13 }} data-testid="matrix-status-legend">
+                <span><PendingIcon aria-hidden sx={{ fontSize: 14, verticalAlign: "-2px", mr: 0.5 }} />{Locale.label("plans.servingOverviewPage.pendingLegend", "Pending: not answered yet")}</span>
+                <span><DeclinedIcon aria-hidden sx={{ fontSize: 14, verticalAlign: "-2px", mr: 0.5, color: "var(--b1-danger)" }} />{Locale.label("plans.servingOverviewPage.declinedLegend", "Declined: the slot is open again")}</span>
+              </Stack>
+            )}
           </Stack>
           {displayRows.length > 0 && (
             <TableContainer sx={{ maxHeight: "70vh", overflowX: "auto", borderTop: 1, borderColor: "divider" }}>
@@ -347,11 +393,11 @@ export const ServingOverviewPage = () => {
                         const isGap = isActive && cell && filled < cell.needed;
                         const ids = cell ? cellPersonIds(cell) : [];
                         const isHighlight = !!highlightPersonId && ids.includes(highlightPersonId);
-                        const sortedIds = [...ids].sort(byName);
-                        const content = !isActive ? "" : sortedIds.length === 0 ? "—" : sortedIds.map((id, i) => (
-                          <React.Fragment key={id}>
+                        const sorted = cell ? [...cellAssignments(cell)].sort((a, b) => byName(a.personId, b.personId)) : [];
+                        const content = !isActive ? "" : sorted.length === 0 ? "—" : sorted.map((a, i) => (
+                          <React.Fragment key={a.assignmentId || a.personId + i}>
                             {i > 0 && ", "}
-                            <span>{getDisplayName(id)}{blockoutBadge(id, d, true)}</span>
+                            <Box component="span" sx={nameSx(a)}>{getDisplayName(a.personId)}</Box><StatusMark assignment={a} />{blockoutBadge(a.personId, d, true)}
                           </React.Fragment>
                         ));
                         return (
@@ -390,7 +436,11 @@ export const ServingOverviewPage = () => {
             <Box key={slot.positionId} sx={{ mb: 2 }}>
               {[...slot.assignments].sort((a, b) => byName(a.personId, b.personId)).map(a => (
                 <Stack key={a.assignmentId} direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 0.5 }}>
-                  <Stack direction="row" alignItems="center" spacing={1}><span>{getDisplayName(a.personId)}</span>{blockoutBadge(a.personId, editingKey?.date)}</Stack>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Box component="span" sx={nameSx(a)}>{getDisplayName(a.personId)}</Box>
+                    {statusLabel(a) && <StatusBadge tone={isDeclined(a) ? "danger" : "neutral"} data-testid={"matrix-status-" + a.personId}>{statusLabel(a)}</StatusBadge>}
+                    {blockoutBadge(a.personId, editingKey?.date)}
+                  </Stack>
                   <Tooltip title={Locale.label("plans.servingOverviewPage.remove")}>
                     <IconButton size="small" onClick={() => removeAssignment(a.assignmentId, getDisplayName(a.personId))} data-testid={"matrix-remove-" + a.personId}><ClearIcon fontSize="small" /></IconButton>
                   </Tooltip>
@@ -400,11 +450,11 @@ export const ServingOverviewPage = () => {
                 key={slot.positionId}
                 position={{ id: slot.positionId, groupId: slot.groupId, count: slot.needed, name: editingRow?.positionName } as PositionInterface}
                 assignment={{ positionId: slot.positionId } as AssignmentInterface}
-                peopleNeeded={slot.needed - slot.assignments.length}
+                peopleNeeded={slot.needed - activeCount(slot)}
                 assignedPersonIds={slot.assignments.map((a) => a.personId)}
                 blockoutDates={blockouts.data}
                 serviceDate={editingKey?.date}
-                updatedFunction={(done: boolean) => { overviewData.refetch(); if (done) setEditingKey(null); }}
+                updatedFunction={(done: boolean) => { refreshGrid(); if (done) setEditingKey(null); }}
               />
             </Box>
           ))}

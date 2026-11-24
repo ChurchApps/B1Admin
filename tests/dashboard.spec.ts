@@ -201,6 +201,25 @@ test.describe("Needs attention", () => {
     await expect(card).not.toContainText("approvals");
     await expect(card).not.toContainText("requests");
   });
+
+  test("open giving batches link to Batches; closed and the online batch do not count", async ({ page }) => {
+    await page.route("**/events/pending", (route) => route.fulfill({ json: [] }));
+    await page.route("**/eventBookings/pending", (route) => route.fulfill({ json: [] }));
+    await page.route("**/groupjoinrequests/pending", (route) => route.fulfill({ json: [] }));
+    await page.route(/\/donationbatches$/, (route) => route.fulfill({
+      json: [
+        { id: "B1", name: "Sunday cash", status: "open" },
+        { id: "B2", name: "Midweek", status: "open" },
+        { id: "B3", name: "Last month", status: "closed" },
+        { id: "B4", name: "Online Donation", status: "open" }
+      ]
+    }));
+    await page.goto("/");
+    const card = page.getByTestId("needs-attention");
+    await expect(card).toContainText("2 open giving batches", { timeout: 15000 });
+    await card.getByText("2 open giving batches").click();
+    await expect(page).toHaveURL(/\/donations\/batches$/);
+  });
 });
 
 plainTest.describe("View People Names Only", () => {

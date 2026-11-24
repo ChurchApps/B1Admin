@@ -9,4 +9,4 @@ export { useErrorSummary } from "./useErrorSummary";
 export { useFirstDayOfWeek, applyWeekStart } from "./useFirstDayOfWeek";
 export { useReorderableLinks } from "./useReorderableLinks";
 export { useRequirePermission } from "./useRequirePermission";
-export { usePendingApprovalsCount, usePendingJoinRequestsCount } from "./usePendingCounts";
+export { usePendingApprovalsCount, usePendingJoinRequestsCount, useOpenBatchesCount } from "./usePendingCounts";

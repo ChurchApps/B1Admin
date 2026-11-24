@@ -66,7 +66,7 @@
     },
     "mobile": {
       "src": ["src/mobile/**"],
-      "specs": ["mobile-app.spec.ts", "checkin*.spec.ts", "label-designer.spec.ts", "everyone-role.spec.ts"]
+      "specs": ["mobile-app.spec.ts", "mobile-app-install-link.spec.ts", "checkin*.spec.ts", "label-designer.spec.ts", "everyone-role.spec.ts"]
     },
     "settings": {
       "src": ["src/settings/**"],

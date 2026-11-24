@@ -5,6 +5,7 @@ import type { GenericSettingInterface, GroupInterface } from "@churchapps/helper
 import { FormCard } from "../components/ui/FormCard";
 import { useRequirePermission } from "../hooks";
 import { MobileChrome } from "./components/MobileChrome";
+import { AppInstallLink } from "./components/AppInstallLink";
 import { clearSiteCache } from "../site/siteCache";
 
 // The church-wide defaults always hold a value for every field (the Api falls back to "members").
@@ -143,6 +144,7 @@ export const B1MobilePage: React.FC = () => {
 
   return (
     <MobileChrome title={Locale.label("mobile.b1MobilePage.title")} subtitle={Locale.label("mobile.b1MobilePage.subtitle")}>
+      <AppInstallLink />
       <FormCard title={Locale.label("mobile.b1MobilePage.title")} icon="phone_iphone" onSave={handleSave} isSubmitting={saving} disabled={!loaded}>
         <Stack direction="row" alignItems="center" sx={{ mb: 2 }}>
           <Typography variant="h3">{Locale.label("settings.directoryApprovalSettingsEdit.directoryApprovalGroup")}</Typography>
