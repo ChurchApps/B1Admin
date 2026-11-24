@@ -24,6 +24,7 @@ type RegistrationSettingsFormValues = {
   registrationCloseDate: string;
   tags: string;
   formId: string;
+  confirmationMessage: string;
 };
 
 const toLocalInput = (d: Date | string) => {
@@ -43,7 +44,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   // Bumped after a copy so the attendee type, selection, and discount code lists reload.
   const [listsVersion, setListsVersion] = useState(0);
 
-  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<RegistrationSettingsFormValues>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "" } });
+  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<RegistrationSettingsFormValues>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "", confirmationMessage: "" } });
 
   const sectionsDirty = typesDirty || selectionsDirty || couponsDirty;
   const anyDirty = isDirty || sectionsDirty;
@@ -67,7 +68,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
     registrationOpenDate: e.registrationOpenDate ? toLocalInput(e.registrationOpenDate) : "",
     registrationCloseDate: e.registrationCloseDate ? toLocalInput(e.registrationCloseDate) : "",
     tags: e.tags || "",
-    formId: e.formId || ""
+    formId: e.formId || "",
+    confirmationMessage: e.confirmationMessage || ""
   });
 
   useEffect(() => {
@@ -91,7 +93,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
       registrationOpenDate: values.registrationOpenDate ? new Date(values.registrationOpenDate) : null,
       registrationCloseDate: values.registrationCloseDate ? new Date(values.registrationCloseDate) : null,
       tags: values.tags,
-      formId: values.formId || null
+      formId: values.formId || null,
+      confirmationMessage: values.confirmationMessage.trim() // blank clears it
     };
     try {
       await ApiHelper.post("/events", [updated], "ContentApi");
@@ -149,6 +152,17 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
             <MenuItem value="">{Locale.label("registrations.registrationSettingsEdit.none")}</MenuItem>
             {forms.map((f) => <MenuItem key={f.id} value={f.id}>{f.name}</MenuItem>)}
           </TextField>
+          <TextField
+            label={Locale.label("registrations.registrationSettingsEdit.confirmationMessage", "Confirmation Message")}
+            helperText={Locale.label("registrations.registrationSettingsEdit.confirmationMessageHelper", "Optional. Added to the registration confirmation email as plain text.")}
+            size="small"
+            fullWidth
+            multiline
+            minRows={3}
+            slotProps={{ htmlInput: { maxLength: 2000 } }}
+            data-testid="registration-confirmation-message"
+            {...register("confirmationMessage")}
+          />
           <Button variant="contained" onClick={handleSubmit(onValid)} disabled={saving}>
             {saving ? Locale.label("common.saving") : Locale.label("registrations.registrationSettingsEdit.saveSettings")}
           </Button>

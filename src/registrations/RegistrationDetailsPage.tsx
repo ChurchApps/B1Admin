@@ -29,7 +29,8 @@ import {
   ReceiptLong as ReceiptIcon,
   ArrowUpward as PromoteIcon,
   Restore as RestoreIcon,
-  Share as ShareIcon
+  Share as ShareIcon,
+  MailOutline as MailIcon
 } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, UserHelper, Permissions, PersonHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
@@ -101,6 +102,8 @@ export const RegistrationDetailsPage = () => {
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
   const [sharing, setSharing] = useState(false);
+  const [reminderResult, setReminderResult] = useState<{ severity: "success" | "error"; message: string } | null>(null);
+  const [sendingReminders, setSendingReminders] = useState(false);
   const [currency, setCurrency] = useState("usd");
   const [registrantNames, setRegistrantNames] = useState<Map<string, PersonInterface>>(new Map());
   const { view: requestedView, setView } = useRecordView("view", { replace: ["settings"] });
@@ -200,6 +203,23 @@ export const RegistrationDetailsPage = () => {
     if (!(await confirm(Locale.label("registrations.commerce.promoteConfirm"), { destructive: false, confirmLabel: Locale.label("registrations.commerce.promote") }))) return;
     await ApiHelper.post("/registrations/" + regId + "/promote", {}, "ContentApi");
     loadData(false);
+  };
+
+  // Matches the API: active (pending or confirmed) registrations with a balance; cancelled and waitlisted are skipped.
+  const owingCount = registrations.filter((r) => isActive(r.status) && r.personId && balanceOf(r) > 0).length;
+
+  const handleSendBalanceReminders = async () => {
+    if (!(await confirm(Locale.label("registrations.registrationDetailsPage.balanceReminderConfirm", "Email a balance reminder to {count} registrants who owe money?").replace("{count}", String(owingCount)), { destructive: false, confirmLabel: Locale.label("registrations.registrationDetailsPage.sendBalanceReminder", "Send Balance Reminder") }))) return;
+    setSendingReminders(true);
+    setReminderResult(null);
+    try {
+      const result: { sent?: number } = await ApiHelper.post("/registrations/event/" + eventId + "/balance-reminders", {}, "ContentApi");
+      setReminderResult({ severity: "success", message: Locale.label("registrations.registrationDetailsPage.balanceRemindersSent", "Balance reminder emailed to {count} registrants.").replace("{count}", String(result?.sent ?? 0)) });
+    } catch {
+      setReminderResult({ severity: "error", message: Locale.label("registrations.registrationDetailsPage.balanceRemindersError", "Balance reminders could not be sent. Please try again.") });
+    } finally {
+      setSendingReminders(false);
+    }
   };
 
   const money = (n: number | null | undefined) => CurrencyHelper.formatCurrencyWithLocale(Number(n) || 0, currency);
@@ -317,7 +337,7 @@ export const RegistrationDetailsPage = () => {
   const getRows = () => visibleRegistrations.map((reg) => {
     const total = Number(reg.totalAmount) || 0;
     const paid = Number(reg.amountPaid) || 0;
-    const balance = Math.max(0, total - paid);
+    const balance = balanceOf(reg);
     return (
       <TableRow key={reg.id} data-testid="registration-row">
         <TableCell>
@@ -411,7 +431,10 @@ export const RegistrationDetailsPage = () => {
     <CardWithHeader
       title={`${Locale.label("registrations.registrationDetailsPage.registrations")} (${count}${event.capacity ? ` / ${event.capacity}` : ""}${waitlistCount > 0 ? " · " + Locale.label("registrations.registrationDetailsPage.waitlisted", "{count} waitlisted").replace("{count}", String(waitlistCount)) : ""})`}
       actions={(
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+          {canEdit && owingCount > 0 && (
+            <Button startIcon={<MailIcon />} variant="outlined" onClick={handleSendBalanceReminders} disabled={sendingReminders} data-testid="send-balance-reminder">{Locale.label("registrations.registrationDetailsPage.sendBalanceReminder", "Send Balance Reminder")}</Button>
+          )}
           {canEdit && (
             <Button startIcon={<PersonAddIcon />} variant="outlined" onClick={() => { setAddAttendeeTypeId(types[0]?.id || ""); setShowAddAttendee(true); }}>{Locale.label("registrations.registrationDetailsPage.addAttendee")}</Button>
           )}
@@ -419,6 +442,9 @@ export const RegistrationDetailsPage = () => {
           <Button startIcon={<DownloadIcon />} onClick={handleExportCSV}>{Locale.label("registrations.registrationDetailsPage.exportCsv")}</Button>
         </Stack>
       )}>
+      {reminderResult && (
+        <Alert severity={reminderResult.severity} onClose={() => setReminderResult(null)} sx={{ mb: 1 }} data-testid="balance-reminder-result">{reminderResult.message}</Alert>
+      )}
       {types.length > 0 && (
         <Stack direction="row" spacing={0.5} flexWrap="wrap" useFlexGap sx={{ mb: 1 }} data-testid="type-counts">
           {types.map((t) => (
