@@ -125,6 +125,7 @@ interface LegalLabels {
   placeOfIssue: string;
   receiptNumber: string;
   signature: string;
+  taxId: string;
 }
 
 const legalLabels = (): LegalLabels => ({
@@ -143,7 +144,8 @@ const legalLabels = (): LegalLabels => ({
   nzNumber: Locale.label("donations.statementLegal.nzNumber"),
   placeOfIssue: Locale.label("donations.statementLegal.placeOfIssue"),
   receiptNumber: Locale.label("donations.statementLegal.receiptNumber"),
-  signature: Locale.label("donations.statementLegal.signature")
+  signature: Locale.label("donations.statementLegal.signature"),
+  taxId: Locale.label("donations.statementLegal.taxId")
 });
 
 const pledgeStatusLabel = (status: PledgeStatus | undefined) => {
@@ -532,6 +534,11 @@ export const GivingStatementDocument = (props: Props) => {
   };
   const disclaimerText = (statementSettings?.disclaimer || labels.disclaimer).split("{churchName}").join(churchName);
 
+  // The standard layout has no legal block, so a filled-in Tax ID and organization address print in the
+  // Organization card instead. Country formats already show both in their legal block.
+  const standardTaxId = !format ? statementSettings?.registrationNumber?.trim() || "" : "";
+  const standardOrgAddress = !format ? statementSettings?.orgAddress?.trim() || "" : "";
+
   const legalTitle = format === "australia" ? legal.australiaTitle : format === "canada" ? legal.canadaTitle : legal.newZealandTitle;
   const registrationLabel = format === "australia" ? legal.abn : format === "canada" ? legal.craNumber : legal.nzNumber;
 
@@ -594,15 +601,22 @@ export const GivingStatementDocument = (props: Props) => {
             <h2 className="section-label">{labels.organization}</h2>
             <div className="info-card">
               <p className="info-name">{church?.name}</p>
-              {church?.address1 && <p className="info-detail">{church.address1}</p>}
-              {church?.address2 && <p className="info-detail">{church.address2}</p>}
-              {(church?.city || church?.country || church?.zip) && (
-                <p className="info-detail">
-                  {[church?.city, church?.country, church?.zip]
-                    .filter(Boolean)
-                    .join(", ")}
-                </p>
+              {standardOrgAddress ? (
+                <p className="info-detail" data-testid="statement-org-address" style={{ whiteSpace: "pre-line" }}>{standardOrgAddress}</p>
+              ) : (
+                <>
+                  {church?.address1 && <p className="info-detail">{church.address1}</p>}
+                  {church?.address2 && <p className="info-detail">{church.address2}</p>}
+                  {(church?.city || church?.country || church?.zip) && (
+                    <p className="info-detail">
+                      {[church?.city, church?.country, church?.zip]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </p>
+                  )}
+                </>
               )}
+              {standardTaxId && <p className="info-detail" data-testid="statement-tax-id">{legal.taxId}: {standardTaxId}</p>}
             </div>
           </div>
         </div>

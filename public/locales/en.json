@@ -1222,7 +1222,8 @@
       "nzNumber": "Charity registration number",
       "placeOfIssue": "Place of issue",
       "receiptNumber": "Receipt number",
-      "signature": "Authorized signature"
+      "signature": "Authorized signature",
+      "taxId": "Tax ID"
     },
     "statementPeriod": {
       "range": "Period: {start} - {end}"
@@ -4720,6 +4721,7 @@
       "registrationNumber": "Registration Number",
       "signatory": "Authorized Signatory Name",
       "standard": "Standard",
+      "taxId": "Tax ID",
       "yearStart": "Statement Year Starts In",
       "yearStartHelper": "The first month of the year your giving statements cover, for example July for a July–June tax year."
     },
