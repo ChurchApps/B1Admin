@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, Box, Divider, Table, TableBody, TableRow, TableCell, TableHead, TextField, MenuItem, Alert } from "@mui/material";
 import { Delete as DeleteIcon, PersonAdd as PersonAddIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, CurrencyHelper, PersonHelper } from "@churchapps/apphelper";
+import { ApiHelper, Loading, Locale, CurrencyHelper, PersonHelper, UserHelper } from "@churchapps/apphelper";
 import { type PersonInterface } from "@churchapps/helpers";
 import { FormSubmission, PersonAdd } from "../../components";
 import { StatusBadge } from "../../components/ui";
 import { AppIconButton } from "../../components/ui/AppIconButton";
 import { formatDateSafe } from "../../helpers/DateFormatHelper";
-import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface, type LoadedSelectionChoice } from "../registrationCommerce";
+import { type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type RegistrationPaymentInterface, type LoadedSelectionChoice, isGatewayPayment, refundableForPayment } from "../registrationCommerce";
+import { RegistrationPaymentDialog, type PaymentDialogMode, type PaymentSaveResult } from "./RegistrationPaymentDialog";
+
+// Same check the Api makes before recording payments or refunds.
+const REGISTRATIONS_EDIT = { api: "ContentApi", contentType: "Registrations", action: "Edit" };
 
 interface Props {
   registrationId: string;
@@ -17,6 +21,8 @@ interface Props {
   canEdit?: boolean;
   onSaved?: () => void;
   onClose: () => void;
+  // Called after a payment or refund changes the registration's paid total.
+  onChanged?: () => void;
 }
 
 interface EditMember { personId?: string; firstName: string; lastName: string; registrationTypeId: string }
@@ -42,8 +48,8 @@ const editErrorMessage = (raw: string) => {
   }
 };
 
-export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, typeMap, selMap, registrantName, canEdit, onSaved, onClose }) => {
-  const [reg, setReg] = useState<(Omit<CommerceRegistrationInterface, "selectionChoices"> & { selectionChoices?: LoadedSelectionChoice[]; payments?: RegistrationPaymentInterface[] }) | null>(null);
+export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, typeMap, selMap, registrantName, canEdit, onSaved, onClose, onChanged }) => {
+  const [reg, setReg] = useState<(Omit<CommerceRegistrationInterface, "selectionChoices" | "payments"> & { selectionChoices?: LoadedSelectionChoice[]; payments?: RegistrationPaymentInterface[] }) | null>(null);
   const [loading, setLoading] = useState(true);
   const [currency, setCurrency] = useState("usd");
   const [editing, setEditing] = useState(false);
@@ -52,6 +58,9 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
   const [showAddPerson, setShowAddPerson] = useState(false);
   const [editError, setEditError] = useState("");
   const [saving, setSaving] = useState(false);
+  const [paymentDialog, setPaymentDialog] = useState<{ mode: PaymentDialogMode; payment?: RegistrationPaymentInterface; max: number } | null>(null);
+  // Payments and refunds need Registrations Edit, the same check the Api makes.
+  const canPay = UserHelper.checkAccess(REGISTRATIONS_EDIT);
 
   const load = () => ApiHelper.get(`/registrations/${registrationId}`, "ContentApi").then((data) => setReg(data)).catch(() => setReg(null)).finally(() => setLoading(false));
 
@@ -62,7 +71,7 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
 
   const total = Number(reg?.totalAmount) || 0;
   const paid = Number(reg?.amountPaid) || 0;
-  const balance = Math.max(0, total - paid);
+  const balance = Math.max(0, Math.round((total - paid) * 100) / 100);
   const types = Array.from(typeMap.values());
   const selections = Array.from(selMap.values());
 
@@ -169,6 +178,20 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
     </Stack>
   );
 
+  const payments = reg?.payments || [];
+  const canRecordPayment = canPay && balance > 0 && reg?.status !== "cancelled" && reg?.status !== "waitlisted";
+
+  const handleSaved = (result: PaymentSaveResult) => {
+    setReg((prev) => (prev ? { ...prev, amountPaid: result.registration.amountPaid, status: result.registration.status, payments: result.payments } : prev));
+    setPaymentDialog(null);
+    onChanged?.();
+  };
+
+  const paymentLabel = (p: RegistrationPaymentInterface) => {
+    const parts = [p.method, p.provider].filter(Boolean).join(" / ");
+    return !p.provider && p.transactionId ? `${parts} #${p.transactionId}` : parts;
+  };
+
   return (
     <Dialog open onClose={onClose} maxWidth="md" fullWidth>
       <DialogTitle>{Locale.label("registrations.commerce.registrationDetails")}</DialogTitle>
@@ -217,16 +240,23 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
 
             <Box>
               <Divider sx={{ mb: 1 }} />
-              <Stack direction="row" spacing={2} alignItems="center">
+              <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap" useFlexGap>
                 <Typography variant="body2">{Locale.label("registrations.commerce.paid")}: {money(paid)} / {money(total)}</Typography>
                 {balance > 0 && <StatusBadge tone="warning">{`${Locale.label("registrations.commerce.balance")}: ${money(balance)}`}</StatusBadge>}
+                <Box sx={{ flexGrow: 1 }} />
+                {canRecordPayment && (
+                  <Button size="small" variant="outlined" onClick={() => setPaymentDialog({ mode: "payment", max: balance })} data-testid="record-registration-payment">{Locale.label("registrations.commerce.recordPayment")}</Button>
+                )}
+                {canPay && paid > 0 && (
+                  <Button size="small" color="warning" onClick={() => setPaymentDialog({ mode: "refund", max: paid })} data-testid="record-registration-refund">{Locale.label("registrations.commerce.recordRefund")}</Button>
+                )}
               </Stack>
             </Box>
 
             <Box>
               <Divider sx={{ mb: 1 }} />
               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>{Locale.label("registrations.commerce.payments")}</Typography>
-              {(reg?.payments || []).length === 0 ? (
+              {payments.length === 0 ? (
                 <Typography variant="body2" color="text.secondary">{Locale.label("registrations.commerce.noPayments")}</Typography>
               ) : (
                 <Table size="small" data-testid="detail-payments">
@@ -236,17 +266,28 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
                       <TableCell>{Locale.label("registrations.commerce.method")}</TableCell>
                       <TableCell>{Locale.label("registrations.commerce.kind")}</TableCell>
                       <TableCell>{Locale.label("registrations.registrationDetailsPage.date")}</TableCell>
+                      {canPay && <TableCell />}
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {(reg?.payments || []).map((p, i) => (
-                      <TableRow key={p.id || i}>
-                        <TableCell align="right">{money(p.amount)}</TableCell>
-                        <TableCell>{[p.method, p.provider].filter(Boolean).join(" / ")}</TableCell>
-                        <TableCell>{p.kind}</TableCell>
-                        <TableCell>{formatDateSafe(p.createdDate)}</TableCell>
-                      </TableRow>
-                    ))}
+                    {payments.map((p, i) => {
+                      const refundable = canPay && isGatewayPayment(p) ? refundableForPayment(p, payments, paid) : 0;
+                      return (
+                        <TableRow key={p.id || i} data-testid="registration-payment-row">
+                          <TableCell align="right">{p.kind === "refund" ? `-${money(p.amount)}` : money(p.amount)}</TableCell>
+                          <TableCell>{paymentLabel(p)}</TableCell>
+                          <TableCell>{p.status === "pending" ? `${p.kind} (${p.status})` : p.kind}</TableCell>
+                          <TableCell>{formatDateSafe(p.createdDate)}</TableCell>
+                          {canPay && (
+                            <TableCell align="right">
+                              {refundable > 0 && (
+                                <Button size="small" color="warning" onClick={() => setPaymentDialog({ mode: "gatewayRefund", payment: p, max: refundable })} data-testid="refund-registration-payment">{Locale.label("registrations.commerce.refund")}</Button>
+                              )}
+                            </TableCell>
+                          )}
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               )}
@@ -275,6 +316,17 @@ export const RegistrationDetailDialog: React.FC<Props> = ({ registrationId, type
           </>
         )}
       </DialogActions>
+      {paymentDialog && (
+        <RegistrationPaymentDialog
+          mode={paymentDialog.mode}
+          registrationId={registrationId}
+          payment={paymentDialog.payment}
+          maxAmount={paymentDialog.max}
+          currency={paymentDialog.payment?.currency || currency}
+          onSaved={handleSaved}
+          onClose={() => setPaymentDialog(null)}
+        />
+      )}
     </Dialog>
   );
 };

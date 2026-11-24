@@ -86,3 +86,17 @@ export interface CommerceRegistrationInterface extends RegistrationInterface {
   waitlistNotifiedDate?: Date;
   members?: CommerceMemberInterface[];
 }
+
+export type OfflinePaymentMethod = "cash" | "check" | "other";
+
+const round2 = (n: number) => Math.round(n * 100) / 100;
+
+// Mirrors the Api's RegistrationPaymentHelper so the dialog only offers what the server will accept.
+export const isGatewayPayment = (p: RegistrationPaymentInterface) => p.kind !== "refund" && !!p.provider && !!p.transactionId && (p.status || "succeeded") === "succeeded";
+
+export const refundableForPayment = (payment: RegistrationPaymentInterface, payments: RegistrationPaymentInterface[], amountPaid: number) => {
+  const refunded = payments
+    .filter((p) => p.kind === "refund" && !!p.provider && p.transactionId === payment.transactionId && p.status !== "failed")
+    .reduce((sum, p) => sum + (Number(p.amount) || 0), 0);
+  return Math.max(0, round2(Math.min((Number(payment.amount) || 0) - refunded, Number(amountPaid) || 0)));
+};
