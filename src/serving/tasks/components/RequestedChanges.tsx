@@ -67,7 +67,9 @@ export const RequestedChanges = (props: Props) => {
     const rows: JSX.Element[] = [];
     requestedChanges?.forEach((ch, i) => {
       let val: React.ReactNode = ch.value;
-      if (ch.field === "photo") {
+      if (ch.field === "photo" && !ch.value) {
+        val = <Typography variant="body2" data-testid="requested-change-remove-photo">{Locale.label("tasks.requestedChanges.removePhoto")}</Typography>;
+      } else if (ch.field === "photo") {
         val = (
           <Avatar
             src={ch.value}
@@ -129,6 +131,8 @@ export const RequestedChanges = (props: Props) => {
         case "name.last": p.name.last = value; break;
         case "name.prefix": p.name.prefix = value; break;
         case "photo": {
+          // An empty value is a request to take the photo down.
+          if (!value) { p.photo = ""; p.photoUpdated = undefined; break; }
           p.photo = value;
           const getTime = value.split("?dt=")[1];
           p.photoUpdated = new Date(+getTime);

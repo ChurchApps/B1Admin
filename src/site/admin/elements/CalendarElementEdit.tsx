@@ -11,6 +11,7 @@ type CalendarAnswers = {
   layout?: string;
   groupBadge?: string;
   tag?: string;
+  itemCount?: string | number;
 };
 
 interface Props {
@@ -59,6 +60,9 @@ export const CalendarElementEdit = ({ parsedData, handleChange }: Props) => {
             <MenuItem value="autoscroll">{Locale.label("site.calendarElementEdit.layoutAutoscroll")}</MenuItem>
           </Select>
         </FormControl>
+      )}
+      {parsedData.display === "upcoming" && (
+        <TextField fullWidth size="small" type="number" sx={{ mt: 2 }} label={Locale.label("site.calendarElementEdit.itemCount")} name="itemCount" value={parsedData.itemCount ?? 12} onChange={handleChange} slotProps={{ htmlInput: { min: 1 } }} data-testid="calendar-item-count-input" />
       )}
       {parsedData.display === "upcoming" && parsedData.calendarType === "curated" && (
         <FormControl fullWidth sx={{ mt: 2 }}>

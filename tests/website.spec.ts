@@ -1706,6 +1706,21 @@ test.describe.serial("Events page calendar element", () => {
       const answers = JSON.parse((await elementPost).request().postDataJSON()[0].answersJSON);
       expect(answers).toMatchObject({ display: "upcoming", layout: "autoscroll" });
     });
+
+    test("sets how many upcoming events show, starting from 12", async () => {
+      await page.goto("/site/pages/PAG00000004");
+      const display = await openCalendarElement();
+      await display.click();
+      await page.getByRole("option", { name: "Upcoming events" }).click();
+      const count = page.locator('[data-testid="calendar-item-count-input"] input');
+      await expect(count).toHaveValue("12");
+      await count.fill("4");
+      const elementPost = page.waitForResponse((r) => r.url().includes("/content/elements") && r.request().method() === "POST", { timeout: 15000 });
+      await page.locator("button").getByText("Save").click();
+      const answers = JSON.parse((await elementPost).request().postDataJSON()[0].answersJSON);
+      expect(answers.display).toBe("upcoming");
+      expect(String(answers.itemCount)).toBe("4");
+    });
   });
 
   // ChurchAppsSupport#1442: the Group List element gets the same Grid / Scrolling (automatic) layout choice.

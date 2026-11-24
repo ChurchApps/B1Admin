@@ -130,3 +130,58 @@ test.describe.serial("Directory update: anniversary", () => {
     expect(String(me.anniversary).slice(0, 10)).toBe("2011-06-18");
   });
 });
+
+// A member can ask to take their photo down from the app (a "photo" change with an empty value); approving it clears the photo.
+test.describe.serial("Directory update: remove photo", () => {
+  let ctx: APIRequestContext;
+  let jwt = "";
+  let original: any;
+
+  test.beforeAll(async () => {
+    ctx = await pwRequest.newContext();
+    const login = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    jwt = (login.userChurches || []).find((c: any) => c.church?.id === CHURCH_ID)?.jwt;
+    expect(jwt).toBeTruthy();
+    original = await (await ctx.get(`${API}/membership/people/${DEMO_PERSON_ID}`, auth(jwt))).json();
+    // Give the person a photo to remove.
+    await ctx.post(`${API}/membership/people`, { ...auth(jwt), data: [{ ...original, photoUpdated: new Date() }] });
+  });
+
+  test.afterAll(async () => {
+    const me = await (await ctx.get(`${API}/membership/people/${DEMO_PERSON_ID}`, auth(jwt))).json();
+    await ctx.post(`${API}/membership/people`, { ...auth(jwt), data: [{ ...me, photoUpdated: original?.photoUpdated ?? null }] });
+    await ctx.dispose();
+  });
+
+  test("shows Remove photo and clears the photo when applied", async ({ page }) => {
+    const taskRes = await ctx.post(`${API}/doing/tasks?type=directoryUpdate`, {
+      ...auth(jwt),
+      data: [
+        {
+          dateCreated: new Date(),
+          associatedWithType: "person",
+          associatedWithId: DEMO_PERSON_ID,
+          associatedWithLabel: "Demo User",
+          createdByType: "person",
+          createdById: DEMO_PERSON_ID,
+          createdByLabel: "Demo User",
+          title: "Profile changes for Demo User",
+          status: "Open",
+          data: JSON.stringify([{ field: "photo", label: "Photo", value: "" }])
+        }
+      ]
+    });
+    expect(taskRes.ok()).toBeTruthy();
+    const task = (await taskRes.json())[0];
+
+    await page.goto("/serving/tasks/" + task.id);
+    await expect(page.getByText("Requested Changes", { exact: true })).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("requested-change-remove-photo")).toHaveText("Remove photo");
+
+    await page.getByRole("button", { name: "Apply" }).click();
+    await page.waitForURL(/\/serving\/tasks$/, { timeout: 20000 });
+
+    const me = await (await ctx.get(`${API}/membership/people/${DEMO_PERSON_ID}`, auth(jwt))).json();
+    expect(me.photoUpdated ?? null).toBeNull();
+  });
+});
