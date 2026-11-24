@@ -112,3 +112,87 @@ test.describe.serial("Statement disclaimer and statement year", () => {
     await expect(page.getByTestId("giving-statement")).toHaveAttribute("href", new RegExp(`/donations/print/${JOHN_SMITH}\\?year=2024$`));
   });
 });
+
+// Settings > Giving: the Tax ID and organization address print on the standard statement when filled in.
+test.describe.serial("Statement Tax ID and organization address", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const JOHN_SMITH = "PER00000001";
+  const TAX_ID = "12-3456789";
+  const ADDRESS = "PO Box 100, Springfield, IL 62701";
+  type SettingRow = { id?: string; churchId?: string; keyName: string; value?: string; public?: number };
+  let ctx: APIRequestContext;
+  let auth: { headers: { Authorization: string } };
+
+  const saveSettings = async (values: Record<string, string>) => {
+    const existing: SettingRow[] = await (await ctx.get(`${API}/membership/settings`, auth)).json();
+    const rows = Object.entries(values).map(([keyName, value]) => ({ ...(existing.find((s) => s.keyName === keyName) || { churchId: "CHU00000001", keyName }), public: 1, value }));
+    expect((await ctx.post(`${API}/membership/settings`, { ...auth, data: rows })).ok()).toBeTruthy();
+  };
+  const clear = { statementFormat: "", statementRegistrationNumber: "", statementOrgAddress: "" };
+
+  test.beforeAll(async () => {
+    ctx = await request.newContext();
+    const body = await (await ctx.post(`${API}/membership/users/login`, { data: { email: "demo@b1.church", password: "password" } })).json();
+    const uc = body.userChurches.find((c: { church?: { id?: string }; jwt: string }) => c.church?.id === "CHU00000001");
+    auth = { headers: { Authorization: "Bearer " + uc.jwt } };
+  });
+
+  test.afterAll(async () => {
+    await saveSettings(clear);
+    await ctx.dispose();
+  });
+
+  test.beforeEach(async ({ page }) => {
+    await page.addInitScript(() => { window.print = () => {}; });
+  });
+
+  test("the standard format shows and saves the Tax ID and organization address", async ({ page }) => {
+    await saveSettings(clear);
+    await navigateTo(page, "settings");
+    await page.locator('[data-testid="settings-section-giving"]').click();
+    const section = page.locator('[data-testid="settings-giving"]');
+    await expect(section).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="settings-giving"] [data-testid="small-button-edit"]').dispatchEvent("click");
+    await expect(section.locator('[data-testid="statement-format-select"]')).toContainText("Standard", { timeout: 10000 });
+    await expect(section.getByLabel("Tax ID")).toBeVisible();
+    await section.locator('[data-testid="statement-registration-input"] input').fill(TAX_ID);
+    await section.locator('[data-testid="statement-org-address-input"] input').fill(ADDRESS);
+    const settingsPost = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST", { timeout: 15000 });
+    await section.getByRole("button", { name: "Save" }).click();
+    const saved: SettingRow[] = (await settingsPost).request().postDataJSON();
+    expect(saved.find((s) => s.keyName === "statementRegistrationNumber")?.value).toBe(TAX_ID);
+    expect(saved.find((s) => s.keyName === "statementOrgAddress")?.value).toBe(ADDRESS);
+  });
+
+  test("blank settings print neither line on the standard statement", async ({ page }) => {
+    await saveSettings(clear);
+    await page.goto(`/donations/print/${JOHN_SMITH}?year=2025`);
+    await expect(page.getByText("2025 Annual Giving Statement")).toBeVisible({ timeout: 15000 });
+    await expect(page.getByTestId("statement-tax-id")).toHaveCount(0);
+    await expect(page.getByTestId("statement-org-address")).toHaveCount(0);
+  });
+
+  test("the standard statement, Print All and the receipt print the Tax ID and address", async ({ page }) => {
+    await saveSettings({ statementFormat: "", statementRegistrationNumber: TAX_ID, statementOrgAddress: ADDRESS });
+    await page.goto(`/donations/print/${JOHN_SMITH}?year=2025`);
+    await expect(page.getByTestId("statement-tax-id")).toHaveText("Tax ID: " + TAX_ID, { timeout: 15000 });
+    await expect(page.getByTestId("statement-org-address")).toHaveText(ADDRESS);
+    await expect(page.getByTestId("statement-legal-block")).toHaveCount(0);
+
+    await page.goto("/donations/print-all?year=2025");
+    await expect(page.getByTestId("statement-tax-id").first()).toHaveText("Tax ID: " + TAX_ID, { timeout: 15000 });
+
+    await page.goto("/donations/receipt/DON00000001");
+    await expect(page.getByTestId("statement-tax-id")).toHaveText("Tax ID: " + TAX_ID, { timeout: 15000 });
+  });
+
+  test("a country format prints them only in its legal block", async ({ page }) => {
+    await saveSettings({ statementFormat: "canada", statementRegistrationNumber: TAX_ID, statementOrgAddress: ADDRESS });
+    await page.goto(`/donations/print/${JOHN_SMITH}?year=2025`);
+    const block = page.getByTestId("statement-legal-block");
+    await expect(block).toContainText(TAX_ID, { timeout: 15000 });
+    await expect(block).toContainText(ADDRESS);
+    await expect(page.getByTestId("statement-tax-id")).toHaveCount(0);
+    await expect(page.getByTestId("statement-org-address")).toHaveCount(0);
+  });
+});

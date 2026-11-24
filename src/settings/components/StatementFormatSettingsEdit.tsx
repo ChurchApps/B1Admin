@@ -22,7 +22,7 @@ const registrationLabelKey = (format: string) => {
     case "canada": return "settings.statementFormat.craNumber";
     case "australia": return "settings.statementFormat.abn";
     case "newZealand": return "settings.statementFormat.nzNumber";
-    default: return "settings.statementFormat.registrationNumber";
+    default: return "settings.statementFormat.taxId";
   }
 };
 
@@ -91,14 +91,15 @@ export const StatementFormatSettingsEdit: React.FC<Props> = (props) => {
           )}
         />
       </Grid>
+      {/* Shown for every format: the standard statement prints them in the Organization card when filled in. */}
+      <Grid size={{ xs: 12, md: 6 }}>
+        <TextField fullWidth label={Locale.label(registrationLabelKey(format))} {...register("statementRegistrationNumber")} data-testid="statement-registration-input" />
+      </Grid>
+      <Grid size={{ xs: 12, md: 6 }}>
+        <TextField fullWidth label={Locale.label("settings.statementFormat.orgAddress")} {...register("statementOrgAddress")} data-testid="statement-org-address-input" />
+      </Grid>
       {format && (
         <>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth label={Locale.label(registrationLabelKey(format))} {...register("statementRegistrationNumber")} />
-          </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
-            <TextField fullWidth label={Locale.label("settings.statementFormat.orgAddress")} {...register("statementOrgAddress")} />
-          </Grid>
           <Grid size={{ xs: 12, md: 6 }}>
             <TextField fullWidth label={Locale.label("settings.statementFormat.signatory")} {...register("statementSignatory")} />
           </Grid>
