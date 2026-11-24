@@ -2177,6 +2177,18 @@
       "value": "Value",
       "workflowSuccess": "Added {count} people to the workflow."
     },
+    "deliveryProblems": {
+      "address": "Address",
+      "bounce": "Email bounced",
+      "channel": "Channel",
+      "complaint": "Marked as spam",
+      "date": "Date",
+      "email": "Email",
+      "error": "Error",
+      "push": "App notification",
+      "sms": "Text",
+      "title": "Delivery problems"
+    },
     "demographics": {
       "age": "Age",
       "campus": "Campus",
