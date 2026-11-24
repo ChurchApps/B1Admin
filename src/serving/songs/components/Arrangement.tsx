@@ -1,5 +1,7 @@
 import React, { useEffect, memo, useCallback, useMemo } from "react";
-import { type ArrangementInterface, type SongDetailInterface } from "../../../helpers";
+import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface } from "../../../helpers";
+import { type LinkInterface } from "@churchapps/helpers";
+import { copyArrangementName } from "../arrangementCopy";
 import { ChordProHelper } from "../../../helpers/ChordProHelper";
 import { ApiHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Stack, Box, Alert, Button, FormControl, InputLabel, MenuItem, Select, Typography, type SelectChangeEvent } from "@mui/material";
@@ -11,6 +13,9 @@ interface Props {
   arrangement: ArrangementInterface;
   songDetailId?: string; // the song's, for arrangements saved without their own
   reload: () => void;
+  // Names of the song's arrangements, so a duplicate gets an unused name.
+  arrangementNames?: string[];
+  onDuplicated?: (arrangement: ArrangementInterface) => void;
 }
 
 export const Arrangement = memo((props: Props) => {
@@ -101,6 +106,40 @@ export const Arrangement = memo((props: Props) => {
     });
   }, [songDetail?.praiseChartsId, props.arrangement, props.reload]);
 
+  const [duplicating, setDuplicating] = React.useState(false);
+
+  // Copies the arrangement's details, lyrics, keys and each key's links. Uploaded audio stays with the original.
+  const handleDuplicate = useCallback(async () => {
+    const source = props.arrangement;
+    if (!source?.id || duplicating) return;
+    setDuplicating(true);
+    try {
+      const copy: ArrangementInterface = {
+        songId: source.songId,
+        songDetailId: source.songDetailId || props.songDetailId,
+        name: copyArrangementName(source.name, props.arrangementNames || [source.name], Locale.label("songs.arrangement.copySuffix", "copy")),
+        lyrics: source.lyrics || "",
+        bpm: source.bpm,
+        seconds: source.seconds,
+        meter: source.meter,
+        sequence: source.sequence
+      };
+      const [saved]: ArrangementInterface[] = await ApiHelper.post("/arrangements", [copy], "ContentApi");
+      const keys: ArrangementKeyInterface[] = await ApiHelper.get("/arrangementKeys/arrangement/" + source.id, "ContentApi");
+      for (const k of keys || []) {
+        const [newKey]: ArrangementKeyInterface[] = await ApiHelper.post("/arrangementKeys", [{ arrangementId: saved.id, keySignature: k.keySignature, shortDescription: k.shortDescription }], "ContentApi");
+        const links: LinkInterface[] = await ApiHelper.get("/links?category=arrangementKey_" + k.id, "ContentApi");
+        if (links?.length) {
+          const copies = links.map(({ id: _id, churchId: _churchId, children: _children, ...rest }) => ({ ...rest, category: "arrangementKey_" + newKey.id }));
+          await ApiHelper.post("/links", copies, "ContentApi");
+        }
+      }
+      props.onDuplicated?.(saved);
+    } finally {
+      setDuplicating(false);
+    }
+  }, [props.arrangement, props.songDetailId, props.arrangementNames, props.onDuplicated, duplicating]);
+
   const handleSave = useCallback(
     () => {
       setEdit(false);
@@ -114,6 +153,7 @@ export const Arrangement = memo((props: Props) => {
       <Box component="section" data-testid="arrangement-view">
         <RecordHeading label={`${Locale.label("songs.arrangement.title")} · ${props.arrangement?.name}`}>
           {canEdit && <TextAction small onClick={() => setEdit(true)} data-testid="arrangement-edit-button">{Locale.label("common.edit")}</TextAction>}
+          {canEdit && props.onDuplicated && <TextAction small onClick={handleDuplicate} disabled={duplicating} data-testid="arrangement-duplicate-button">{Locale.label("songs.arrangement.duplicate", "Duplicate")}</TextAction>}
         </RecordHeading>
 
         {(props.arrangement?.bpm || props.arrangement?.seconds || props.arrangement?.meter || props.arrangement?.sequence) && (
@@ -170,7 +210,7 @@ export const Arrangement = memo((props: Props) => {
       </Box>
     ),
     [
-      props.arrangement, canEdit, canImportLyrics, importLyrics, formatSeconds, keyOffset, useFlats, getKeySelect
+      props.arrangement, props.onDuplicated, canEdit, canImportLyrics, importLyrics, formatSeconds, keyOffset, useFlats, getKeySelect, handleDuplicate, duplicating
     ]
   );
 

@@ -2,19 +2,52 @@ import { ApiHelper, ArrayHelper, DateHelper, type PersonInterface, Locale, Loadi
 import { Box, Checkbox, FormControlLabel, Grid } from "@mui/material";
 import React, { useContext, useEffect } from "react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
-import { type PlanItemInterface, type PlanItemTimeInterface } from "../../helpers";
+import { type ArrangementInterface, type ArrangementKeyInterface, type PlanItemInterface, type PlanItemTimeInterface, type SongDetailInterface } from "../../helpers";
+import { ChordProHelper } from "../../helpers/ChordProHelper";
 import { formatClockTime } from "../components/PlanUtils";
 import { type AssignmentInterface, type PlanInterface, type PositionInterface, type TimeInterface } from "@churchapps/helpers";
 import { OlfPrintPreview } from "../components/print/OlfPrintPreview";
 import { type FeedVenueInterface, type FeedSectionInterface, type FeedActionInterface } from "../../helpers";
 import { getProvider, type InstructionItem, type Instructions } from "@churchapps/content-providers";
-import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels } from "../components/planItemUtils";
+import { getProviderInstructions, filterFeedByPlanItems, buildPositionLabels, isSongType } from "../components/planItemUtils";
 import UserContext from "../../UserContext";
 import { PrintChurchHeader, usePrintLogo } from "../../components/PrintChurchHeader";
 
 const PRINT_FAINT = "#999";
 const PRINT_INK = "#000";
 const PRINT_MUTED = "#555";
+
+interface ChordChart { planItemId: string; title: string; artist: string; keySignature: string; sequence: string; html: string }
+
+const flattenPlanItems = (items: PlanItemInterface[]): PlanItemInterface[] =>
+  items.flatMap((item) => [item, ...(item.children ? flattenPlanItems(item.children) : [])]);
+
+// One chart per song item, in plan order, transposed from the song's written key into the key chosen on the plan.
+const loadChordCharts = async (planItems: PlanItemInterface[]): Promise<ChordChart[]> => {
+  const songItems = flattenPlanItems(planItems).filter((pi) => isSongType(pi.itemType) && pi.relatedId);
+  const cache = new Map<string, Promise<unknown>>();
+  function get<T>(path: string): Promise<T | null> {
+    if (!cache.has(path)) cache.set(path, ApiHelper.get(path, "ContentApi").catch(() => null));
+    return cache.get(path) as Promise<T | null>;
+  }
+  const charts = await Promise.all(songItems.map(async (pi): Promise<ChordChart | null> => {
+    const key = await get<ArrangementKeyInterface>("/arrangementKeys/" + pi.relatedId);
+    if (!key?.arrangementId) return null;
+    const arrangement = await get<ArrangementInterface>("/arrangements/" + key.arrangementId);
+    if (!arrangement?.lyrics?.trim()) return null;
+    const detail = arrangement.songDetailId ? await get<SongDetailInterface>("/songDetails/" + arrangement.songDetailId) : null;
+    const transposition = ChordProHelper.getTransposition(detail?.keySignature, key.keySignature);
+    return {
+      planItemId: pi.id || pi.relatedId || "",
+      title: detail?.title || pi.label || "",
+      artist: detail?.artist || "",
+      keySignature: key.keySignature || "",
+      sequence: arrangement.sequence || "",
+      html: ChordProHelper.formatLyrics(arrangement.lyrics, transposition?.offset || 0, transposition?.useFlats)
+    };
+  }));
+  return charts.filter((c): c is ChordChart => !!c);
+};
 
 export const PrintPlan = () => {
   const params = useParams();
@@ -26,6 +59,8 @@ export const PrintPlan = () => {
   const churchName = church?.name || "";
   const printLogo = usePrintLogo(church?.id);
   const [showHeading, setShowHeading] = React.useState(() => localStorage.getItem("printPlan.showHeading") !== "false");
+  const [includeCharts, setIncludeCharts] = React.useState(() => localStorage.getItem("printPlan.includeCharts") === "true");
+  const [charts, setCharts] = React.useState<ChordChart[] | null>(null);
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [positions, setPositions] = React.useState<PositionInterface[]>([]);
   const [assignments, setAssignments] = React.useState<AssignmentInterface[]>([]);
@@ -202,12 +237,21 @@ export const PrintPlan = () => {
     loadData();
   }, []);
 
+  const hasSongs = React.useMemo(() => flattenPlanItems(planItems).some((pi) => isSongType(pi.itemType) && pi.relatedId), [planItems]);
+
   useEffect(() => {
-    if (autoprint && !isLoading && !feed && printLogo.ready && !hasPrinted.current) {
+    if (!includeCharts || isLoading || charts) return;
+    loadChordCharts(planItems).then(setCharts).catch((error: unknown) => { console.error("Failed to load chord charts:", error); setCharts([]); });
+  }, [includeCharts, isLoading, planItems, charts]);
+
+  const chartsReady = !includeCharts || !hasSongs || !!charts;
+
+  useEffect(() => {
+    if (autoprint && !isLoading && !feed && printLogo.ready && chartsReady && !hasPrinted.current) {
       hasPrinted.current = true;
       window.print();
     }
-  }, [autoprint, isLoading, feed, printLogo.ready]);
+  }, [autoprint, isLoading, feed, printLogo.ready, chartsReady]);
 
   useEffect(() => {
     const handleAfterPrint = () => navigate("/serving/plans/" + params.id);
@@ -388,6 +432,25 @@ export const PrintPlan = () => {
     localStorage.setItem("printPlan.showHeading", String(checked));
   };
 
+  const handleIncludeChartsChange = (checked: boolean) => {
+    setIncludeCharts(checked);
+    localStorage.setItem("printPlan.includeCharts", String(checked));
+  };
+
+  const renderCharts = () => {
+    if (!includeCharts || !hasSongs) return null;
+    if (!charts) return <div className="no-print" style={{ padding: 20 }}><Loading /></div>;
+    return charts.map((c) => (
+      <div key={c.planItemId} className="printChordChart" data-testid="print-plan-chord-chart" style={{ breakBefore: "page", pageBreakBefore: "always", paddingTop: 20, textAlign: "left", color: PRINT_INK }}>
+        <div style={{ fontWeight: "bold", fontSize: 20 }}>{c.title}</div>
+        <div style={{ color: PRINT_MUTED, marginBottom: 10 }}>
+          {[c.artist, c.keySignature && `${Locale.label("songs.details.key")}: ${c.keySignature}`, c.sequence].filter(Boolean).join(" · ")}
+        </div>
+        <div className="chordPro" style={{ fontFamily: "monospace", lineHeight: 1.6 }} dangerouslySetInnerHTML={{ __html: c.html }} />
+      </div>
+    ));
+  };
+
   const renderWorshipOrder = () => (
     <div style={Styles.body} className="printBackgrounds">
       <Box className="print-toolbar no-print" sx={{ px: 1, pb: 1, textAlign: "left" }}>
@@ -395,6 +458,12 @@ export const PrintPlan = () => {
           control={<Checkbox checked={showHeading} onChange={(e) => handleShowHeadingChange(e.target.checked)} data-testid="print-plan-show-heading" />}
           label={Locale.label("plans.printPlan.showHeading")}
         />
+        {hasSongs && (
+          <FormControlLabel
+            control={<Checkbox checked={includeCharts} onChange={(e) => handleIncludeChartsChange(e.target.checked)} data-testid="print-plan-include-charts" />}
+            label={Locale.label("plans.printPlan.includeCharts", "Include chord charts")}
+          />
+        )}
       </Box>
       {(churchName || printLogo.logoUrl || plan?.name) && (
         <div style={{ textAlign: "center", marginBottom: 10 }}>
@@ -441,6 +510,7 @@ export const PrintPlan = () => {
           </div>
         </Grid>
       </Grid>
+      {renderCharts()}
     </div>
   );
 

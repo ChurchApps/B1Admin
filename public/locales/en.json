@@ -3071,7 +3071,9 @@
       "servingTeam": "Serving team",
       "status": "Plan status",
       "viewOrder": "View order of service",
-      "viewTeam": "View serving team"
+      "viewTeam": "View serving team",
+      "previousPlan": "Previous plan",
+      "nextPlan": "Next plan"
     },
     "planType": {
       "details": "Plan Type Details"
@@ -3202,6 +3204,7 @@
       "team": "Serving Team"
     },
     "printPlan": {
+      "includeCharts": "Include chord charts",
       "length": "Length",
       "serviceOrder": "SERVICE ORDER",
       "showHeading": "Show Service Order heading",
@@ -6159,7 +6162,9 @@
     "addSong": "Add Song",
     "arrangement": {
       "chordProHint": "ChordPro format: [G] inline chords, [Verse 1] section headers.",
+      "copySuffix": "copy",
       "deleteConfirm": "Are you sure you want to delete this arrangement?",
+      "duplicate": "Duplicate",
       "edit": "Edit Arrangement",
       "enterLyrics": "Manually enter lyrics or import from PraiseCharts",
       "lyrics": "Lyrics",
@@ -6193,6 +6198,22 @@
       "meter": "Meter",
       "releaseDate": "Release Date",
       "seconds": "Seconds"
+    },
+    "export": {
+      "artist": "Artist",
+      "ccliLink": "CCLI link",
+      "ccliNumber": "CCLI number",
+      "endDate": "End date",
+      "export": "Export CSV",
+      "keys": "Keys",
+      "library": "Export",
+      "noUsage": "No songs were used on plans between these dates.",
+      "planDates": "Plan dates",
+      "startDate": "Start date",
+      "timesUsed": "Times used",
+      "title": "Title",
+      "usageHint": "Songs used on plans between these dates, with CCLI numbers, for your CCLI report.",
+      "usageTitle": "Export song usage"
     },
     "key": {
       "default": "Default",

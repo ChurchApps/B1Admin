@@ -12,6 +12,7 @@ import { BackVerb, PageContainer, Surface, useRecordView } from "../../component
 import { InRecordContext } from "../../components/ui/RecordLayout";
 import { PlanHeader } from "./components/PlanHeader";
 import { PlanOverview } from "./components/PlanOverview";
+import { getAdjacentPlans } from "./planNavigation";
 
 type Section = "" | "order" | "team";
 
@@ -24,7 +25,6 @@ export const PlanPage = () => {
   const [plan, setPlan] = React.useState<PlanInterface | null>(null);
   const [ministry, setMinistry] = React.useState<GroupInterface | null>(null);
   const [planType, setPlanType] = React.useState<PlanTypeInterface | null>(null);
-  const [allPlans, setAllPlans] = React.useState<PlanInterface[]>([]);
   const hasPlansEdit = hasPlansEditAccess();
 
   const myMinistriesQuery = useQuery<GroupInterface[]>({
@@ -57,10 +57,14 @@ export const PlanPage = () => {
 
   const editing = requestedSection !== "team" && (requestedSection === "" || !plan?.serviceOrder) && requestedView === "edit" && canEdit;
 
-  React.useEffect(() => {
-    if (!editing || !plan?.planTypeId) return;
-    ApiHelper.get("/plans/types/" + plan.planTypeId, "DoingApi").then((data: PlanInterface[]) => setAllPlans(data || []));
-  }, [editing, plan?.planTypeId]);
+  // Plans of this plan type: the edit form checks them, and the header steps through them by service date.
+  const typePlansQuery = useQuery<PlanInterface[]>({
+    queryKey: ["/plans/types/" + plan?.planTypeId, "DoingApi"],
+    enabled: !!plan?.planTypeId,
+    placeholderData: []
+  });
+  const allPlans = React.useMemo(() => typePlansQuery.data || [], [typePlansQuery.data]);
+  const { previous: previousPlan, next: nextPlan } = React.useMemo(() => getAdjacentPlans(allPlans, plan?.id), [allPlans, plan?.id]);
 
   if (!plan) {
     return (
@@ -87,6 +91,7 @@ export const PlanPage = () => {
       if (!p?.id) { navigate(upPath); return; }
       setView("");
       loadData();
+      typePlansQuery.refetch();
     } catch {
       navigate(upPath);
     }
@@ -129,6 +134,9 @@ export const PlanPage = () => {
         subpageTitle={subpageTitle}
         editing={editing}
         onEdit={section === "" ? () => setView(editing ? "" : "edit") : undefined}
+        previousPlan={previousPlan}
+        nextPlan={nextPlan}
+        sectionPath={section ? "/" + section : ""}
       />
       {plan.lessonTrimWarning && canEdit && !editing && (
         <Alert severity="warning" sx={{ mb: { xs: 2, md: 2.5 } }} data-testid="lesson-trim-warning" action={<Button color="inherit" size="small" onClick={dismissLessonTrimWarning}>{Locale.label("plans.lessonTrim.dismiss")}</Button>}>

@@ -88,3 +88,21 @@ describe("ChordProHelper flat spelling", () => {
     assert.equal(ChordProHelper.usesFlats(ChordProHelper.noteMap.G), false);
   });
 });
+
+describe("ChordProHelper.getTransposition", () => {
+  it("moves a chart from the song's key to the plan's key", () => {
+    assert.deepEqual(ChordProHelper.getTransposition("G", "A"), { offset: 2, useFlats: false });
+    assert.deepEqual(ChordProHelper.getTransposition("A", "G"), { offset: 10, useFlats: false });
+    assert.deepEqual(ChordProHelper.getTransposition("C", "Eb"), { offset: 3, useFlats: true });
+    assert.deepEqual(ChordProHelper.getTransposition("C", "F#"), { offset: 6, useFlats: false });
+  });
+
+  it("reads minor keys by their root", () => {
+    assert.deepEqual(ChordProHelper.getTransposition("Em", "F#m"), { offset: 2, useFlats: false });
+  });
+
+  it("is null when a key is missing or not a key", () => {
+    assert.equal(ChordProHelper.getTransposition("", "G"), null);
+    assert.equal(ChordProHelper.getTransposition("G", "Default"), null);
+  });
+});
