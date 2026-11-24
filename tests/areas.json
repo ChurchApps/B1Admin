@@ -34,7 +34,7 @@
     },
     "attendance": {
       "src": ["src/attendance/**"],
-      "specs": ["attendance.spec.ts", "attendance-checkout-details.spec.ts", "campus.spec.ts"]
+      "specs": ["attendance.spec.ts", "attendance-checkout-details.spec.ts", "attendance-room-roster.spec.ts", "campus.spec.ts"]
     },
     "donations": {
       "src": ["src/donations/**", "src/donationComponents/**"],
