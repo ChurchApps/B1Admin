@@ -1,11 +1,12 @@
 import React from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { Box, Button, Stack, Typography } from "@mui/material";
-import { ArrowBack as ArrowBackIcon, EditOutlined as EditIcon, PrintOutlined as PrintIcon } from "@mui/icons-material";
-import { Locale } from "@churchapps/apphelper";
+import { ArrowBack as ArrowBackIcon, ChevronLeft as PreviousIcon, ChevronRight as NextIcon, EditOutlined as EditIcon, PrintOutlined as PrintIcon } from "@mui/icons-material";
+import { DateHelper, Locale } from "@churchapps/apphelper";
 import { type PlanInterface, type PlanTypeInterface } from "../../../helpers";
 import { withBase } from "../../../helpers/basePath";
 import { TextAction, VerbRow, eyebrowSx } from "../../../components/ui";
+import { AppIconButton } from "../../../components/ui/AppIconButton";
 
 interface Props {
   plan: PlanInterface;
@@ -19,12 +20,22 @@ interface Props {
   editing?: boolean;
   onEdit?: () => void;
   actions?: React.ReactNode;
+  /** Neighboring plans of the same plan type by service date; arrows show when either exists. */
+  previousPlan?: PlanInterface | null;
+  nextPlan?: PlanInterface | null;
+  /** "", "/order" or "/team": the arrows keep you on the same subpage. */
+  sectionPath?: string;
 }
 
 // Full-width header strip for the plan overview and its subpages: where the old identity column's date, edit and print went.
 export const PlanHeader = (props: Props) => {
   const { plan, planName, dateLabel, eyebrow, planType, canEdit, subpageTitle } = props;
   const planPath = `/serving/plans/${plan.id}`;
+  const navigate = useNavigate();
+  const showArrows = !!(props.previousPlan || props.nextPlan);
+  const arrowLabel = (label: string, p?: PlanInterface | null) =>
+    p ? [label, p.name, p.serviceDate ? DateHelper.prettyDate(DateHelper.toDate(p.serviceDate)) : ""].filter(Boolean).join(" · ") : label;
+  const goTo = (p?: PlanInterface | null) => { if (p?.id) navigate(`/serving/plans/${p.id}${props.sectionPath || ""}`); };
 
   return (
     <Box component="header" data-testid="plan-identity" sx={{ mb: { xs: 2, md: 3 } }}>
@@ -43,9 +54,17 @@ export const PlanHeader = (props: Props) => {
             eyebrow && <Typography component="p" sx={{ ...eyebrowSx, mb: 0.5 }}>{eyebrow}</Typography>
           )}
           <Typography id="page-header-title" variant="h1" component="h1" sx={{ overflowWrap: "anywhere" }}>{subpageTitle || planName}</Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5 }} data-testid="plan-date">
-            {subpageTitle ? [planName, dateLabel].filter(Boolean).join(" · ") : dateLabel}
-          </Typography>
+          <Stack direction="row" alignItems="center" spacing={0.5} sx={{ mt: 0.5 }}>
+            {showArrows && (
+              <AppIconButton label={arrowLabel(Locale.label("plans.planPage.previousPlan", "Previous plan"), props.previousPlan)} icon={<PreviousIcon />} tone="card" disabled={!props.previousPlan} onClick={() => goTo(props.previousPlan)} sx={{ ml: -1 }} data-testid="plan-previous-button" />
+            )}
+            <Typography variant="body1" color="text.secondary" data-testid="plan-date">
+              {subpageTitle ? [planName, dateLabel].filter(Boolean).join(" · ") : dateLabel}
+            </Typography>
+            {showArrows && (
+              <AppIconButton label={arrowLabel(Locale.label("plans.planPage.nextPlan", "Next plan"), props.nextPlan)} icon={<NextIcon />} tone="card" disabled={!props.nextPlan} onClick={() => goTo(props.nextPlan)} data-testid="plan-next-button" />
+            )}
+          </Stack>
         </Box>
         <Stack direction="row" useFlexGap flexWrap="wrap" gap={1} sx={{ "& .MuiButton-root": { flex: { xs: 1, sm: "none" } } }}>
           {props.actions}

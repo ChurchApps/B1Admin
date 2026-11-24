@@ -105,6 +105,11 @@ export const SongPage = memo(() => {
     setSelectedArrangement(newArrangements[0]);
   }, [song.data?.id, songDetail.data?.keySignature, refetch]);
 
+  const handleDuplicated = useCallback(async (copy: ArrangementInterface) => {
+    await arrangements.refetch();
+    setSelectedArrangement(copy);
+  }, [arrangements]);
+
   const sd = songDetail.data;
   const title = sd?.title || song.data?.name || Locale.label("songs.songPage.loading");
   const editing = editSongDetails && canEdit && !!sd;
@@ -204,7 +209,16 @@ export const SongPage = memo(() => {
         />
       );
     }
-    return <Arrangement key={selectedArrangement.id} arrangement={selectedArrangement} songDetailId={songDetailId} reload={refetch} />;
+    return (
+      <Arrangement
+        key={selectedArrangement.id}
+        arrangement={selectedArrangement}
+        songDetailId={songDetailId}
+        reload={refetch}
+        arrangementNames={(arrangements.data || []).map((a) => a.name || "")}
+        onDuplicated={handleDuplicated}
+      />
+    );
   };
 
   return (

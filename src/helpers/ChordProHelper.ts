@@ -41,6 +41,22 @@ export class ChordProHelper {
   // Keys whose signatures use flats (Db, Eb, F, Ab, Bb)
   static usesFlats = (keyIndex: number) => [1, 3, 5, 8, 10].includes(((keyIndex % 12) + 12) % 12);
 
+  // Semitone of a key's root ("G", "F#m", "Bb"), or undefined when it is not a key.
+  static keyRoot = (key?: string) => {
+    const m = /^\s*([A-G])([#b]?)\s*(?:m|min|minor|maj|major)?\s*$/i.exec(key || "");
+    return m ? this.noteMap[m[1] + m[2]] : undefined;
+  };
+
+  // How to move a chart written in fromKey into toKey: the half steps and whether to spell with flats.
+  // Null when either key is missing or not a key, so the chart prints as written.
+  static getTransposition = (fromKey?: string, toKey?: string): { offset: number; useFlats: boolean } | null => {
+    const from = this.keyRoot(fromKey);
+    const to = this.keyRoot(toKey);
+    if (from === undefined || to === undefined) return null;
+    const accidental = /^\s*[A-G]([#b])/i.exec(toKey || "")?.[1];
+    return { offset: (((to - from) % 12) + 12) % 12, useFlats: accidental ? accidental === "b" : this.usesFlats(to) };
+  };
+
   static replaceChords = (line: string) => {
     const l = line.replaceAll("[", "<sup>").replaceAll("]", "</sup>");
     return l;

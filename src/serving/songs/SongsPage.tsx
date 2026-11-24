@@ -2,10 +2,11 @@ import React, { memo, useMemo, useCallback } from "react";
 import { ApiHelper, Loading, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Link as RouterLink, Navigate } from "react-router-dom";
 import { Button, Box, Stack, Avatar, Link, Table, TableBody, TableCell, TableHead, TableRow, Checkbox, TablePagination, Typography } from "@mui/material";
-import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon } from "@mui/icons-material";
+import { MusicNote as MusicIcon, LibraryMusic as LibraryIcon, Add as AddIcon, Search as SearchIcon, QueryStats as UsageIcon } from "@mui/icons-material";
 import { SongSearchDialog } from "./SongSearchDialog";
 import { EmptyState } from "../../components/ui/EmptyState";
-import { BulkBar, HeaderPrimaryButton, PageContainer, PageHeader, ResultsBar, SearchField, Surface, TextAction, tableScrollSx } from "../../components/ui";
+import { SongLibraryExport, SongUsageExportDialog } from "./components/SongExports";
+import { BulkBar, HeaderPrimaryButton, HeaderSecondaryButton, PageContainer, PageHeader, ResultsBar, SearchField, Surface, TextAction, tableScrollSx } from "../../components/ui";
 import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetailInterface, type SongInterface } from "../../helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useConfirmDelete } from "../../hooks";
@@ -15,6 +16,7 @@ type SongListRow = SongDetailInterface & { id: string; songId: string };
 
 export const SongsPage = memo(() => {
   const [showSearch, setShowSearch] = React.useState(false);
+  const [showUsageExport, setShowUsageExport] = React.useState(false);
   const canEdit = UserHelper.checkAccess(Permissions.contentApi.content.edit);
   const [redirect, setRedirect] = React.useState("");
   const [searchFilter, setSearchFilter] = React.useState("");
@@ -264,6 +266,12 @@ export const SongsPage = memo(() => {
     <>
       {ConfirmDialogElement}
       <PageHeader title={Locale.label("songs.title") || Locale.label("songs.songsPage.songs")} subtitle={Locale.label("songs.songsPage.subtitle")}>
+        {canEdit && <SongLibraryExport />}
+        {canEdit && (
+          <HeaderSecondaryButton startIcon={<UsageIcon />} onClick={() => setShowUsageExport(true)} data-testid="song-usage-export">
+            {Locale.label("songs.export.usageTitle", "Export song usage")}
+          </HeaderSecondaryButton>
+        )}
         {canEdit && (
           <HeaderPrimaryButton startIcon={<AddIcon />} onClick={() => setShowSearch(true)} data-testid="add-song-button" aria-label={Locale.label("songs.songsPage.addSongAria")}>
             {Locale.label("songs.addSong") || "Add Song"}
@@ -307,6 +315,7 @@ export const SongsPage = memo(() => {
         )}
       </PageContainer>
 
+      {showUsageExport && canEdit && <SongUsageExportDialog onClose={() => setShowUsageExport(false)} />}
       {showSearch && canEdit && <SongSearchDialog onClose={() => setShowSearch(false)} onSelect={handleAdd} />}
     </>
   );
