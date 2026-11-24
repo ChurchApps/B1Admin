@@ -9,7 +9,7 @@ import UserContext from "../UserContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { PersonIdentity } from "./components/PersonIdentity";
 import { useHousehold } from "./components/Household";
-import { PersonAttendanceSummary, PersonFormsSummary, PersonGivingSummary, PersonGroupsSummary, PersonNotesSummary, PersonRequestsSummary } from "./components/PersonSummaries";
+import { PersonAttendanceSummary, PersonDeliveryProblemsSummary, PersonFormsSummary, PersonGivingSummary, PersonGroupsSummary, PersonNotesSummary, PersonRequestsSummary } from "./components/PersonSummaries";
 import { LogGiftDialog } from "../donations/components/LogGiftDialog";
 import { PersonDocumentsSummary } from "./components/PersonDocumentsSummary";
 
@@ -269,6 +269,7 @@ export const PersonPage = () => {
             {canViewGiving && !publicSettings.isLoading && <PersonGivingSummary personId={person.id!} householdMembers={household.members} onViewAll={() => setView("giving")} onLogGift={canLogGift ? () => setShowLogGift(true) : undefined} hidden={givingHidden} />}
             <PersonGroupsSummary personId={person.id!} />
             {canEdit && <PersonNotesSummary conversationId={person.conversationId || ""} onViewAll={() => setView("notes")} />}
+            {canEdit && <PersonDeliveryProblemsSummary personId={person.id!} />}
             {canViewPeople && <PersonDocumentsSummary personId={person.id!} canEdit={canEdit} />}
             {showForms && <PersonFormsSummary person={person} forms={visibleForms} onOpen={(formId) => setView("forms", { form: formId || "" })} />}
             {(canViewRequests || canViewRegistrations) && <PersonRequestsSummary personId={person.id!} canViewRequests={canViewRequests} canViewRegistrations={canViewRegistrations} onViewAll={() => setView("requests")} />}

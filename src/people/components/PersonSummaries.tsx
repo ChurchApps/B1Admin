@@ -526,3 +526,54 @@ export const PersonRequestsSummary: React.FC<RequestsProps> = ({ personId, canVi
 
   return <Section id="person-requests-heading" title={title} testId="person-requests-section">{body()}</Section>;
 };
+
+interface DeliveryFailure { attemptTime?: string; deliveryMethod?: string; deliveryAddress?: string; errorMessage?: string }
+
+const channelLabel = (method?: string) => {
+  switch (method) {
+    case "email": return Locale.label("people.deliveryProblems.email", "Email");
+    case "sesBounce": return Locale.label("people.deliveryProblems.bounce", "Email bounced");
+    case "sesComplaint": return Locale.label("people.deliveryProblems.complaint", "Marked as spam");
+    case "sms": return Locale.label("people.deliveryProblems.sms", "Text");
+    case "push": return Locale.label("people.deliveryProblems.push", "App notification");
+    default: return method || "";
+  }
+};
+
+// Shown only to People editors and only when something failed; the Api returns no message content.
+export const PersonDeliveryProblemsSummary: React.FC<{ personId: string }> = ({ personId }) => {
+  const failures = useQuery<DeliveryFailure[]>({
+    queryKey: [`/deliverylogs/person/${personId}/failures`, "MessagingApi"],
+    enabled: !UniqueIdHelper.isMissing(personId)
+  });
+  const list = failures.data || [];
+  if (list.length === 0) return null;
+  const title = Locale.label("people.deliveryProblems.title", "Delivery problems");
+  return (
+    <Section id="person-delivery-problems-heading" title={title} testId="person-delivery-problems-section">
+      <Box sx={tableScrollSx}>
+        <Table size="small" sx={plainTableSx}>
+          <TableHead>
+            <TableRow>
+              <TableCell>{Locale.label("people.deliveryProblems.date", "Date")}</TableCell>
+              <TableCell>{Locale.label("people.deliveryProblems.channel", "Channel")}</TableCell>
+              <TableCell>{Locale.label("people.deliveryProblems.address", "Address")}</TableCell>
+              <TableCell>{Locale.label("people.deliveryProblems.error", "Error")}</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {list.map((f, i) => (
+              <TableRow key={i} data-testid="person-delivery-problem">
+                <TableCell sx={{ whiteSpace: "nowrap" }}>{f.attemptTime ? DateHelper.prettyDateTime(new Date(f.attemptTime)) : ""}</TableCell>
+                <TableCell>{channelLabel(f.deliveryMethod)}</TableCell>
+                {/* A push address is a device token, which means nothing to staff. */}
+                <TableCell sx={{ overflowWrap: "anywhere" }}>{f.deliveryMethod === "push" ? "" : f.deliveryAddress}</TableCell>
+                <TableCell sx={{ overflowWrap: "anywhere" }}>{f.errorMessage}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
+    </Section>
+  );
+};
