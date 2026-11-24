@@ -3718,6 +3718,12 @@
       "selectOne": "Select {title}",
       "title": "Delete selected sermons"
     },
+    "bulkMove": {
+      "action": "Move to Playlist ({count})",
+      "done": "Moved {count} sermons to {playlist}",
+      "error": "Some sermons could not be moved. Please try again.",
+      "moving": "Moving sermons…"
+    },
     "bulkImport": {
       "alreadyImported": "Already imported",
       "chooseSource": "Choose Import Source",

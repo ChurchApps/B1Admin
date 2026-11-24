@@ -26,6 +26,10 @@ export const Sermons = () => {
   const [selectedSermonIds, setSelectedSermonIds] = React.useState<Set<string>>(new Set());
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [deleteError, setDeleteError] = React.useState(false);
+  const [isMoving, setIsMoving] = React.useState(false);
+  const [moveAnchor, setMoveAnchor] = React.useState<null | HTMLElement>(null);
+  const [moveError, setMoveError] = React.useState(false);
+  const [moveSnackbar, setMoveSnackbar] = React.useState<string | null>(null);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const navigate = useNavigate();
@@ -168,7 +172,7 @@ export const Sermons = () => {
   const selectableIds = filteredSermons.flatMap((sermon) => sermon.id && !sermon.permanentUrl ? [sermon.id] : []);
   const selectedIds = selectableIds.filter((id) => selectedSermonIds.has(id));
   const allSelected = selectableIds.length > 0 && selectedIds.length === selectableIds.length;
-  const selectionDisabled = isDeleting || currentSermon !== null || currentPlaylist !== null;
+  const selectionDisabled = isDeleting || isMoving || currentSermon !== null || currentPlaylist !== null;
 
   const toggleSelected = (id: string, checked: boolean) => {
     setSelectedSermonIds((current) => {
@@ -197,6 +201,27 @@ export const Sermons = () => {
       await loadSermons().catch(() => { /* Keep the confirmed deletions reflected if the refresh fails. */ });
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  const handleMoveSelected = async (playlistId: string) => {
+    setMoveAnchor(null);
+    if (selectionDisabled || selectedIds.length === 0) return;
+    const targets = sermons.filter((s) => s.id && selectedIds.includes(s.id));
+    const count = targets.length;
+    const playlistTitle = getPlaylistTitle(playlistId) || Locale.label("sermons.noPlaylist");
+    setIsMoving(true);
+    setMoveError(false);
+    try {
+      // SermonRepo.update writes every column, so send the whole sermon with the new playlist.
+      await ApiHelper.post("/sermons", targets.map((s) => ({ ...s, playlistId: playlistId || null })), "ContentApi");
+      setSelectedSermonIds(new Set());
+      setMoveSnackbar(Locale.label("sermons.bulkMove.done").replace("{count}", String(count)).replace("{playlist}", playlistTitle));
+      await loadSermons().catch(() => { /* The save succeeded; the next load catches up. */ });
+    } catch {
+      setMoveError(true);
+    } finally {
+      setIsMoving(false);
     }
   };
 
@@ -418,14 +443,24 @@ export const Sermons = () => {
                     <Typography variant="body2" color="text.secondary">
                       {Locale.label("sermons.resultCount", "{shown} of {total} sermons").replace("{shown}", filteredSermons.length.toString()).replace("{total}", sermons.length.toString())}
                     </Typography>
-                    {(selectedIds.length > 0 || isDeleting) && (
-                      <Button size="small" color="error" variant="outlined" startIcon={<DeleteIcon />} disabled={selectionDisabled} onClick={handleDeleteSelected}>
-                        {isDeleting ? Locale.label("sermons.bulkDelete.deleting") : Locale.label("sermons.bulkDelete.action").replace("{count}", String(selectedIds.length))}
-                      </Button>
+                    {(selectedIds.length > 0 || isDeleting || isMoving) && (
+                      <Stack direction="row" spacing={1}>
+                        <Button size="small" variant="outlined" startIcon={<PlaylistIcon />} endIcon={<ArrowDropDownIcon />} disabled={selectionDisabled} onClick={(e) => setMoveAnchor(e.currentTarget)} data-testid="bulk-move-button">
+                          {isMoving ? Locale.label("sermons.bulkMove.moving") : Locale.label("sermons.bulkMove.action").replace("{count}", String(selectedIds.length))}
+                        </Button>
+                        <Menu anchorEl={moveAnchor} open={Boolean(moveAnchor)} onClose={() => setMoveAnchor(null)}>
+                          <MenuItem onClick={() => handleMoveSelected("")}>{Locale.label("sermons.noPlaylist")}</MenuItem>
+                          {playlists.map((p) => <MenuItem key={p.id} onClick={() => handleMoveSelected(p.id || "")}>{p.title}</MenuItem>)}
+                        </Menu>
+                        <Button size="small" color="error" variant="outlined" startIcon={<DeleteIcon />} disabled={selectionDisabled} onClick={handleDeleteSelected}>
+                          {isDeleting ? Locale.label("sermons.bulkDelete.deleting") : Locale.label("sermons.bulkDelete.action").replace("{count}", String(selectedIds.length))}
+                        </Button>
+                      </Stack>
                     )}
                   </ResultsBar>
                 )}
                 {deleteError && <Alert severity="error" onClose={() => setDeleteError(false)}>{Locale.label("sermons.bulkDelete.error")}</Alert>}
+                {moveError && <Alert severity="error" onClose={() => setMoveError(false)}>{Locale.label("sermons.bulkMove.error")}</Alert>}
                 <Box sx={tableScrollSx} role="region" aria-label={Locale.label("sermons.title")} tabIndex={0}>
                   {getTable()}
                 </Box>
@@ -473,6 +508,9 @@ export const Sermons = () => {
       </SermonChrome>
       <Snackbar open={copySnackbar} autoHideDuration={2500} onClose={() => setCopySnackbar(false)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
         <Alert severity="success" variant="filled" onClose={() => setCopySnackbar(false)}>{Locale.label("sermons.podcast.feedUrlCopied")}</Alert>
+      </Snackbar>
+      <Snackbar open={moveSnackbar !== null} autoHideDuration={4000} onClose={() => setMoveSnackbar(null)} anchorOrigin={{ vertical: "bottom", horizontal: "center" }}>
+        <Alert severity="success" variant="filled" onClose={() => setMoveSnackbar(null)}>{moveSnackbar}</Alert>
       </Snackbar>
     </>
   );

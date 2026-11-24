@@ -706,6 +706,76 @@ plainTest("bulk deletes selected sermons with and without a playlist and retries
   }
 });
 
+plainTest("moves selected sermons into a playlist and back out with No Playlist", async ({ page, request }) => {
+  const api = new URL(process.env.API_BASE || "http://localhost:8084");
+  expect(["localhost", "127.0.0.1", "[::1]"]).toContain(api.hostname);
+  const loginResponse = await request.post(new URL("/membership/users/login", api).href, { data: { email: "demo@b1.church", password: "password" } });
+  await expect(loginResponse).toBeOK();
+  const { userChurches }: { userChurches: LoginUserChurchInterface[] } = await loginResponse.json();
+  const demoChurch = userChurches.find(({ church }) => church.id === "CHU00000001")!;
+  const churchId = demoChurch.church.id;
+  const contentApi = new URL("/content/", api).href;
+  const auth = { headers: { Authorization: "Bearer " + (demoChurch.apis?.find(({ keyName }) => keyName === "ContentApi")?.jwt || demoChurch.jwt) } };
+  const marker = `Bulk Move ${Date.now()}`;
+  const playlistTitle = `${marker} Series`;
+  const inPlaylist = `${marker} Playlist Sermon`;
+  const standalone = `${marker} Standalone Sermon`;
+  const playlistResponse = await request.post(contentApi + "playlists", { ...auth, data: [{ churchId, title: playlistTitle }] });
+  await expect(playlistResponse).toBeOK();
+  const [{ id: playlistId }]: { id: string }[] = await playlistResponse.json();
+  let sermons: { id: string; title: string }[] = [];
+
+  try {
+    const sermonResponse = await request.post(contentApi + "sermons", {
+      ...auth,
+      data: [
+        { churchId, title: inPlaylist, playlistId, permanentUrl: false, videoType: "youtube", videoData: "abc123", duration: 3600 },
+        { churchId, title: standalone, permanentUrl: false, videoType: "youtube", videoData: "def456", duration: 3600 }
+      ]
+    });
+    await expect(sermonResponse).toBeOK();
+    sermons = await sermonResponse.json();
+
+    await login(page);
+    await navigateToSermons(page);
+    const search = page.getByTestId("sermon-search-input");
+    const moveSelected = page.getByRole("button", { name: /^Move to Playlist/ });
+    const row = (title: string) => page.getByRole("row").filter({ hasText: title });
+
+    await search.fill(marker);
+    await expect(row(standalone)).toContainText("No Playlist");
+    await row(inPlaylist).getByRole("checkbox").check();
+    await row(standalone).getByRole("checkbox").check();
+    await expect(moveSelected).toHaveText("Move to Playlist (2)");
+    await moveSelected.click();
+    await expect(page.getByRole("menuitem", { name: "No Playlist" })).toBeVisible();
+    await page.getByRole("menuitem", { name: playlistTitle }).click();
+    await expect(page.getByText(`Moved 2 sermons to ${playlistTitle}`)).toBeVisible();
+    await expect(row(standalone)).toContainText(playlistTitle);
+    await expect(row(inPlaylist)).toContainText(playlistTitle);
+    await expect(row(standalone).getByRole("checkbox")).not.toBeChecked();
+    await expect(moveSelected).toBeHidden();
+
+    await row(inPlaylist).getByRole("checkbox").check();
+    await row(standalone).getByRole("checkbox").check();
+    await moveSelected.click();
+    await page.getByRole("menuitem", { name: "No Playlist" }).click();
+    await expect(page.getByText("Moved 2 sermons to No Playlist")).toBeVisible();
+    await expect(row(inPlaylist)).toContainText("No Playlist");
+    await expect(row(standalone)).toContainText("No Playlist");
+
+    await page.reload();
+    await search.fill(marker);
+    await expect(row(inPlaylist)).toContainText("No Playlist");
+    await expect(row(standalone)).toContainText("No Playlist");
+    const saved: { id: string; videoData: string }[] = await (await request.get(contentApi + "sermons", auth)).json();
+    expect(saved.find(({ id }) => id === sermons.find(({ title }) => title === inPlaylist)!.id)?.videoData).toBe("abc123");
+  } finally {
+    for (const { id } of sermons) await request.delete(contentApi + "sermons/" + id, auth);
+    await request.delete(contentApi + "playlists/" + playlistId, auth);
+  }
+});
+
 // Without Streaming Services / Edit, every Sermons page explains why instead of rendering blank.
 plainTest.describe("Sermons pages without streaming permission", () => {
   plainTest.use({ storageState: { cookies: [], origins: [] } });
