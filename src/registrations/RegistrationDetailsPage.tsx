@@ -28,6 +28,7 @@ import {
   Description as DescriptionIcon,
   ReceiptLong as ReceiptIcon,
   ArrowUpward as PromoteIcon,
+  Restore as RestoreIcon,
   Share as ShareIcon
 } from "@mui/icons-material";
 import { ApiHelper, Loading, Locale, UserHelper, Permissions, PersonHelper, CurrencyHelper, DateHelper } from "@churchapps/apphelper";
@@ -45,6 +46,30 @@ import { getPublicEventUrl } from "../helpers/EventLinkHelper";
 import { type CommerceEventInterface, type CommerceRegistrationInterface, type RegistrationTypeInterface, type RegistrationSelectionInterface, type LoadedSelectionChoice } from "./registrationCommerce";
 
 const isActive = (status?: string) => status === "pending" || status === "confirmed";
+const STATUSES = ["confirmed", "pending", "waitlisted", "cancelled"] as const;
+const statusLabelKey: Record<string, string> = {
+  confirmed: "registrations.registrationDetailsPage.statusConfirmed",
+  pending: "registrations.registrationDetailsPage.statusPending",
+  waitlisted: "registrations.registrationDetailsPage.statusWaitlisted",
+  cancelled: "registrations.registrationDetailsPage.statusCancelled"
+};
+const balanceOf = (reg: CommerceRegistrationInterface) => Math.max(0, (Number(reg.totalAmount) || 0) - (Number(reg.amountPaid) || 0));
+
+const parseActionError = (raw: string, fallbackKey: string) => {
+  try {
+    const parsed = JSON.parse(raw);
+    switch (parsed?.code) {
+      case "registration-has-payments": return Locale.label("registrations.registrationDetailsPage.deleteHasPayments");
+      case "event-full": return Locale.label("registrations.registrationDetailsPage.eventFull");
+      case "type-full": return Locale.label("registrations.registrationDetailsPage.restoreTypeFull");
+      case "coupon-max-uses": return Locale.label("registrations.registrationDetailsPage.restoreCouponUsed");
+      case "already-registered": return Locale.label("registrations.registrationDetailsPage.restoreAlreadyRegistered");
+      default: return parsed?.error || Locale.label(fallbackKey);
+    }
+  } catch {
+    return Locale.label(fallbackKey);
+  }
+};
 
 const parseErrorMessage = (raw: string) => {
   try {
@@ -69,6 +94,10 @@ export const RegistrationDetailsPage = () => {
   const [addAttendeeTypeId, setAddAttendeeTypeId] = useState("");
   const [addError, setAddError] = useState("");
   const [unansweredOnly, setUnansweredOnly] = useState(false);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
+  const [balanceDueOnly, setBalanceDueOnly] = useState(false);
+  const [actionError, setActionError] = useState("");
   const [viewSubmissionId, setViewSubmissionId] = useState("");
   const [viewDetailId, setViewDetailId] = useState("");
   const [sharing, setSharing] = useState(false);
@@ -126,6 +155,18 @@ export const RegistrationDetailsPage = () => {
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
+  const runAction = async (action: () => Promise<unknown>, fallbackKey: string) => {
+    setActionError("");
+    try {
+      await action();
+    } catch (err) {
+      setActionError(parseActionError((err as { message?: string } | null | undefined)?.message || "", fallbackKey));
+    }
+    loadData(false);
+  };
+
+  const handleRestore = (regId: string) => runAction(() => ApiHelper.post("/registrations/" + regId + "/restore", {}, "ContentApi"), "registrations.registrationDetailsPage.restoreError");
+
   const handleCancel = async (regId: string) => {
     if (!(await confirm(Locale.label("registrations.registrationDetailsPage.cancelConfirm"), { destructive: false, confirmLabel: Locale.label("common.confirm", "Confirm") }))) return;
     await ApiHelper.post("/registrations/" + regId + "/cancel", {}, "ContentApi");
@@ -134,8 +175,7 @@ export const RegistrationDetailsPage = () => {
 
   const handleDelete = async (regId: string) => {
     if (!(await confirm(Locale.label("registrations.registrationDetailsPage.deleteConfirm")))) return;
-    await ApiHelper.delete("/registrations/" + regId, "ContentApi");
-    loadData(false);
+    await runAction(() => ApiHelper.delete("/registrations/" + regId, "ContentApi"), "registrations.registrationDetailsPage.deleteError");
   };
 
   const handleAddAttendee = async (person: PersonInterface) => {
@@ -181,6 +221,15 @@ export const RegistrationDetailsPage = () => {
     return counts;
   };
 
+  const visibleRegistrations = registrations.filter((r) => {
+    if (event?.formId && unansweredOnly && r.formSubmissionId) return false;
+    if (statusFilter && r.status !== statusFilter) return false;
+    if (typeFilter && !(r.members || []).some((m) => m.registrationTypeId === typeFilter)) return false;
+    if (balanceDueOnly && balanceOf(r) <= 0) return false;
+    return true;
+  });
+  const filtersActive = (!!event?.formId && unansweredOnly) || !!statusFilter || !!typeFilter || balanceDueOnly;
+
   const waitlistOrder = registrations.filter((r) => r.status === "waitlisted").sort((a, b) => new Date(a.registeredDate || 0).getTime() - new Date(b.registeredDate || 0).getTime());
   const waitlistCount = waitlistOrder.length;
   const waitlistPos = new Map<string, number>(waitlistOrder.map((r, i) => [r.id as string, i + 1]));
@@ -190,10 +239,11 @@ export const RegistrationDetailsPage = () => {
     const answerMap = new Map<string, Record<string, string>>();
     const questionTitles: string[] = [];
     const seenQ = new Set<string>();
-    const personIds = [...new Set(registrations.map((r) => r.personId).filter(Boolean))];
+    const exportRows = visibleRegistrations;
+    const personIds = [...new Set(exportRows.map((r) => r.personId).filter(Boolean))];
     const people: PersonInterface[] = personIds.length ? await ApiHelper.get("/people/ids?ids=" + personIds.join(","), "MembershipApi").catch(() => []) : [];
     const nameMap = new Map<string, string>(people.map((p) => [p.id as string, p.name?.display || ""]));
-    await Promise.all(registrations.map(async (reg) => {
+    await Promise.all(exportRows.map(async (reg) => {
       const detail = await ApiHelper.get(`/registrations/${reg.id}`, "ContentApi").catch(() => null);
       if (detail) detailMap.set(reg.id as string, detail);
       if (reg.formSubmissionId) {
@@ -221,7 +271,7 @@ export const RegistrationDetailsPage = () => {
       ...questionTitles
     ];
     const rows = [header];
-    registrations.forEach((reg) => {
+    exportRows.forEach((reg) => {
       const members = getAttendeeNames(reg).join("; ");
       const detail = detailMap.get(reg.id as string);
       const selText = (detail?.selectionChoices || []).map((c) => {
@@ -264,8 +314,6 @@ export const RegistrationDetailsPage = () => {
     return <Box component="span" sx={{ textTransform: "capitalize" }}><StatusBadge tone={toneMap[status] || "neutral"}>{status}</StatusBadge></Box>;
   };
 
-  const visibleRegistrations = event?.formId && unansweredOnly ? registrations.filter((r) => !r.formSubmissionId) : registrations;
-
   const getRows = () => visibleRegistrations.map((reg) => {
     const total = Number(reg.totalAmount) || 0;
     const paid = Number(reg.amountPaid) || 0;
@@ -304,7 +352,9 @@ export const RegistrationDetailsPage = () => {
               {reg.status === "waitlisted" && (
                 <AppIconButton intent="add" label={Locale.label("registrations.commerce.promote")} icon={<PromoteIcon />} onClick={() => handlePromote(reg.id || "")} />
               )}
-              {reg.status !== "cancelled" && (
+              {reg.status === "cancelled" ? (
+                <AppIconButton intent="add" label={Locale.label("registrations.registrationDetailsPage.restore")} icon={<RestoreIcon />} onClick={() => handleRestore(reg.id || "")} />
+              ) : (
                 <AppIconButton label={Locale.label("registrations.registrationDetailsPage.cancelRegistration")} icon={<CancelIcon />} onClick={() => handleCancel(reg.id || "")} />
               )}
               <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => handleDelete(reg.id || "")} />
@@ -376,15 +426,33 @@ export const RegistrationDetailsPage = () => {
           ))}
         </Stack>
       )}
-      {event.formId && (
-        <Box sx={{ mb: 1 }}>
-          <FilterChip selected={unansweredOnly} onClick={() => setUnansweredOnly(!unansweredOnly)}>
-            {Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
-          </FilterChip>
-        </Box>
+      {actionError && <Alert severity="error" onClose={() => setActionError("")} sx={{ mb: 1 }} data-testid="roster-action-error">{actionError}</Alert>}
+      {registrations.length > 0 && (
+        <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mb: 1 }} data-testid="roster-filters">
+          {event.formId && (
+            <FilterChip selected={unansweredOnly} onClick={() => setUnansweredOnly(!unansweredOnly)}>
+              {Locale.label("registrations.registrationDetailsPage.unansweredOnly")}
+            </FilterChip>
+          )}
+          {STATUSES.filter((st) => statusFilter === st || registrations.some((r) => r.status === st)).map((st) => (
+            <FilterChip key={st} selected={statusFilter === st} onClick={() => setStatusFilter(statusFilter === st ? "" : st)} data-testid={`roster-filter-status-${st}`}>
+              {Locale.label(statusLabelKey[st])}
+            </FilterChip>
+          ))}
+          {types.length > 1 && types.map((t) => (
+            <FilterChip key={t.id} selected={typeFilter === t.id} onClick={() => setTypeFilter(typeFilter === t.id ? "" : t.id || "")} data-testid={`roster-filter-type-${t.id}`}>
+              {t.name}
+            </FilterChip>
+          ))}
+          {(balanceDueOnly || registrations.some((r) => balanceOf(r) > 0)) && (
+            <FilterChip selected={balanceDueOnly} onClick={() => setBalanceDueOnly(!balanceDueOnly)} data-testid="roster-filter-balance-due">
+              {Locale.label("registrations.registrationDetailsPage.balanceDue")}
+            </FilterChip>
+          )}
+        </Stack>
       )}
       {visibleRegistrations.length === 0 ? (
-        <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationDetailsPage.noRegistrations")}</Typography>
+        <Typography variant="body2" color="text.secondary">{Locale.label(filtersActive && registrations.length > 0 ? "registrations.registrationDetailsPage.noMatches" : "registrations.registrationDetailsPage.noRegistrations")}</Typography>
       ) : (
         <Box sx={tableScrollSx} role="region" aria-label={Locale.label("registrations.registrationDetailsPage.registrations")} tabIndex={0}>
           <Table size="small">
@@ -459,7 +527,7 @@ export const RegistrationDetailsPage = () => {
         />
       )}
       {viewDetailId && (
-        <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} registrantName={getMissingRegistrantName(registrations.find((r) => r.id === viewDetailId) || {})} onClose={() => setViewDetailId("")} />
+        <RegistrationDetailDialog registrationId={viewDetailId} typeMap={typeMap} selMap={selMap} registrantName={getMissingRegistrantName(registrations.find((r) => r.id === viewDetailId) || {})} canEdit={canEdit} onSaved={() => loadData(false)} onClose={() => setViewDetailId("")} />
       )}
       {viewSubmissionId && (
         <Dialog open onClose={() => setViewSubmissionId("")} maxWidth="md" fullWidth>
