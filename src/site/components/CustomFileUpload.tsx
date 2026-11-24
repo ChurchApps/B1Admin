@@ -86,7 +86,11 @@ export function CustomFileUpload(props: Props) {
       } else if (message.includes("storage_provider_error")) {
         setUploadError(message.substring(message.indexOf("storage_provider_error")));
       } else if (message.includes("unsupported_audio_format")) {
-        setUploadError(Locale.label("songs.audio.unsupportedFormat", "Unsupported audio format. Please upload an MP3, M4A, or AAC file."));
+        setUploadError(Locale.label("songs.audio.unsupportedFileType", "Unsupported file type. Please upload an MP3, M4A, or AAC audio file, or a PDF chart."));
+      } else if (message.includes("invalid_pdf")) {
+        setUploadError(Locale.label("songs.audio.invalidPdf", "This file is not a valid PDF."));
+      } else if (message.includes("pdf_too_large")) {
+        setUploadError(Locale.label("songs.audio.pdfTooLarge", "PDF is too large. Maximum size is 4 MB."));
       } else if (message.includes("file_too_large")) {
         setUploadError(Locale.label("songs.audio.tooLarge", "File is too large. Maximum size is 25 MB."));
       } else {

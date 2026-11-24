@@ -3,7 +3,7 @@ import { type ArrangementInterface, type ArrangementKeyInterface, type SongDetai
 import { type FileInterface, type LinkInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, Locale, UserHelper, Permissions } from "@churchapps/apphelper";
 import { Box, Button, Menu, MenuItem, Typography, Stack, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
-import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon, AudioFile as AudioFileIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { MusicNote as KeyIcon, Add as AddIcon, Download as DownloadIcon, Link as LinkIcon, Edit as EditIcon, CloudDownload as ImportIcon, AudioFile as AudioFileIcon, Delete as DeleteIcon, PictureAsPdf as PdfIcon } from "@mui/icons-material";
 import { PillTabs, RecordHeading, TextAction } from "../../../components/ui";
 import { AppIconButton } from "../../../components/ui/AppIconButton";
 import { PraiseChartsProducts } from "./PraiseChartsProducts";
@@ -14,6 +14,8 @@ import { AudioFilesEdit } from "./AudioFilesEdit";
 import { EmptyState } from "../../../components/ui/EmptyState";
 import { useConfirmDelete } from "../../../hooks";
 import { type PraiseChartsArrangementProduct } from "../../types";
+
+const isPdf = (f: FileInterface) => f.fileType === "application/pdf" || /\.pdf$/i.test(f.fileName || "");
 
 interface Props {
   arrangement: ArrangementInterface;
@@ -28,7 +30,7 @@ export const Keys = memo((props: Props) => {
   const [editLink, setEditLink] = React.useState<LinkInterface | null>(null);
   const [products, setProducts] = React.useState<PraiseChartsArrangementProduct[]>([]);
   const [links, setLinks] = React.useState<LinkInterface[]>([]);
-  const [audioFiles, setAudioFiles] = React.useState<FileInterface[]>([]);
+  const [arrangementFiles, setArrangementFiles] = React.useState<FileInterface[]>([]);
   const [showImport, setShowImport] = React.useState(false);
   const [showAudioUpload, setShowAudioUpload] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
@@ -92,14 +94,16 @@ export const Keys = memo((props: Props) => {
     }
   }, [selectedKey]);
 
-  // Scoped to the arrangement, not the selected key, so tracks persist across key tabs.
-  const loadAudioFiles = useCallback(() => {
+  // Scoped to the arrangement, not the selected key, so tracks and charts persist across key tabs.
+  const loadArrangementFiles = useCallback(() => {
     if (props.arrangement?.id) {
       ApiHelper.get("/files/arrangement/" + props.arrangement.id, "ContentApi").then((data: FileInterface[]) => {
-        setAudioFiles(data || []);
+        setArrangementFiles(data || []);
       });
     }
   }, [props.arrangement?.id]);
+  const audioFiles = useMemo(() => arrangementFiles.filter((f) => !isPdf(f)), [arrangementFiles]);
+  const chartFiles = useMemo(() => arrangementFiles.filter(isPdf), [arrangementFiles]);
 
   useEffect(() => {
     loadData();
@@ -109,8 +113,8 @@ export const Keys = memo((props: Props) => {
     loadLinks();
   }, [loadPraiseCharts, loadLinks]);
   useEffect(() => {
-    loadAudioFiles();
-  }, [loadAudioFiles]);
+    loadArrangementFiles();
+  }, [loadArrangementFiles]);
 
   //<DisplayBox headerText="Keys" headerIcon="music_note">
   //<PraiseChartsProducts praiseChartsId={songDetail?.praiseChartsId} />
@@ -198,15 +202,45 @@ export const Keys = memo((props: Props) => {
     );
   }, [links, canEdit]);
 
-  const handleDeleteAudio = useCallback(
+  const handleDeleteFile = useCallback(
     async (file: FileInterface) => {
-      if (await confirm(Locale.label("songs.audio.deleteConfirm") || "Are you sure you want to delete this audio file?")) {
+      const message = isPdf(file)
+        ? Locale.label("songs.keys.deleteChartConfirm", "Are you sure you want to delete this chart?")
+        : Locale.label("songs.audio.deleteConfirm") || "Are you sure you want to delete this audio file?";
+      if (await confirm(message)) {
         await ApiHelper.delete("/files/" + file.id, "ContentApi");
-        loadAudioFiles();
+        loadArrangementFiles();
       }
     },
-    [confirm, loadAudioFiles]
+    [confirm, loadArrangementFiles]
   );
+
+  const chartFilesList = useMemo(() => {
+    if (chartFiles.length === 0) return null;
+
+    return (
+      <Box sx={{ mt: 2 }} data-testid="arrangement-chart-files">
+        <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
+          {Locale.label("songs.keys.chartPdfs", "Chart PDFs")}
+        </Typography>
+        <List sx={{ p: 0 }}>
+          {chartFiles.map((f) => (
+            <ListItem key={f.id} sx={{ px: 0, py: 0.5 }}>
+              <Stack direction="row" spacing={1} alignItems="center" sx={{ width: "100%" }}>
+                <ListItemButton component="a" href={f.contentPath} target="_blank" rel="noopener noreferrer" sx={{ borderRadius: "var(--b1-radius-control)", flex: 1 }}>
+                  <PdfIcon fontSize="small" color="action" sx={{ mr: 1 }} />
+                  <ListItemText primary={f.fileName} primaryTypographyProps={{ variant: "body2", fontWeight: 500 }} />
+                </ListItemButton>
+                {canEdit && (
+                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" onClick={() => handleDeleteFile(f)} />
+                )}
+              </Stack>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    );
+  }, [chartFiles, canEdit, handleDeleteFile]);
 
   const audioFilesList = useMemo(() => {
     if (audioFiles.length === 0) return null;
@@ -226,7 +260,7 @@ export const Keys = memo((props: Props) => {
                   <Box component="audio" controls preload="none" src={f.contentPath} sx={{ width: "100%", maxWidth: 420 }} />
                 </Stack>
                 {canEdit && (
-                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" onClick={() => handleDeleteAudio(f)} />
+                  <AppIconButton label={Locale.label("common.delete")} icon={<DeleteIcon />} tone="card" onClick={() => handleDeleteFile(f)} />
                 )}
               </Stack>
             </ListItem>
@@ -234,7 +268,7 @@ export const Keys = memo((props: Props) => {
         </List>
       </Box>
     );
-  }, [audioFiles, canEdit, handleDeleteAudio]);
+  }, [audioFiles, canEdit, handleDeleteFile]);
 
   const keyOptions = useMemo(
     () => keys.map((k) => ({ value: k.id || "", label: `${k.shortDescription} · ${k.keySignature}`, "data-testid": "key-pill-" + k.id })),
@@ -270,6 +304,7 @@ export const Keys = memo((props: Props) => {
           <Box>
             {productsList}
             {linksList}
+            {chartFilesList}
             {audioFilesList}
 
             {canEdit && (
@@ -315,7 +350,7 @@ export const Keys = memo((props: Props) => {
             setShowAudioUpload(true);
           }}>
           <AudioFileIcon color="action" sx={{ mr: 2 }} />
-          {Locale.label("songs.keys.uploadAudio") || "Upload Audio"}
+          {Locale.label("songs.keys.uploadAudioOrChart", "Upload Audio or Chart PDF")}
         </MenuItem>
       </Menu>
 
@@ -326,7 +361,7 @@ export const Keys = memo((props: Props) => {
           arrangementId={props.arrangement.id}
           onSave={() => {
             setShowAudioUpload(false);
-            loadAudioFiles();
+            loadArrangementFiles();
           }}
           onCancel={() => setShowAudioUpload(false)}
         />
