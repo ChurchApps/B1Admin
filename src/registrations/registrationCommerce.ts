@@ -10,6 +10,8 @@ export interface RegistrationTypeInterface {
   name?: string;
   description?: string;
   price?: number | null;
+  // Charged per attendee at checkout instead of the price; the rest is left as a balance.
+  depositAmount?: number | null;
   capacity?: number | null;
   minAgeYears?: number | null;
   maxAgeYears?: number | null;
@@ -65,6 +67,8 @@ export interface RegistrationPaymentInterface {
 
 export interface CommerceEventInterface extends Omit<EventInterface, "capacity" | "registrationOpenDate" | "registrationCloseDate" | "formId"> {
   waitlistEnabled?: boolean;
+  allowSelfCancel?: boolean;
+  allowPayLater?: boolean;
   // Saved as null to unlink the form.
   formId?: string | null;
   capacity?: number | null;
