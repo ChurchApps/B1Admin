@@ -11,6 +11,12 @@ interface Props {
   onDirtyChange?: (dirty: boolean) => void;
 }
 
+// Matches the Api rule: an optional deposit above zero and no more than the price.
+const depositInvalid = (row: RegistrationTypeInterface) => {
+  const deposit = toNum(row.depositAmount);
+  return deposit !== null && (deposit <= 0 || deposit > (toNum(row.price) ?? 0));
+};
+
 export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange }) => {
   const { rows, saving, error, dirty, update, addRow, removeRow, save, ConfirmDialogElement } = useEditableRowList<RegistrationTypeInterface>({
     loadUrl: `/registrations/types/event/${event.id}?churchId=${event.churchId}`,
@@ -21,7 +27,7 @@ export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange })
     sortBy: "sort",
     newRow: (current) => ({ name: "", price: null, capacity: null, sort: current.length + 1, active: true }),
     filter: (r) => !!(r.name || "").trim(),
-    coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), capacity: toNum(r.capacity), minAgeYears: toNum(r.minAgeYears), maxAgeYears: toNum(r.maxAgeYears), sort: toNum(r.sort) })
+    coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), depositAmount: toNum(r.depositAmount), capacity: toNum(r.capacity), minAgeYears: toNum(r.minAgeYears), maxAgeYears: toNum(r.maxAgeYears), sort: toNum(r.sort) })
   });
 
   useEffect(() => { onDirtyChange?.(dirty); }, [dirty, onDirtyChange]);
@@ -37,6 +43,7 @@ export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange })
           <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" useFlexGap>
             <TextField label={Locale.label("registrations.commerce.name")} size="small" value={row.name || ""} onChange={(e) => update(i, "name", e.target.value)} data-testid="type-name" sx={{ flex: "1 1 140px" }} />
             <TextField label={Locale.label("registrations.commerce.price")} type="number" size="small" value={row.price ?? ""} onChange={(e) => update(i, "price", e.target.value)} data-testid="type-price" sx={{ flex: "1 1 90px" }} />
+            <TextField label={Locale.label("registrations.commerce.deposit")} type="number" size="small" value={row.depositAmount ?? ""} onChange={(e) => update(i, "depositAmount", e.target.value)} error={depositInvalid(row)} helperText={depositInvalid(row) ? Locale.label("registrations.commerce.depositInvalid") : undefined} data-testid="type-deposit" sx={{ flex: "1 1 90px" }} />
             <TextField label={Locale.label("registrations.commerce.capacity")} type="number" size="small" value={row.capacity ?? ""} onChange={(e) => update(i, "capacity", e.target.value)} data-testid="type-capacity" sx={{ flex: "1 1 90px" }} />
             <TextField label={Locale.label("registrations.commerce.minAge", "Min age")} type="number" size="small" value={row.minAgeYears ?? ""} onChange={(e) => update(i, "minAgeYears", e.target.value)} slotProps={{ htmlInput: { min: 0 } }} data-testid="type-min-age" sx={{ flex: "1 1 80px" }} />
             <TextField label={Locale.label("registrations.commerce.maxAge", "Max age")} type="number" size="small" value={row.maxAgeYears ?? ""} onChange={(e) => update(i, "maxAgeYears", e.target.value)} slotProps={{ htmlInput: { min: 0 } }} data-testid="type-max-age" sx={{ flex: "1 1 80px" }} />

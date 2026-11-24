@@ -19,6 +19,8 @@ interface Props {
 type RegistrationSettingsFormValues = {
   registrationEnabled: boolean;
   waitlistEnabled: boolean;
+  allowSelfCancel: boolean;
+  allowPayLater: boolean;
   capacity: string;
   registrationOpenDate: string;
   registrationCloseDate: string;
@@ -44,7 +46,7 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   // Bumped after a copy so the attendee type, selection, and discount code lists reload.
   const [listsVersion, setListsVersion] = useState(0);
 
-  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<RegistrationSettingsFormValues>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "", confirmationMessage: "" } });
+  const { register, handleSubmit, reset, control, watch, formState: { isDirty } } = useForm<RegistrationSettingsFormValues>({ defaultValues: { registrationEnabled: false, waitlistEnabled: false, allowSelfCancel: true, allowPayLater: false, capacity: "", registrationOpenDate: "", registrationCloseDate: "", tags: "", formId: "", confirmationMessage: "" } });
 
   const sectionsDirty = typesDirty || selectionsDirty || couponsDirty;
   const anyDirty = isDirty || sectionsDirty;
@@ -64,6 +66,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
   const toFormValues = (e: CommerceEventInterface): RegistrationSettingsFormValues => ({
     registrationEnabled: e.registrationEnabled || false,
     waitlistEnabled: e.waitlistEnabled || false,
+    allowSelfCancel: e.allowSelfCancel !== false,
+    allowPayLater: e.allowPayLater || false,
     capacity: e.capacity?.toString() || "",
     registrationOpenDate: e.registrationOpenDate ? toLocalInput(e.registrationOpenDate) : "",
     registrationCloseDate: e.registrationCloseDate ? toLocalInput(e.registrationCloseDate) : "",
@@ -89,6 +93,8 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
       ...event,
       registrationEnabled: values.registrationEnabled,
       waitlistEnabled: !!values.waitlistEnabled, // explicit boolean — Kysely drops undefined so un-toggling must send false
+      allowSelfCancel: !!values.allowSelfCancel,
+      allowPayLater: !!values.allowPayLater,
       capacity: values.capacity ? parseInt(values.capacity) : null,
       registrationOpenDate: values.registrationOpenDate ? new Date(values.registrationOpenDate) : null,
       registrationCloseDate: values.registrationCloseDate ? new Date(values.registrationCloseDate) : null,
@@ -137,6 +143,23 @@ export const RegistrationSettingsEdit: React.FC<Props> = ({ event, onUpdate }) =
             name="waitlistEnabled"
             render={({ field }) => (
               <FormControlLabel control={<Switch checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="waitlist-enabled-switch" />} label={Locale.label("registrations.registrationSettingsEdit.enableWaitlist")} />
+            )}
+          />
+          <Controller
+            control={control}
+            name="allowSelfCancel"
+            render={({ field }) => (
+              <FormControlLabel control={<Switch checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="allow-self-cancel-switch" />} label={Locale.label("registrations.registrationSettingsEdit.allowSelfCancel")} />
+            )}
+          />
+          <Controller
+            control={control}
+            name="allowPayLater"
+            render={({ field }) => (
+              <Box>
+                <FormControlLabel control={<Switch checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="allow-pay-later-switch" />} label={Locale.label("registrations.registrationSettingsEdit.allowPayLater")} />
+                <Typography variant="body2" color="text.secondary">{Locale.label("registrations.registrationSettingsEdit.allowPayLaterHelper")}</Typography>
+              </Box>
             )}
           />
           <Grid container spacing={2}>

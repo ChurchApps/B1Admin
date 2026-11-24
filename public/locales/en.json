@@ -3520,6 +3520,8 @@
       "check": "Check",
       "checkNumber": "Check Number",
       "code": "Code",
+      "deposit": "Deposit",
+      "depositInvalid": "More than 0, up to the price",
       "description": "Description",
       "discountCodes": "Discount Codes",
       "discountType": "Type",
@@ -3627,6 +3629,9 @@
       "waitlisted": "{count} waitlisted"
     },
     "registrationSettingsEdit": {
+      "allowPayLater": "Allow pay later (cash or check)",
+      "allowPayLaterHelper": "Members can register now and pay at the door. Churches without online giving always allow this.",
+      "allowSelfCancel": "Members can cancel their own registration",
       "capacity": "Capacity",
       "capacityPlaceholder": "Leave empty for unlimited",
       "confirmationMessage": "Confirmation Message",
