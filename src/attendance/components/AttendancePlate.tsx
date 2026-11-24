@@ -8,6 +8,7 @@ import { type GroupInterface, type PersonInterface, type ServiceInterface } from
 import { RecordHeading, TextAction, VerbRow, eyebrowSx, filterChipSx, numericCellSx, RecordActions } from "../../components/ui";
 import { type HeadcountInterface } from "./HeadcountEntry";
 import { addDays, isoDate, parseDate, startOfSundayWeek } from "../week";
+import { RoomRosterDialog } from "./RoomRosterDialog";
 
 const WEEKS = 13;
 
@@ -215,6 +216,7 @@ const Muted = ({ children }: { children: React.ReactNode }) => <Typography varia
 
 export const ThisWeekSlice = ({ onView, canYears }: { onView: (view: AttendanceView) => void; canYears: boolean }) => {
   const data = useThisWeekAttendance();
+  const [rosterRoom, setRosterRoom] = React.useState<{ id: string; name: string } | null>(null);
   if (!data.canView) return <Muted>{Locale.label("attendance.attendancePage.subtitle")}</Muted>;
   if (data.loading) return <Loading />;
 
@@ -234,7 +236,16 @@ export const ThisWeekSlice = ({ onView, canYears }: { onView: (view: AttendanceV
                     {room.name
                       ? <Link component={RouterLink} to={"/groups/" + room.id} underline="hover" sx={{ fontWeight: 500, overflowWrap: "anywhere" }}>{room.name}</Link>
                       : <Typography variant="body1" color="text.secondary">{Locale.label("attendance.plate.unknownGroup", "Removed group")}</Typography>}
-                    <Typography variant="body2" color="text.secondary" sx={numericCellSx}>{room.capacity ? `${room.count} / ${room.capacity}` : room.count}</Typography>
+                    <Stack direction="row" spacing={1.5} alignItems="baseline" sx={{ flexShrink: 0 }}>
+                      <TextAction
+                        small
+                        onClick={() => setRosterRoom({ id: room.id, name: room.name || Locale.label("attendance.plate.unknownGroup", "Removed group") })}
+                        aria-label={Locale.label("attendance.roomRoster.openAria", "Who checked in to {room} today").replace("{room}", room.name || Locale.label("attendance.plate.unknownGroup", "Removed group"))}
+                        data-testid="attendance-room-today">
+                        {Locale.label("attendance.roomRoster.open", "Today")}
+                      </TextAction>
+                      <Typography variant="body2" color="text.secondary" sx={numericCellSx}>{room.capacity ? `${room.count} / ${room.capacity}` : room.count}</Typography>
+                    </Stack>
                   </Stack>
                   {room.capacity > 0 && (
                     <Box role="meter" aria-valuemin={0} aria-valuemax={room.capacity} aria-valuenow={room.count} aria-label={room.name} sx={{ mt: 0.5, height: 4, borderRadius: 2, bgcolor: "var(--b1-neutral-bg)", overflow: "hidden" }}>
@@ -246,6 +257,7 @@ export const ThisWeekSlice = ({ onView, canYears }: { onView: (view: AttendanceV
             })}
           </Box>
         )}
+        {rosterRoom && <RoomRosterDialog groupId={rosterRoom.id} groupName={rosterRoom.name} onClose={() => setRosterRoom(null)} />}
       </Section>
 
       {guestPeople.length > 0 && (

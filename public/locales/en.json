@@ -190,6 +190,15 @@
       "weeksWith": "{count} of the last {weeks} weeks had check-ins",
       "yearsSummary": "Trends, headcounts and group attendance across every year. Use the filters to narrow the dates."
     },
+    "roomRoster": {
+      "empty": "No one has checked in to this room today.",
+      "loadError": "The room's check-ins could not be loaded.",
+      "open": "Today",
+      "openAria": "Who checked in to {room} today",
+      "serviceTime": "Service Time",
+      "summary": "{checkedIn} checked in, {stillHere} not picked up yet",
+      "title": "{room} today"
+    },
     "serviceEdit": {
       "campus": "Campus",
       "campusAria": "Select campus",
@@ -2246,6 +2255,9 @@
       "marYears": "Years Married",
       "memAtt": "Member Attendance",
       "memDon": "Member Donations",
+      "notDon": "has not donated (in general)",
+      "notDonChip": "Not donated: {fund}",
+      "notDonTo": "has not donated to",
       "notMem": "is not member of",
       "operator": "Operator",
       "saveCon": "Save Condition",

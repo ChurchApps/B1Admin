@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "
 import { B1AdminPersonHelper } from ".";
 import { useCampuses } from "../../hooks/useCampuses";
 import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface, type FormInterface } from "@churchapps/helpers";
-import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
+import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
 import {
@@ -42,7 +42,7 @@ import {
 } from "@mui/icons-material";
 import { getMembershipStatusOptions } from "../helpers/MembershipStatusOptions";
 import { GRADE_OPTIONS } from "../../helpers/GradeOptions";
-import { getGroupCategories, getGroupIdsForCategory } from "./listRules";
+import { getGroupCategories, getGroupIdsForCategory, isAnyFundOperator, isNotDonatedOperator } from "./listRules";
 import { type PersonFieldInterface } from "../../helpers/Interfaces";
 import { AppDatePicker } from "../../components";
 
@@ -388,12 +388,12 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     // Add donations if permissions allow
-    if (Permissions.givingApi.donations) {
+    if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) {
       categories.activity.push({
         key: "memberDonations",
         label: Locale.label("people.editCondition.memDon"),
         type: "complex",
-        operators: ["donatedToAny", "donatedTo"]
+        operators: ["donatedToAny", "donatedTo", "notDonatedToAny", "notDonatedTo"]
       });
     }
 
@@ -419,7 +419,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     if (category === "activity") {
-      if (Permissions.givingApi.donations) {
+      if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) {
         const fundData = await ApiHelper.get("/funds", "GivingApi");
         setFunds(fundData);
       }
@@ -548,16 +548,16 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
 
     const filters = { ...activeFilters };
     if (complexConfig.type === "donation") {
-      if (complexConfig.operator === "donatedToAny") {
+      if (isAnyFundOperator(complexConfig.operator)) {
         filters[complexFilterDialog.field] = {
           field: "memberDonations",
-          operator: "donatedToAny",
+          operator: complexConfig.operator,
           value: JSON.stringify([{ value: "any", text: "Any" }, { from: complexConfig.fromDate, to: complexConfig.toDate }])
         };
       } else {
         filters[complexFilterDialog.field] = {
           field: "memberDonations",
-          operator: "donatedTo",
+          operator: complexConfig.operator === "notDonatedTo" ? "notDonatedTo" : "donatedTo",
           value: JSON.stringify([{ value: complexConfig.entityValue, text: complexConfig.entityText }, { from: complexConfig.fromDate, to: complexConfig.toDate }])
         };
       }
@@ -602,13 +602,14 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
         case "memberDonations":
           const fundVal = JSON.parse(filter.value);
           let memberDonations: FundDonationInterface[];
-          if (filter.operator === "donatedToAny") {
+          if (isAnyFundOperator(filter.operator)) {
             memberDonations = await ApiHelper.get(`/funddonations?startDate=${fundVal[1].from}&endDate=${fundVal[1].to}`, "GivingApi");
           } else {
             memberDonations = await ApiHelper.get(`/funddonations?fundId=${fundVal[0].value}&startDate=${fundVal[1].from}&endDate=${fundVal[1].to}`, "GivingApi");
           }
           const memberIds = ArrayHelper.getUniqueValues(memberDonations, "donation.personId").filter((f) => f !== null);
-          result.push({ field: "id", operator: "in", value: memberIds.join(",") });
+          // "Has not donated" keeps everyone except the donors in the range; the Api matches "notIn" on id as a set.
+          result.push({ field: "id", operator: isNotDonatedOperator(filter.operator) ? "notIn" : "in", value: memberIds.join(",") });
           break;
         case "memberAttendance":
           const attendanceValue = JSON.parse(filter.value);
@@ -836,6 +837,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
       try {
         const parsed = JSON.parse(filter.value);
         displayText = `${parsed[0]?.text || Locale.label("people.editCondition.any")}`;
+        if (isNotDonatedOperator(filter.operator)) displayText = Locale.label("people.editCondition.notDonChip", "Not donated: {fund}").replace("{fund}", displayText);
       } catch {
         // ignore
       }
@@ -1079,7 +1081,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                   }}>
                   {complexFilterDialog.field === "memberDonations" ? [
                     <MenuItem key="donatedToAny" value="donatedToAny">{Locale.label("people.editCondition.hasDon")}</MenuItem>,
-                    <MenuItem key="donatedTo" value="donatedTo">{Locale.label("people.editCondition.donTo")}</MenuItem>
+                    <MenuItem key="donatedTo" value="donatedTo">{Locale.label("people.editCondition.donTo")}</MenuItem>,
+                    <MenuItem key="notDonatedToAny" value="notDonatedToAny">{Locale.label("people.editCondition.notDon", "has not donated (in general)")}</MenuItem>,
+                    <MenuItem key="notDonatedTo" value="notDonatedTo">{Locale.label("people.editCondition.notDonTo", "has not donated to")}</MenuItem>
                   ] : [
                     <MenuItem key="attendedAny" value="attendedAny">{Locale.label("people.editCondition.attGen")}</MenuItem>,
                     <MenuItem key="attendedCampus" value="attendedCampus">{Locale.label("people.editCondition.attCamp")}</MenuItem>,
@@ -1091,7 +1095,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
               </FormControl>
 
               {complexConfig?.operator &&
-              complexConfig.operator !== "donatedToAny" &&
+              !isAnyFundOperator(complexConfig.operator) &&
               complexConfig.operator !== "attendedAny" && (
                 <FormControl fullWidth>
                   <InputLabel>
@@ -1242,7 +1246,9 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
                 }}>
                 {complexFilterDialog.field === "memberDonations" ? [
                   <MenuItem key="donatedToAny" value="donatedToAny">{Locale.label("people.editCondition.hasDon")}</MenuItem>,
-                  <MenuItem key="donatedTo" value="donatedTo">{Locale.label("people.editCondition.donTo")}</MenuItem>
+                  <MenuItem key="donatedTo" value="donatedTo">{Locale.label("people.editCondition.donTo")}</MenuItem>,
+                  <MenuItem key="notDonatedToAny" value="notDonatedToAny">{Locale.label("people.editCondition.notDon", "has not donated (in general)")}</MenuItem>,
+                  <MenuItem key="notDonatedTo" value="notDonatedTo">{Locale.label("people.editCondition.notDonTo", "has not donated to")}</MenuItem>
                 ] : [
                   <MenuItem key="attendedAny" value="attendedAny">{Locale.label("people.editCondition.attGen")}</MenuItem>,
                   <MenuItem key="attendedCampus" value="attendedCampus">{Locale.label("people.editCondition.attCamp")}</MenuItem>,
@@ -1254,7 +1260,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
             </FormControl>
 
             {complexConfig?.operator &&
-              complexConfig.operator !== "donatedToAny" &&
+              !isAnyFundOperator(complexConfig.operator) &&
               complexConfig.operator !== "attendedAny" && (
               <FormControl fullWidth>
                 <InputLabel>

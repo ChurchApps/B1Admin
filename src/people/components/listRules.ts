@@ -31,6 +31,10 @@ export const getGroupCategories = (groups: GroupInterface[]): string[] =>
 export const getGroupIdsForCategory = (groups: GroupInterface[], categoryName: string): string[] =>
   groups.filter((g) => isStandardGroup(g) && g.categoryName === categoryName).map((g) => g.id || "").filter(Boolean);
 
+// Donation operators: "has donated" and "has not donated", each to any fund or to one fund.
+export const isNotDonatedOperator = (operator: string) => operator === "notDonatedToAny" || operator === "notDonatedTo";
+export const isAnyFundOperator = (operator: string) => operator === "donatedToAny" || operator === "notDonatedToAny";
+
 const attendanceTypeByOperator: Record<string, string> = {
   attendedCampus: "campus",
   attendedService: "service",
@@ -64,7 +68,8 @@ const convertFilter = (filter: ActiveFilter): ListRuleCondition | null => {
     case "memberDonations": {
       const [entity, range] = parseComplexValue(filter.value);
       const condition: ListRuleCondition = { provider: "giving", field: "donated", from: range.from, to: range.to };
-      if (filter.operator === "donatedTo" && entity.value && entity.value !== "any") condition.entityId = entity.value;
+      if (!isAnyFundOperator(filter.operator) && entity.value && entity.value !== "any") condition.entityId = entity.value;
+      if (isNotDonatedOperator(filter.operator)) condition.operator = "notIn";
       return condition;
     }
     case "memberAttendance": {
