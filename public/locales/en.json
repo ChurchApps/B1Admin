@@ -2861,9 +2861,12 @@
       "confirmDelete": "Are you sure you wish to remove this volunteer's assignment?",
       "done": "Done",
       "editAssign": "Edit Assignment",
+      "lastServed": "Last served {date}",
+      "neverServed": "Hasn't served yet",
       "noMem": "No group members found.",
       "searchAnyone": "Search for anyone in your church",
-      "searchTeam": "Search team"
+      "searchTeam": "Search team",
+      "servingThatDay": "Serving that day"
     },
     "browseGrid": {
       "addOn": "Add-On"
@@ -3145,6 +3148,8 @@
       "daysBefore": "days before",
       "daysN": "{count} days before",
       "enable": "Send reminders for plans of this type",
+      "gapAlert": "Alert ministry leaders about scheduling gaps",
+      "gapAlertHint": "Leaders of the plan's ministry get one message listing unfilled positions and people who haven't confirmed, with a link to the plan. Nothing is sent when the plan is fully scheduled.",
       "message": "Message",
       "messageHint": "Optional. Leave blank to use the default reminder wording.",
       "minutesN": "{count} minutes before",
