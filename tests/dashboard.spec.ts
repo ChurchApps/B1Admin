@@ -202,16 +202,19 @@ test.describe("Needs attention", () => {
     await expect(card).not.toContainText("requests");
   });
 
-  test("open giving batches link to Batches; closed and the online batch do not count", async ({ page }) => {
+  test("open giving batches link to Batches; closed, old, and the online batch do not count", async ({ page }) => {
+    const daysAgo = (n: number) => new Date(Date.now() - n * 24 * 60 * 60 * 1000).toISOString();
     await page.route("**/events/pending", (route) => route.fulfill({ json: [] }));
     await page.route("**/eventBookings/pending", (route) => route.fulfill({ json: [] }));
     await page.route("**/groupjoinrequests/pending", (route) => route.fulfill({ json: [] }));
     await page.route(/\/donationbatches$/, (route) => route.fulfill({
       json: [
-        { id: "B1", name: "Sunday cash", status: "open" },
-        { id: "B2", name: "Midweek", status: "open" },
-        { id: "B3", name: "Last month", status: "closed" },
-        { id: "B4", name: "Online Donation", status: "open" }
+        { id: "B1", name: "Sunday cash", status: "open", batchDate: daysAgo(1) },
+        { id: "B2", name: "Midweek", status: "open", batchDate: daysAgo(10) },
+        { id: "B3", name: "Last week", status: "closed", batchDate: daysAgo(7) },
+        { id: "B4", name: "Online Donation", status: "open", batchDate: daysAgo(2) },
+        // Batches from before closing existed read as open forever; only recent ones count.
+        { id: "B5", name: "Easter 2025", status: "open", batchDate: daysAgo(400) }
       ]
     }));
     await page.goto("/");

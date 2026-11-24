@@ -21,10 +21,20 @@ export const usePendingJoinRequestsCount = (): number => {
   return canApprove ? (requests.data?.length || 0) : 0;
 };
 
-// Batches still being worked on: every batch is open until someone closes it. Same query as the Batches page, so they share a cache.
+// Batches can only be closed since October 2026, so older batches all read as open and never will be closed.
+// Count only batches dated in the last 30 days: the ones someone is still entering gifts into.
+const RECENT_BATCH_DAYS = 30;
+
+const isRecentOpenBatch = (b: BatchWithStatus, now = new Date()) => {
+  if (isBatchClosed(b) || b.name === ONLINE_BATCH_NAME || !b.batchDate) return false;
+  const batchTime = new Date(b.batchDate).getTime();
+  return !isNaN(batchTime) && batchTime >= now.getTime() - RECENT_BATCH_DAYS * 24 * 60 * 60 * 1000;
+};
+
+// Open batches still being worked on. Same query as the Batches page, so they share a cache.
 export const useOpenBatchesCount = (): number => {
   const canSee = canSeeBatches();
   const batches = useQuery<BatchWithStatus[]>({ queryKey: ["/donationbatches", "GivingApi"], placeholderData: [], enabled: canSee });
   if (!canSee) return 0;
-  return (batches.data || []).filter((b) => !isBatchClosed(b) && b.name !== ONLINE_BATCH_NAME).length;
+  return (batches.data || []).filter((b) => isRecentOpenBatch(b)).length;
 };
