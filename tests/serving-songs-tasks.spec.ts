@@ -115,11 +115,35 @@ test.describe("Serving Management - Songs & Tasks", () => {
       await expect(page.locator("#page-header-title")).toBeVisible({ timeout: 10000 });
 
       await page.locator('[id="addBtnGroup"]').first().click();
-      await page.locator("li").getByText("Upload Audio").click();
+      await page.locator("li").getByText("Upload Audio or Chart PDF").click();
       await page.locator('input[type="file"]').setInputFiles({ name: "frolic.mp3", mimeType: "audio/mpeg", buffer: Buffer.from("SUQzAwAAAAAAAA==", "base64") });
       await page.locator("button").getByText("Save", { exact: true }).last().click();
       await expect(page.getByText("frolic.mp3").first()).toBeVisible({ timeout: 20000 });
       await expect(page.locator("audio")).toBeVisible();
+    });
+
+    test("should upload a chart PDF beside the audio and reject a fake one", async () => {
+      const songsBtn = (await siblingNav(page)).getByText("Songs");
+      await songsBtn.click();
+      await expect(page).toHaveURL(/\/serving\/songs(?:\/?$|\?)/, { timeout: 10000 });
+      await page.locator('[data-testid="add-song-button"]').waitFor({ state: "visible", timeout: 10000 });
+      await page.locator("a").getByText("Frolic", { exact: true }).first().click();
+      await expect(page.locator("#page-header-title")).toBeVisible({ timeout: 10000 });
+
+      await page.locator('[id="addBtnGroup"]').first().click();
+      await page.locator("li").getByText("Upload Audio or Chart PDF").click();
+      await page.locator('input[type="file"]').setInputFiles({ name: "fake-chart.pdf", mimeType: "application/pdf", buffer: Buffer.from("<html>not a pdf</html>") });
+      await page.locator("button").getByText("Save", { exact: true }).last().click();
+      await expect(page.getByTestId("file-upload-error")).toHaveText("This file is not a valid PDF.", { timeout: 20000 });
+      await page.getByTestId("CancelIcon").first().click();
+
+      await page.locator('input[type="file"]').setInputFiles({ name: "frolic-chart.pdf", mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.4\n%E2E chart\n%%EOF\n") });
+      await page.locator("button").getByText("Save", { exact: true }).last().click();
+      const charts = page.getByTestId("arrangement-chart-files");
+      const chartLink = charts.getByRole("link", { name: "frolic-chart.pdf" });
+      await expect(chartLink).toBeVisible({ timeout: 20000 });
+      await expect(chartLink).toHaveAttribute("target", "_blank");
+      await expect(page.locator("audio").first()).toBeVisible();
     });
 
     test("should add link from song key menu", async () => {

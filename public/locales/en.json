@@ -6174,7 +6174,10 @@
     },
     "audio": {
       "deleteConfirm": "Are you sure you want to delete this audio file?",
+      "invalidPdf": "This file is not a valid PDF.",
+      "pdfTooLarge": "PDF is too large. Maximum size is 4 MB.",
       "tooLarge": "File is too large. Maximum size is 25 MB.",
+      "unsupportedFileType": "Unsupported file type. Please upload an MP3, M4A, or AAC audio file, or a PDF chart.",
       "unsupportedFormat": "Unsupported audio format. Please upload an MP3, M4A, or AAC file.",
       "upload": "Upload Audio"
     },
@@ -6228,6 +6231,8 @@
       "addFiles": "Add Files",
       "audioTracks": "Audio Tracks",
       "availableDownloads": "Available Downloads",
+      "chartPdfs": "Chart PDFs",
+      "deleteChartConfirm": "Are you sure you want to delete this chart?",
       "externalLinks": "External Links",
       "import": "Import",
       "importFromPraiseCharts": "Import files from PraiseCharts",
@@ -6235,7 +6240,8 @@
       "keysTabsAria": "Keys tabs",
       "noKeysAvailable": "No keys available. Add a key to get started.",
       "title": "Keys",
-      "uploadAudio": "Upload Audio"
+      "uploadAudio": "Upload Audio",
+      "uploadAudioOrChart": "Upload Audio or Chart PDF"
     },
     "library": {
       "empty": {
