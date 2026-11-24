@@ -14,9 +14,9 @@ import {
   Button
 } from "@mui/material";
 import { Add as AddIcon, HowToReg as RegIcon, CalendarMonth as CalendarIcon } from "@mui/icons-material";
-import { ApiHelper, Loading, Locale, Permissions } from "@churchapps/apphelper";
+import { ApiHelper, EventHelper, Loading, Locale, Permissions } from "@churchapps/apphelper";
 import { type EventInterface } from "@churchapps/helpers";
-import { EmptyState, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, SearchField, StatusBadge, Surface, tableScrollSx } from "../components/ui";
+import { EmptyState, FilterChip, HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, ResultsBar, SearchField, StatusBadge, Surface, tableScrollSx } from "../components/ui";
 import { useRequirePermission } from "../hooks";
 import { formatDateSafe } from "../helpers/DateFormatHelper";
 
@@ -25,11 +25,15 @@ export const RegistrationsPage = () => {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [showPast, setShowPast] = useState(false);
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const data: EventInterface[] = await ApiHelper.get("/events/registerable", "ContentApi");
+      const [data] = await Promise.all([
+        ApiHelper.get("/events/registerable", "ContentApi") as Promise<EventInterface[]>,
+        EventHelper.ensureInitialized().catch(() => undefined)
+      ]);
       setEvents(data || []);
 
       const countMap: Record<string, number> = {};
@@ -62,8 +66,19 @@ export const RegistrationsPage = () => {
     );
   };
 
+  // An event is past once it has ended; upcoming soonest first, past most recent first.
+  const now = Date.now();
+  const isPast = (e: EventInterface) => {
+    if (e.recurrenceRule) {
+      // A series stays upcoming while it has another date ahead.
+      try { return !EventHelper.getFullRRule(e).after(new Date(now), true); } catch { return false; }
+    }
+    return new Date(e.end || e.start || 0).getTime() < now;
+  };
+  const timeOf = (e: EventInterface) => new Date(e.start || 0).getTime();
+  const listEvents = events.filter((e) => isPast(e) === showPast).sort((a, b) => (showPast ? timeOf(b) - timeOf(a) : timeOf(a) - timeOf(b)));
   const query = search.trim().toLowerCase();
-  const visibleEvents = query ? events.filter((e) => (e.title || "").toLowerCase().includes(query) || (e.tags || "").toLowerCase().includes(query)) : events;
+  const visibleEvents = query ? listEvents.filter((e) => (e.title || "").toLowerCase().includes(query) || (e.tags || "").toLowerCase().includes(query)) : listEvents;
 
   const getRows = () => visibleEvents.map((event) => (
     <TableRow key={event.id}>
@@ -109,9 +124,13 @@ export const RegistrationsPage = () => {
           ) : (
             <Stack spacing={3}>
               <SearchField value={search} onChange={setSearch} label={Locale.label("registrations.registrationsPage.search", "Search events")} data-testid="registrations-search" />
+              <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap" role="group" aria-label={Locale.label("registrations.registrationsPage.when", "When")} data-testid="registrations-when-filter">
+                <FilterChip selected={!showPast} onClick={() => setShowPast(false)} data-testid="registrations-filter-upcoming">{Locale.label("registrations.registrationsPage.upcoming", "Upcoming")}</FilterChip>
+                <FilterChip selected={showPast} onClick={() => setShowPast(true)} data-testid="registrations-filter-past">{Locale.label("registrations.registrationsPage.past", "Past")}</FilterChip>
+              </Stack>
               <ResultsBar>
                 <Typography variant="body2" color="text.secondary">
-                  {Locale.label("registrations.registrationsPage.enabledEvents")}: {visibleEvents.length}
+                  {(showPast ? Locale.label("registrations.registrationsPage.pastEvents", "Past events") : Locale.label("registrations.registrationsPage.upcomingEvents", "Upcoming events"))}: {visibleEvents.length}
                 </Typography>
                 {query && <Button size="small" onClick={() => setSearch("")}>{Locale.label("common.clear", "Clear")}</Button>}
               </ResultsBar>
@@ -127,6 +146,11 @@ export const RegistrationsPage = () => {
                   </TableHead>
                   <TableBody>{getRows()}</TableBody>
                 </Table>
+                {visibleEvents.length === 0 && (
+                  <Typography variant="body2" color="text.secondary" sx={{ p: 2 }} data-testid="registrations-filter-empty">
+                    {query ? Locale.label("registrations.registrationsPage.noMatches", "No events match your search.") : showPast ? Locale.label("registrations.registrationsPage.noPast", "No past events with registration.") : Locale.label("registrations.registrationsPage.noUpcoming", "No upcoming events with registration. Choose Past to see earlier ones.")}
+                  </Typography>
+                )}
               </Box>
             </Stack>
           )}

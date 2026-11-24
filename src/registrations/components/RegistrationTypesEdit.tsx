@@ -21,7 +21,7 @@ export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange })
     sortBy: "sort",
     newRow: (current) => ({ name: "", price: null, capacity: null, sort: current.length + 1, active: true }),
     filter: (r) => !!(r.name || "").trim(),
-    coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), capacity: toNum(r.capacity), sort: toNum(r.sort) })
+    coerce: (r) => ({ ...r, eventId: event.id, price: toNum(r.price), capacity: toNum(r.capacity), minAgeYears: toNum(r.minAgeYears), maxAgeYears: toNum(r.maxAgeYears), sort: toNum(r.sort) })
   });
 
   useEffect(() => { onDirtyChange?.(dirty); }, [dirty, onDirtyChange]);
@@ -38,11 +38,16 @@ export const RegistrationTypesEdit: React.FC<Props> = ({ event, onDirtyChange })
             <TextField label={Locale.label("registrations.commerce.name")} size="small" value={row.name || ""} onChange={(e) => update(i, "name", e.target.value)} data-testid="type-name" sx={{ flex: "1 1 140px" }} />
             <TextField label={Locale.label("registrations.commerce.price")} type="number" size="small" value={row.price ?? ""} onChange={(e) => update(i, "price", e.target.value)} data-testid="type-price" sx={{ flex: "1 1 90px" }} />
             <TextField label={Locale.label("registrations.commerce.capacity")} type="number" size="small" value={row.capacity ?? ""} onChange={(e) => update(i, "capacity", e.target.value)} data-testid="type-capacity" sx={{ flex: "1 1 90px" }} />
+            <TextField label={Locale.label("registrations.commerce.minAge", "Min age")} type="number" size="small" value={row.minAgeYears ?? ""} onChange={(e) => update(i, "minAgeYears", e.target.value)} slotProps={{ htmlInput: { min: 0 } }} data-testid="type-min-age" sx={{ flex: "1 1 80px" }} />
+            <TextField label={Locale.label("registrations.commerce.maxAge", "Max age")} type="number" size="small" value={row.maxAgeYears ?? ""} onChange={(e) => update(i, "maxAgeYears", e.target.value)} slotProps={{ htmlInput: { min: 0 } }} data-testid="type-max-age" sx={{ flex: "1 1 80px" }} />
             <TextField label={Locale.label("registrations.commerce.sort")} type="number" size="small" value={row.sort ?? ""} onChange={(e) => update(i, "sort", e.target.value)} data-testid="type-sort" sx={{ flex: "0 1 70px" }} />
             <AppIconButton intent="remove" label={Locale.label("common.delete")} icon={<DeleteIcon />} onClick={() => removeRow(i)} />
           </Stack>
         </Box>
       ))}
+      {rows.length > 0 && (
+        <Typography variant="caption" color="text.secondary">{Locale.label("registrations.commerce.ageHint", "Ages are in years and inclusive. When a household member's birthdate fits a type's age range, the signup page picks that type for them.")}</Typography>
+      )}
       {error && <Alert severity="error">{error}</Alert>}
       <Stack direction="row" spacing={1}>
         <Button size="small" startIcon={<AddIcon />} onClick={addRow} data-testid="add-registration-type">{Locale.label("registrations.commerce.addType")}</Button>

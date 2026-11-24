@@ -11,9 +11,9 @@ export interface RegistrationTypeInterface {
   description?: string;
   price?: number | null;
   capacity?: number | null;
-  minAgeYears?: number;
-  maxAgeYears?: number;
-  formId?: string;
+  minAgeYears?: number | null;
+  maxAgeYears?: number | null;
+  formId?: string | null;
   sort?: number;
   active?: boolean;
   remainingCapacity?: number;

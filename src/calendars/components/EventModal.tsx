@@ -457,6 +457,11 @@ export function EventModal(props: Props) {
                 <Button variant="outlined" size="small" onClick={() => setShowGallery(true)} data-testid="new-event-photo-button">
                   {photoUrl ? Locale.label("common.changePhoto") : Locale.label("calendars.newEvent.addPhoto")}
                 </Button>
+                {photoUrl && (
+                  <Button variant="text" size="small" color="error" onClick={() => setPhotoUrl("")} data-testid="new-event-remove-photo-button">
+                    {Locale.label("calendars.newEvent.removePhoto", "Remove Photo")}
+                  </Button>
+                )}
                 <Typography variant="caption" color="text.secondary">{Locale.label("calendars.newEvent.photoHint")}</Typography>
               </Stack>
             </Stack>

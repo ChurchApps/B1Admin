@@ -438,6 +438,7 @@
       "private": "Private",
       "public": "Public",
       "quantity": "Quantity",
+      "removePhoto": "Remove Photo",
       "repeats": "Repeats",
       "reserveFrom": "Reserve from",
       "reserveUntil": "Reserve until",
@@ -3471,6 +3472,7 @@
       "addCoupon": "Add Discount Code",
       "addSelection": "Add Selection",
       "addType": "Add Type",
+      "ageHint": "Ages are in years and inclusive. When a household member's birthdate fits a type's age range, the signup page picks that type for them.",
       "amount": "Amount",
       "attendeeTypes": "Attendee Types",
       "balance": "Balance",
@@ -3481,9 +3483,11 @@
       "discountType": "Type",
       "endDate": "End Date",
       "kind": "Kind",
+      "maxAge": "Max age",
       "maxQuantity": "Max Qty",
       "maxUses": "Max Uses",
       "method": "Method",
+      "minAge": "Min age",
       "minMembers": "Min Members",
       "name": "Name",
       "noCoupons": "No discount codes yet.",
@@ -3506,6 +3510,16 @@
       "type": "Type",
       "usesSoFar": "Uses: {count}",
       "value": "Value"
+    },
+    "copySetup": {
+      "copy": "Copy Setup",
+      "copying": "Copying...",
+      "description": "Copies capacity, waitlist, tags, registration questions, attendee types, selections, and discount codes onto this event. Registrations are not copied, and items this event already has with the same name or code are kept as they are.",
+      "done": "Setup copied from {title}.",
+      "noEvents": "No other events have registration turned on.",
+      "saveFirst": "Save or discard your changes before copying",
+      "source": "Copy from",
+      "title": "Copy setup from another event"
     },
     "registrationDetailsPage": {
       "addAttendee": "Add Attendee",
@@ -3560,13 +3574,21 @@
       "goToCalendars": "Turn on registration on a calendar event",
       "noEvents": "No events have registration enabled yet.",
       "noEventsHint": "To enable registration, open an event on a calendar and click Manage Registrations.",
+      "noMatches": "No events match your search.",
+      "noPast": "No past events with registration.",
+      "noUpcoming": "No upcoming events with registration. Choose Past to see earlier ones.",
+      "past": "Past",
+      "pastEvents": "Past events",
       "registered": "registered",
       "registrations": "Registrations",
       "search": "Search events",
       "subtitle": "Manage event registration settings and view registrants",
       "tags": "Tags",
       "title": "Event Registrations",
-      "turnOnRegistration": "Turn on registration"
+      "turnOnRegistration": "Turn on registration",
+      "upcoming": "Upcoming",
+      "upcomingEvents": "Upcoming events",
+      "when": "When"
     }
   },
   "reporting": {
