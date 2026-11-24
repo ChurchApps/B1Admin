@@ -70,6 +70,8 @@ export interface CommerceEventInterface extends Omit<EventInterface, "capacity" 
   capacity?: number | null;
   registrationOpenDate?: Date | null;
   registrationCloseDate?: Date | null;
+  // Plain text added to the registration confirmation email.
+  confirmationMessage?: string;
 }
 
 interface CommerceMemberInterface extends RegistrationMemberInterface {
