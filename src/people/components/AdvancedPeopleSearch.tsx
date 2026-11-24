@@ -2,7 +2,7 @@ import React, { memo, useCallback, useState, useMemo, useEffect, useRef } from "
 import { B1AdminPersonHelper } from ".";
 import { useCampuses } from "../../hooks/useCampuses";
 import { type GroupMemberInterface, type SearchCondition, type GroupInterface, type ServiceInterface, type ServiceTimeInterface, type QuestionInterface, type FormSubmissionInterface, type FormInterface } from "@churchapps/helpers";
-import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions } from "@churchapps/apphelper";
+import { ArrayHelper, ApiHelper, Locale, DateHelper, Permissions, UserHelper } from "@churchapps/apphelper";
 import { FormCard } from "../../components/ui";
 import { type PersonInterface, type FundDonationInterface, type FundInterface } from "@churchapps/helpers";
 import {
@@ -388,7 +388,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     // Add donations if permissions allow
-    if (Permissions.givingApi.donations) {
+    if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) {
       categories.activity.push({
         key: "memberDonations",
         label: Locale.label("people.editCondition.memDon"),
@@ -419,7 +419,7 @@ export const AdvancedPeopleSearch = memo(function AdvancedPeopleSearch(props: Pr
     }
 
     if (category === "activity") {
-      if (Permissions.givingApi.donations) {
+      if (UserHelper.checkAccess(Permissions.givingApi.donations.view)) {
         const fundData = await ApiHelper.get("/funds", "GivingApi");
         setFunds(fundData);
       }
