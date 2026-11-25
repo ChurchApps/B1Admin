@@ -1301,6 +1301,8 @@
       "question": "Question",
       "questions": "Questions",
       "req": "Required",
+      "shownIfAnswer": "Shown if {question} is {answer}",
+      "shownIfAnswered": "Shown if {question} is answered",
       "type": "Type"
     },
     "formEdit": {
@@ -1364,8 +1366,10 @@
       "title": "Print Form"
     },
     "formQuestionEdit": {
+      "always": "Always show",
       "amt": "Amount",
       "ansReq": "Require an answer for this question",
+      "anyAnswer": "Any answer",
       "checkBox": "Checkbox",
       "confirmMsg": "Are you sure you wish to permanently delete this question?",
       "date": "Date",
@@ -1373,6 +1377,7 @@
       "desc": "Description",
       "fieldType": "Field Type",
       "fund": "Fund",
+      "hasDependents": "Other questions depend on this one, so it can't have a condition of its own.",
       "heading": "Heading",
       "markdownHelper": "Supports Markdown: **bold**, *italic*, lists and [links](https://example.com).",
       "multiChoice": "Multiple Choice",
@@ -1384,6 +1389,9 @@
       "questionReq": "Question is required.",
       "questionRequiredAria": "Question required",
       "questionTitleAria": "Question title",
+      "showIf": "Condition",
+      "showIfAnswer": "Answer",
+      "showIfHelper": "Show this question only when an earlier question is answered.",
       "textArea": "Text Area",
       "textBox": "Textbox",
       "wholeNum": "Whole Number",

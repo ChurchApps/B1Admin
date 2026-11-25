@@ -1,5 +1,6 @@
 import React from "react";
 import { FormQuestionEdit } from ".";
+import { type ConditionalQuestion, getConditionChoices } from "./FormQuestionEdit";
 import { type FormInterface, type QuestionInterface } from "@churchapps/helpers";
 import { ApiHelper, Permissions, Loading, UserHelper, Locale } from "@churchapps/apphelper";
 import { Icon, Table, TableBody, TableCell, TableRow, TableHead, Box, Typography, Stack, Button } from "@mui/material";
@@ -13,7 +14,7 @@ interface Props {
 
 export const Form: React.FC<Props> = (props) => {
   const [form, setForm] = React.useState<FormInterface>({} as FormInterface);
-  const [questions, setQuestions] = React.useState<QuestionInterface[] | null>(null);
+  const [questions, setQuestions] = React.useState<ConditionalQuestion[] | null>(null);
   const [editQuestionId, setEditQuestionId] = React.useState("notset");
   const sortQueue = React.useRef<Promise<unknown>>(Promise.resolve());
   const questionList = questions || []; // Hoisted to avoid guard reads on closure deps while questions is undefined
@@ -58,6 +59,15 @@ export const Form: React.FC<Props> = (props) => {
     tmpQuestions.splice(idx + 1, 0, question);
     setQuestions(tmpQuestions);
     sendSort(question.id || "", "down");
+  };
+  const getConditionText = (q: ConditionalQuestion) => {
+    const trigger = questionList.find((t) => t.id === q.showIf?.questionId);
+    if (!trigger) return null;
+    const answer = q.showIf?.value ? getConditionChoices(trigger).find((c) => c.value === q.showIf?.value)?.text || q.showIf.value : "";
+    const text = answer
+      ? Locale.label("forms.form.shownIfAnswer").replace("{question}", trigger.title || "").replace("{answer}", answer)
+      : Locale.label("forms.form.shownIfAnswered").replace("{question}", trigger.title || "");
+    return <Typography variant="caption" color="text.secondary" sx={{ display: "block" }}>{text}</Typography>;
   };
   // The Api appends new questions, so move the copy up until it sits right under the original.
   const duplicate = async (idx: number) => {
@@ -112,6 +122,7 @@ export const Form: React.FC<Props> = (props) => {
               sx={{ background: "none", border: 0, p: 0, color: "primary.main", cursor: "pointer", fontWeight: 600, font: "inherit", textAlign: "left" }}>
               {questionList[i].title}
             </Box>
+            {getConditionText(questionList[i])}
           </TableCell>
           <TableCell>
             <Typography variant="body2">{questionList[i].fieldType}</Typography>
@@ -148,7 +159,7 @@ export const Form: React.FC<Props> = (props) => {
   };
   const getSidebarModules = () => {
     const result = [];
-    if (editQuestionId !== "notset") result.push(<FormQuestionEdit key="form-questions" questionId={editQuestionId} updatedFunction={questionUpdated} formId={form.id || ""} />);
+    if (editQuestionId !== "notset") result.push(<FormQuestionEdit key="form-questions" questionId={editQuestionId} questions={questionList} updatedFunction={questionUpdated} formId={form.id || ""} />);
     return result;
   };
 

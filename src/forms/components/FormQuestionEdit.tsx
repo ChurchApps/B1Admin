@@ -1,4 +1,4 @@
-import { Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { Checkbox, FormControl, FormControlLabel, FormHelperText, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import React from "react";
 import { useForm, Controller, useFormState } from "react-hook-form";
 import { ChoicesEdit } from ".";
@@ -8,21 +8,36 @@ import { FormCard } from "../../components/ui";
 import { useConfirmDelete, useErrorSummary } from "../../hooks";
 import { PaymentEdit } from "./PaymentEdit";
 
+// The installed @churchapps/helpers predates showIf.
+export type ConditionalQuestion = QuestionInterface & { showIf?: { questionId?: string; value?: string } | null };
+
 interface Props {
   questionId: string;
   formId: string;
+  questions?: ConditionalQuestion[];
   updatedFunction: () => void;
 }
 
 // The form starts with choices: null until a question is loaded.
-type QuestionFormValues = Omit<QuestionInterface, "choices"> & { choices?: QuestionInterface["choices"] | null };
+type QuestionFormValues = Omit<ConditionalQuestion, "choices" | "showIf"> & { choices?: QuestionInterface["choices"] | null; showIf: { questionId: string; value: string } };
+
+const noCondition = { questionId: "", value: "" };
+const nonTriggerTypes = ["Heading", "Payment"];
+
+// Choices a condition can match; other answer types can only be checked for "answered".
+export const getConditionChoices = (q?: QuestionInterface) => {
+  if (!q) return [];
+  if (q.fieldType === "Yes/No") return [{ value: "True", text: Locale.label("common.yes") }, { value: "False", text: Locale.label("common.no") }];
+  if (q.fieldType === "Multiple Choice" || q.fieldType === "Checkbox") return q.choices || [];
+  return [];
+};
 
 export function FormQuestionEdit(props: Props) {
   "use no memo"; // compiler caches register() results, breaking RHF field re-registration after reset()
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const isMounted = useMountedState();
 
-  const { control, register, handleSubmit, reset, watch } = useForm<QuestionFormValues>({ defaultValues: { title: "", fieldType: "Textbox", placeholder: "", required: false, description: "", choices: null } });
+  const { control, register, handleSubmit, reset, watch, setValue } = useForm<QuestionFormValues>({ defaultValues: { title: "", fieldType: "Textbox", placeholder: "", required: false, description: "", choices: null, showIf: noCondition } });
 
   const { errors } = useFormState({ control });
   const e = errors;
@@ -30,14 +45,15 @@ export function FormQuestionEdit(props: Props) {
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
 
   const fieldType = watch("fieldType");
+  const showIfQuestionId = watch("showIf.questionId");
   const watchedQuestion = watch() as QuestionInterface;
 
   function loadData() {
     if (!isMounted()) return;
     if (props.questionId) {
-      ApiHelper.get("/questions/" + props.questionId + "?formId=" + props.formId, "MembershipApi").then((data: QuestionInterface) => reset(data));
+      ApiHelper.get("/questions/" + props.questionId + "?formId=" + props.formId, "MembershipApi").then((data: ConditionalQuestion) => reset({ ...data, showIf: { questionId: data.showIf?.questionId || "", value: data.showIf?.value || "" } }));
     } else {
-      reset({ formId: props.formId, fieldType: "Textbox", title: "", placeholder: "", required: false, description: "", choices: null });
+      reset({ formId: props.formId, fieldType: "Textbox", title: "", placeholder: "", required: false, description: "", choices: null, showIf: noCondition });
     }
   }
 
@@ -55,9 +71,50 @@ export function FormQuestionEdit(props: Props) {
     }
   };
 
+  // One level only: a question others depend on can't be conditional, and a conditional question can't be a trigger.
+  const getConditionEdit = () => {
+    const questions = props.questions || [];
+    const ownIndex = questions.findIndex((q) => q.id === watchedQuestion.id);
+    const earlier = ownIndex === -1 ? questions : questions.slice(0, ownIndex);
+    const triggers = earlier.filter((q) => q.id && !q.showIf?.questionId && !nonTriggerTypes.includes(q.fieldType || ""));
+    const hasDependents = !!watchedQuestion.id && questions.some((q) => q.showIf?.questionId === watchedQuestion.id);
+    if (triggers.length === 0 && !showIfQuestionId) return null;
+    const choices = getConditionChoices(questions.find((q) => q.id === showIfQuestionId));
+    return (
+      <Grid container spacing={2}>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <FormControl fullWidth disabled={hasDependents}>
+            <InputLabel id="showIfQuestion">{Locale.label("forms.formQuestionEdit.showIf")}</InputLabel>
+            <Controller name="showIf.questionId" control={control} render={({ field }) => (
+              <Select {...field} value={field.value ?? ""} onChange={(ev) => { field.onChange(ev.target.value); setValue("showIf.value", ""); }} labelId="showIfQuestion" label={Locale.label("forms.formQuestionEdit.showIf")} data-testid="question-show-if-select">
+                <MenuItem value="">{Locale.label("forms.formQuestionEdit.always")}</MenuItem>
+                {triggers.map((q) => <MenuItem key={q.id} value={q.id}>{q.title}</MenuItem>)}
+              </Select>
+            )} />
+            <FormHelperText>{Locale.label(hasDependents ? "forms.formQuestionEdit.hasDependents" : "forms.formQuestionEdit.showIfHelper")}</FormHelperText>
+          </FormControl>
+        </Grid>
+        {showIfQuestionId && (
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <FormControl fullWidth>
+              <InputLabel id="showIfValue">{Locale.label("forms.formQuestionEdit.showIfAnswer")}</InputLabel>
+              <Controller name="showIf.value" control={control} render={({ field }) => (
+                <Select {...field} value={field.value ?? ""} labelId="showIfValue" label={Locale.label("forms.formQuestionEdit.showIfAnswer")} data-testid="question-show-if-value-select">
+                  <MenuItem value="">{Locale.label("forms.formQuestionEdit.anyAnswer")}</MenuItem>
+                  {choices.map((c) => <MenuItem key={c.value} value={c.value}>{c.text}</MenuItem>)}
+                </Select>
+              )} />
+            </FormControl>
+          </Grid>
+        )}
+      </Grid>
+    );
+  };
+
   const onValid = (values: QuestionFormValues) => {
     setIsSubmitting(true);
-    const question = values.fieldType === "Heading" ? { ...values, required: false, placeholder: "", choices: null } : values;
+    const base = values.fieldType === "Heading" ? { ...values, required: false, placeholder: "", choices: null } : values;
+    const question = { ...base, showIf: values.showIf.questionId ? values.showIf : null };
     ApiHelper.post("/questions/", [question], "MembershipApi")
       .then(() => props.updatedFunction())
       .finally(() => { setIsSubmitting(false); });
@@ -65,7 +122,10 @@ export function FormQuestionEdit(props: Props) {
 
   async function handleDelete() {
     if (await confirm(Locale.label("forms.formQuestionEdit.confirmMsg"))) {
-      ApiHelper.delete("/questions/" + watchedQuestion.id + "/?formId=" + props.formId, "MembershipApi").then(props.updatedFunction);
+      const dependents = (props.questions || []).filter((q) => q.showIf?.questionId === watchedQuestion.id).map((q) => ({ ...q, showIf: null }));
+      await ApiHelper.delete("/questions/" + watchedQuestion.id + "/?formId=" + props.formId, "MembershipApi");
+      if (dependents.length > 0) await ApiHelper.post("/questions/", dependents, "MembershipApi");
+      props.updatedFunction();
     }
   }
 
@@ -104,6 +164,7 @@ export function FormQuestionEdit(props: Props) {
       <TextField fullWidth multiline minRows={2} label={Locale.label("forms.formQuestionEdit.desc")} id="description" placeholder={Locale.label("placeholders.form.questionDescription")} helperText={Locale.label("forms.formQuestionEdit.markdownHelper")} slotProps={{ htmlInput: { maxLength: 255 } }} data-testid="question-description-input" aria-label={Locale.label("forms.formQuestionEdit.questionDescriptionAria")} {...register("description")} />
 
       {getChoices(fieldType)}
+      {getConditionEdit()}
       {fieldType !== "Payment" && fieldType !== "Heading" && (
         <Controller name="required" control={control} render={({ field }) => (
           <FormControlLabel control={<Checkbox checked={!!field.value} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="question-required-checkbox" aria-label={Locale.label("forms.formQuestionEdit.questionRequiredAria")} />} label={Locale.label("forms.formQuestionEdit.ansReq")} />
