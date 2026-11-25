@@ -315,6 +315,32 @@ test.describe.serial("People-associated form lifecycle", () => {
     await expect(qRow).toContainText(/Yes/);
   });
 
+  test("a Payment question can let the respondent choose the amount", async () => {
+    await openFormsPage(page);
+    await page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first()
+      .locator("a", { hasText: DISPOSABLE_PERSON_FORM }).click();
+    await page.waitForURL(/\/forms\/[\w-]+/, { timeout: 10000 });
+    await page.getByRole("button", { name: "Add question" }).click();
+    await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
+    await selectMuiOption(page, page.locator("#questionBox").getByLabel("Field Type"), "Payment");
+    await page.locator('[data-testid="question-title-input"] input').fill("Retreat Gift");
+    await page.locator("#questionBox").getByRole("spinbutton", { name: "Amount" }).fill("25");
+
+    const customAmount = page.locator('[data-testid="question-custom-amount-checkbox"] input');
+    await expect(customAmount).not.toBeChecked();
+    await customAmount.check();
+    await expect(page.locator("#questionBox").getByRole("spinbutton", { name: "Suggested amount" })).toHaveValue("25");
+
+    await page.locator("#questionBox button", { hasText: /^Save$/ }).click();
+    await page.locator("#questionBox").waitFor({ state: "hidden", timeout: 15000 });
+
+    // Reopening the question shows the option was stored with it.
+    await page.locator("table tbody tr").filter({ hasText: "Retreat Gift" }).first().getByRole("button", { name: "Retreat Gift" }).click();
+    await page.locator('[data-testid="question-title-input"] input').waitFor({ state: "visible", timeout: 10000 });
+    await expect(page.locator('[data-testid="question-custom-amount-checkbox"] input')).toBeChecked();
+    await expect(page.locator("#questionBox").getByRole("spinbutton", { name: "Suggested amount" })).toHaveValue("25");
+  });
+
   test("archives, restores, and deletes the form", async () => {
     await openFormsPage(page);
     const row = page.locator("table tbody tr").filter({ hasText: DISPOSABLE_PERSON_FORM }).first();
