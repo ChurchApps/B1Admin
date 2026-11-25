@@ -6707,9 +6707,13 @@
     },
     "workflowActions": {
       "add": "Add Action",
+      "builtInFields": "Person fields",
+      "customFields": "Custom fields",
       "days": "Wait days",
+      "deletedField": "Deleted custom field",
       "emailNotApproved": "Your church's email hasn't been approved yet, so these emails won't send. Request a review from a group's Email button.",
       "emailPaused": "Your church's email is paused because recent messages bounced or were reported as spam, so these emails won't send. Please contact support.",
+      "fieldDeleted": "This custom field no longer exists, so nothing will be set. Pick another field.",
       "noAssignee": "Unassigned",
       "noGroup": "No group selected",
       "noPerson": "No person selected",

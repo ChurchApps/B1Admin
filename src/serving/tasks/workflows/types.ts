@@ -24,3 +24,5 @@ export const ACTION_TYPES = [
 export type ActionType = (typeof ACTION_TYPES)[number];
 
 export const SETTABLE_PERSON_FIELDS = ["membershipStatus", "maritalStatus", "gender", "city", "state", "zip"];
+// A Set Field action addresses one of the church's custom person fields as this prefix plus the field id.
+export const CUSTOM_FIELD_PREFIX = "personField_";
