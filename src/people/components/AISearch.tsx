@@ -5,7 +5,8 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { B1AdminPersonHelper } from "../../helpers";
 
 interface Props {
-  updateSearchResults: (people: PersonInterface[]) => void;
+  // null shows the page's loading state in place of the previous list.
+  updateSearchResults: (people: PersonInterface[] | null) => void;
   // Reports the AI-generated conditions so the parent can offer "Save as List".
   onReportCriteria?: (criteria: SearchCondition[] | null) => void;
   resetSearchResults?: () => void;
@@ -21,6 +22,8 @@ export const AISearch = (props: Props) => {
     e.preventDefault();
     setIsLoading(true);
     setErrors([]);
+    // The old list must not sit under "Searching..." as if it were the answer.
+    props.updateSearchResults(null);
     try {
       // First, get the filters from AskApi
       const filters: SearchCondition[] = await ApiHelper.post("/query/people", { query: text }, "AskApi");
@@ -34,6 +37,7 @@ export const AISearch = (props: Props) => {
     } catch (error) {
       // AskApi can answer with a raw HTML error page; never show it to the user.
       console.error(error);
+      props.resetSearchResults?.();
       setErrors([Locale.label("people.aiSearch.unavailable", "AI Search is temporarily unavailable. Please try again later, or use the search above.")]);
     } finally {
       setIsLoading(false);
