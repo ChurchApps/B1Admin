@@ -2428,6 +2428,8 @@
       "bDayNo": "Birthday (No Year)",
       "deleteOp": "Delete Option",
       "export": "Export",
+      "exportCustomColumn": "{name} (custom)",
+      "exportFieldsFailed": "Some custom fields could not be loaded and were left out of the export.",
       "first": "First",
       "last": "Last",
       "loading": "Loading people...",
