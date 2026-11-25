@@ -5,6 +5,8 @@ import { ApiHelper, Locale } from "@churchapps/apphelper";
 import { PeopleSearchResults, PeopleColumns } from "./components";
 import { Box, Typography, Stack, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Snackbar, Alert, CircularProgress, Checkbox, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Skeleton } from "@mui/material";
 import { B1AdminPersonHelper, EnvironmentHelper } from "../helpers";
+import { type PersonFieldInterface, type PersonFieldValueInterface } from "../helpers/Interfaces";
+import { formatFieldValue } from "../helpers/PersonFieldHelper";
 import { withBase } from "../helpers/basePath";
 import { PeopleSearch } from "./components/PeopleSearch";
 import { SavedLists, type ListConditions, type ListInterface } from "./components/SavedLists";
@@ -18,6 +20,7 @@ import { DirectoryHouseholds, groupHouseholds } from "./components/DirectoryHous
 import { PeopleBulkActions } from "./components/bulk/PeopleBulkActions";
 import { type BulkResult } from "./components/bulk/BulkFieldDialog";
 import { PossibleDuplicates } from "./components/PossibleDuplicates";
+import { addCustomFieldColumns, type PersonFieldValueMap } from "./peopleExport";
 
 interface BulkDeleteResponse {
   success: boolean;
@@ -50,6 +53,24 @@ const formatHeader = (key: string): string => {
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
+// One request per field: the Api has no endpoint that returns every field's values at once.
+const loadFieldValues = async (fields: PersonFieldInterface[]) => {
+  const values: PersonFieldValueMap = {};
+  let failed = false;
+  await Promise.all(fields.map(async (field) => {
+    if (!field.id) return;
+    try {
+      const rows: PersonFieldValueInterface[] | null = await ApiHelper.get("/personfieldvalues/field/" + field.id, "MembershipApi");
+      const byPerson: Record<string, string> = {};
+      (rows || []).forEach((v) => { if (v.personId) byPerson[v.personId] = v.value || ""; });
+      values[field.id] = byPerson;
+    } catch {
+      failed = true;
+    }
+  }));
+  return { values, failed };
+};
+
 export const PeoplePage = memo(() => {
   const [searchResults, setSearchResults] = React.useState<PersonInterface[] | null>(null);
   const [selectedColumns, setSelectedColumns] = React.useState<string[]>(["photo", "displayName"]);
@@ -75,8 +96,11 @@ export const PeoplePage = memo(() => {
   const [loadAll, setLoadAll] = React.useState(false);
   const [allPeople, setAllPeople] = React.useState<PersonInterface[]>([]);
   const [maybeMore, setMaybeMore] = React.useState(true);
-  // Export from the unfiltered directory loads everyone first; only the first page is on screen until then.
+  // An Export click that has to load something first: the rest of the unfiltered directory (only its
+  // first page is on screen until then), the church's custom field values, or both.
   const [exportPending, setExportPending] = React.useState(false);
+  // Custom field values for the export being prepared. Loaded by an Export click, never on page load.
+  const [exportFieldValues, setExportFieldValues] = React.useState<PersonFieldValueMap | null>(null);
   const exportRef = React.useRef<HTMLDivElement>(null);
   const [toast, setToast] = React.useState<{ open: boolean; message: string; severity: "success" | "error" }>({
     open: false,
@@ -93,6 +117,11 @@ export const PeoplePage = memo(() => {
 
   const listRequestRef = React.useRef(0);
   const householdsQuery = useQuery<HouseholdInterface[]>({ queryKey: ["/households", "MembershipApi"], placeholderData: [] });
+  const fieldsQuery = useQuery<PersonFieldInterface[]>({ queryKey: ["/personfields", "MembershipApi"], placeholderData: [] });
+  const customFields = React.useMemo(() => (Array.isArray(fieldsQuery.data) ? fieldsQuery.data : []), [fieldsQuery.data]);
+  const exportNeedsPeople = !isSearchPerformed && !loadAll && maybeMore;
+  // The field list is still loading, or the church has custom fields and this export has not loaded their values.
+  const exportNeedsFields = !!searchResults?.length && (fieldsQuery.isPlaceholderData || (customFields.length > 0 && !exportFieldValues));
 
   const changeView = useCallback((next: "households" | "table") => {
     setView(next);
@@ -220,15 +249,28 @@ export const PeoplePage = memo(() => {
     setLoadAll(true);
   }, []);
 
-  const handleExportAll = useCallback(() => {
+  const handleExportRequest = useCallback(() => {
     setExportPending(true);
-    setLoadAll(true);
-  }, []);
+    if (exportNeedsPeople) setLoadAll(true);
+  }, [exportNeedsPeople]);
 
   React.useEffect(() => {
-    // Wait until the whole directory is the current result set, then click the real download link.
+    if (!exportPending || fieldsQuery.isPlaceholderData || customFields.length === 0 || exportFieldValues) return;
+    let cancelled = false;
+    loadFieldValues(customFields).then((result) => {
+      if (cancelled) return;
+      setExportFieldValues(result.values);
+      if (result.failed) setToast({ open: true, message: Locale.label("people.peoplePage.exportFieldsFailed"), severity: "error" });
+    });
+    return () => { cancelled = true; };
+  }, [exportPending, fieldsQuery.isPlaceholderData, customFields, exportFieldValues]);
+
+  React.useEffect(() => {
+    // Wait until the custom field values are in and, unless a search is showing, the whole directory is the
+    // current result set, then click the real download link.
     // The table may re-sort the list into a new array, so compare people rather than the array reference.
-    if (!exportPending || !loadAll || maybeMore || peopleQuery.isFetching || !samePeople(searchResults, allPeople)) return;
+    if (!exportPending || exportNeedsFields) return;
+    if (!isSearchPerformed && (maybeMore || peopleQuery.isFetching || !samePeople(searchResults, allPeople))) return;
     let tries = 0;
     const timer = setInterval(() => {
       const link = exportRef.current?.querySelector("a");
@@ -236,10 +278,12 @@ export const PeoplePage = memo(() => {
         clearInterval(timer);
         setExportPending(false);
         link?.click();
+        // Dropped so the next export reloads them instead of reusing values that may have changed.
+        setExportFieldValues(null);
       }
     }, 100);
     return () => clearInterval(timer);
-  }, [exportPending, loadAll, maybeMore, peopleQuery.isFetching, searchResults, allPeople]);
+  }, [exportPending, exportNeedsFields, isSearchPerformed, maybeMore, peopleQuery.isFetching, searchResults, allPeople]);
 
   const handleSelectList = useCallback((list: ListInterface) => {
     const conditions = list.conditions;
@@ -389,7 +433,7 @@ export const PeoplePage = memo(() => {
   };
 
   const getExportData = (people: PersonInterface[]) => {
-    return people.map((person) => {
+    const rows = people.map((person) => {
       const { name, contactInfo, ...rest } = person;
       const photoUrl = person.photo ? (person.photo.startsWith("http") ? person.photo : (EnvironmentHelper.Common.ContentRoot + person.photo)) : "";
 
@@ -426,6 +470,11 @@ export const PeoplePage = memo(() => {
       });
 
       return formattedExport;
+    });
+    if (!exportFieldValues) return rows;
+    return addCustomFieldColumns(rows, people.map((person) => person.id), customFields, exportFieldValues, {
+      formatValue: formatFieldValue,
+      collisionHeader: (name) => Locale.label("people.peoplePage.exportCustomColumn").replace("{name}", () => name)
     });
   };
 
@@ -507,8 +556,8 @@ export const PeoplePage = memo(() => {
         </HeaderTextButton>
         {searchResults && (
           <Box ref={exportRef} data-testid="people-export">
-            {!isSearchPerformed && !loadAll && maybeMore
-              ? <ExportButton data={[]} text={Locale.label("people.peoplePage.export")} onRequestData={handleExportAll} />
+            {exportNeedsPeople || exportNeedsFields
+              ? <ExportButton data={[]} text={Locale.label("people.peoplePage.export")} onRequestData={handleExportRequest} />
               : <ExportButton data={getExportData(searchResults)} filename="people.csv" text={Locale.label("people.peoplePage.export")} />}
           </Box>
         )}

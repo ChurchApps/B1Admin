@@ -1,4 +1,4 @@
-import { Box, Button, Chip, IconButton, MenuItem, Select, Stack, TextField, Typography, Paper } from "@mui/material";
+import { Box, Button, Chip, IconButton, ListSubheader, MenuItem, Select, Stack, TextField, Typography, Paper } from "@mui/material";
 import React from "react";
 import { flushSync } from "react-dom";
 import { ApiHelper, Locale } from "@churchapps/apphelper";
@@ -6,7 +6,9 @@ import { Add as AddIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { type WorkflowInterface } from "@churchapps/helpers";
 import { ContentPicker } from "../../components/ContentPicker";
 import { MERGE_FIELD_KEYS, keepFocus } from "../../../../groups/components/SendTextDialog";
-import { ACTION_TYPES, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface } from "../types";
+import { type PersonFieldInterface } from "../../../../helpers/Interfaces";
+import { parseFieldChoices } from "../../../../helpers/PersonFieldHelper";
+import { ACTION_TYPES, CUSTOM_FIELD_PREFIX, SETTABLE_PERSON_FIELDS, type WorkflowStepActionInterface } from "../types";
 
 // Gift fields fill in only when a Donation trigger started the workflow, so group texting does not offer them.
 const WORKFLOW_TEXT_MERGE_FIELDS = [
@@ -50,6 +52,8 @@ interface WorkflowActionConfig {
   workflowLabel?: string;
   note?: string;
   field?: string;
+  // The custom field's name when field is CUSTOM_FIELD_PREFIX + its id; the Api shows it in the card history.
+  fieldLabel?: string;
   value?: string;
   url?: string;
 }
@@ -59,6 +63,8 @@ export const WorkflowStepActions = (props: Props) => {
   const [templates, setTemplates] = React.useState<EmailTemplateInterface[]>([]);
   const [textingProviders, setTextingProviders] = React.useState<unknown[] | null>(null);
   const [emailStatus, setEmailStatus] = React.useState<EmailSendStatus | null>(null);
+  // null until loaded, so an action's custom field is not reported as deleted while the list is on its way.
+  const [customFields, setCustomFields] = React.useState<PersonFieldInterface[] | null>(null);
   const [pickerIndex, setPickerIndex] = React.useState<number | null>(null);
   const textRefs = React.useRef<Record<number, HTMLTextAreaElement | null>>({});
 
@@ -72,6 +78,7 @@ export const WorkflowStepActions = (props: Props) => {
     ApiHelper.get("/emailTemplates", "MessagingApi").then((d: EmailTemplateInterface[]) => setTemplates(d || [])).catch(() => setTemplates([]));
     ApiHelper.get("/texting/providers", "MessagingApi").then((d: unknown[]) => setTextingProviders(d || [])).catch(() => setTextingProviders([]));
     ApiHelper.get("/emailTemplates/sendStatus", "MessagingApi").then((d: EmailSendStatus) => setEmailStatus(d || null)).catch(() => setEmailStatus(null));
+    ApiHelper.get("/personfields", "MembershipApi").then((d: PersonFieldInterface[]) => setCustomFields(Array.isArray(d) ? d.filter((f) => f.id) : [])).catch(() => { });
   }, []);
 
   const emailTemplates = templates.filter(t => t.category !== "Text");
@@ -137,6 +144,51 @@ export const WorkflowStepActions = (props: Props) => {
       else if (contentType === "group") setConfig(pickerIndex, { groupId: contentId, groupLabel: label });
     }
     setPickerIndex(null);
+  };
+
+  // The value is kept when switching between built-in fields, as before. A custom field's value only
+  // fits its own type, so it is cleared when either side of the switch is a custom field.
+  const setField = (index: number, previous: WorkflowActionConfig, field: string) => {
+    const isCustom = field.startsWith(CUSTOM_FIELD_PREFIX);
+    const fieldLabel = isCustom ? customFields?.find((f) => CUSTOM_FIELD_PREFIX + f.id === field)?.name : undefined;
+    const keepValue = !isCustom && !previous.field?.startsWith(CUSTOM_FIELD_PREFIX);
+    setConfig(index, { field, fieldLabel, value: keepValue ? previous.value : "" });
+  };
+
+  // The input for a Set Field value. A custom field gets the input for its type, storing the same strings
+  // the person edit form stores: the choice value, True/False, yyyy-mm-dd, or the number as typed.
+  const renderFieldValue = (c: WorkflowActionConfig, index: number, customField?: PersonFieldInterface) => {
+    const label = Locale.label("tasks.workflowActions.value");
+    const testId = "action-value-" + index;
+    const value = c.value || "";
+    const onChange = (e: { target: { value: string } }) => setConfig(index, { value: e.target.value });
+    switch (customField?.fieldType) {
+      case "Multiple Choice": {
+        const choices = parseFieldChoices(customField.choices) || [];
+        return (
+          <Select size="small" displayEmpty value={value} data-testid={testId} onChange={onChange} sx={{ minWidth: 140 }}>
+            <MenuItem value="" disabled>{label}</MenuItem>
+            {choices.map((choice) => <MenuItem key={choice.value} value={choice.value}>{choice.text}</MenuItem>)}
+            {!!value && !choices.some((choice) => choice.value === value) && <MenuItem value={value} disabled>{value}</MenuItem>}
+          </Select>
+        );
+      }
+      case "Yes/No":
+        return (
+          <Select size="small" displayEmpty value={value} data-testid={testId} onChange={onChange} sx={{ minWidth: 140 }}>
+            <MenuItem value="" disabled>{label}</MenuItem>
+            <MenuItem value="True">{Locale.label("common.yes")}</MenuItem>
+            <MenuItem value="False">{Locale.label("common.no")}</MenuItem>
+          </Select>
+        );
+      case "Date":
+        return <TextField size="small" type="date" label={label} value={value} data-testid={testId} onChange={onChange} slotProps={{ inputLabel: { shrink: true } }} />;
+      case "Whole Number":
+      case "Decimal":
+        return <TextField size="small" type="number" label={label} value={value} data-testid={testId} onChange={onChange} />;
+      default:
+        return <TextField size="small" label={label} value={value} data-testid={testId} onChange={onChange} />;
+    }
   };
 
   const renderConfig = (a: WorkflowStepActionInterface, index: number) => {
@@ -240,16 +292,28 @@ export const WorkflowStepActions = (props: Props) => {
         );
       case "addNote":
         return <TextField size="small" fullWidth multiline label={Locale.label("tasks.workflowActions.note")} value={c.note || ""} data-testid={"action-note-" + index} onChange={(e) => setConfig(index, { note: e.target.value })} />;
-      case "setField":
+      case "setField": {
+        const usesCustomField = !!c.field?.startsWith(CUSTOM_FIELD_PREFIX);
+        const customField = usesCustomField ? customFields?.find((f) => CUSTOM_FIELD_PREFIX + f.id === c.field) : undefined;
+        const fieldDeleted = usesCustomField && !!customFields && !customField;
         return (
-          <Stack direction="row" spacing={1}>
-            <Select size="small" displayEmpty value={c.field || ""} data-testid={"action-field-" + index} onChange={(e) => setConfig(index, { field: e.target.value })} sx={{ minWidth: 140 }}>
-              <MenuItem value="" disabled>{Locale.label("tasks.workflowActions.selectField")}</MenuItem>
-              {SETTABLE_PERSON_FIELDS.map((f) => <MenuItem key={f} value={f}>{f}</MenuItem>)}
-            </Select>
-            <TextField size="small" label={Locale.label("tasks.workflowActions.value")} value={c.value || ""} onChange={(e) => setConfig(index, { value: e.target.value })} />
+          <Stack spacing={1}>
+            <Stack direction="row" spacing={1}>
+              <Select size="small" displayEmpty value={c.field || ""} data-testid={"action-field-" + index} onChange={(e) => setField(index, c, e.target.value)} sx={{ minWidth: 140 }}>
+                <MenuItem value="" disabled>{Locale.label("tasks.workflowActions.selectField")}</MenuItem>
+                {!!customFields?.length && <ListSubheader>{Locale.label("tasks.workflowActions.builtInFields")}</ListSubheader>}
+                {SETTABLE_PERSON_FIELDS.map((f) => <MenuItem key={f} value={f}>{f}</MenuItem>)}
+                {!!customFields?.length && <ListSubheader>{Locale.label("tasks.workflowActions.customFields")}</ListSubheader>}
+                {customFields?.map((f) => <MenuItem key={f.id} value={CUSTOM_FIELD_PREFIX + f.id}>{f.name}</MenuItem>)}
+                {/* Stands in for a custom field that is still loading or has been deleted, so the picker is never blank. */}
+                {usesCustomField && !customField && <MenuItem value={c.field} disabled>{c.fieldLabel || (fieldDeleted ? Locale.label("tasks.workflowActions.deletedField") : "")}</MenuItem>}
+              </Select>
+              {renderFieldValue(c, index, customField)}
+            </Stack>
+            {fieldDeleted && <Typography variant="body2" color="warning.main" data-testid={"action-field-deleted-" + index}>{Locale.label("tasks.workflowActions.fieldDeleted")}</Typography>}
           </Stack>
         );
+      }
       case "webhook":
         return <TextField size="small" fullWidth label={Locale.label("tasks.workflowActions.webhookUrl")} value={c.url || ""} data-testid={"action-url-" + index} onChange={(e) => setConfig(index, { url: e.target.value })} />;
       default:

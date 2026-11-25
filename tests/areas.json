@@ -26,7 +26,7 @@
     },
     "people": {
       "src": ["src/people/**"],
-      "specs": ["people*.spec.ts", "person-data-export.spec.ts", "attendance-checkout-details.spec.ts", "bulk-custom-field.spec.ts", "custom-fields.spec.ts", "realtime-person-notes.spec.ts", "campus.spec.ts"]
+      "specs": ["people*.spec.ts", "person-data-export.spec.ts", "attendance-checkout-details.spec.ts", "bulk-custom-field.spec.ts", "custom-fields.spec.ts", "realtime-person-notes.spec.ts", "campus.spec.ts", "serving-workflow-custom-field.spec.ts"]
     },
     "groups": {
       "src": ["src/groups/**"],
