@@ -8,12 +8,15 @@ import { Description as DescriptionIcon } from "@mui/icons-material";
 import { BackVerb, PageContainer, EmptyState, Pill, RecordLayout, TextAction, useRecordView, RecordActions } from "../components/ui";
 
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { EmbedCodeDialog } from "../components/EmbedCodeDialog";
 
 export const FormPage = () => {
   const params = useParams();
   const navigate = useNavigate();
   const { view: requestedView, setView } = useRecordView("view", { replace: true });
   const [searchParams] = useSearchParams();
+  const [showEmbed, setShowEmbed] = useState(false);
 
   const form = useQuery<FormInterface>({
     queryKey: ["/forms/" + params.id, "MembershipApi"],
@@ -85,12 +88,14 @@ export const FormPage = () => {
       {data.description && <Typography component="div" variant="body2" color="text.secondary" sx={{ mt: 2, "& p": { my: 0.5 } }}><MarkdownPreviewLight value={data.description} breaks /></Typography>}
       <RecordActions buttons={canEditSettings && !editing && <Button variant="contained" onClick={() => setView("edit")} data-testid="edit-form-settings-button">{Locale.label("forms.formEdit.editForm")}</Button>}>
         <TextAction small to="/forms" component={Link} data-testid="form-back-to-forms">{Locale.label("forms.formsPage.forms")}</TextAction>
+        {standAlone && !data.archived && <TextAction small onClick={() => setShowEmbed(true)} data-testid="form-embed-code-button">{Locale.label("site.embed.embedCode")}</TextAction>}
       </RecordActions>
     </Box>
   );
 
   return (
     <PageContainer>
+      {standAlone && <EmbedCodeDialog open={showEmbed} onClose={() => setShowEmbed(false)} kind="form" id={data.id} name={data.name} />}
       <RecordLayout identity={identity} spacing={3} data-testid="form-record">
         {editing ? (
           <>
