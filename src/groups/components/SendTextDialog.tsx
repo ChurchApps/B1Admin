@@ -36,6 +36,7 @@ interface Props {
   personId?: string;
   personName?: string;
   phoneNumber?: string;
+  personIds?: string[];
   onClose: () => void;
 }
 
@@ -102,19 +103,22 @@ export const SendTextDialog: React.FC<Props> = (props) => {
     }
   };
 
-  const isGroupMode = !!props.groupId || !!range;
+  const isPeopleMode = !props.groupId && !range && !!props.personIds;
+  const isGroupMode = !!props.groupId || !!range || isPeopleMode;
   const rangeQuery = range ? new URLSearchParams({ startDate: range.startDate, endDate: range.endDate, ministryId: range.ministryId, planTypeId: range.planTypeId || "" }).toString() : "";
-  const previewUrl = range ? "/plans/textRange?" + rangeQuery : props.groupId ? "/texting/preview/" + props.groupId : null;
+  const previewUrl = range ? "/plans/textRange?" + rangeQuery : props.groupId ? "/texting/preview/" + props.groupId : isPeopleMode ? "/texting/preview" : null;
   const charCount = resolveGroup(message).length;
   const segmentCount = charCount <= 160 ? 1 : Math.ceil(charCount / 153);
 
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
     previewUrl,
+    previewBody: isPeopleMode ? { personIds: props.personIds } : undefined,
     sendUrl: range ? "/plans/textRange" : isGroupMode ? "/texting/send" : "/texting/sendPerson",
     apiName: range ? "DoingApi" : "MessagingApi",
     buildPayload: () => {
       if (!message.trim()) return null;
       if (range) return { ...range, message };
+      if (isPeopleMode) return { personIds: props.personIds, message };
       return isGroupMode
         ? { groupId: props.groupId, message: resolveGroup(message) }
         : { personId: props.personId, phoneNumber: props.phoneNumber, personName: props.personName, message };
@@ -124,6 +128,7 @@ export const SendTextDialog: React.FC<Props> = (props) => {
 
   const getTitle = () => {
     if (range) return Locale.label("groups.sendTextDialog.textVolunteersTitle");
+    if (isPeopleMode) return Locale.label("groups.sendTextDialog.textPeopleTitle").replace("{count}", (props.personIds?.length || 0).toString());
     if (isGroupMode) return Locale.label("groups.sendTextDialog.textGroupTitle").replace("{groupName}", props.groupName || "");
     return Locale.label("groups.sendTextDialog.textPersonTitle").replace("{personName}", props.personName || "");
   };
@@ -135,7 +140,9 @@ export const SendTextDialog: React.FC<Props> = (props) => {
 
     const eligibleSummary = range
       ? Locale.label(preview.totalMembers !== 1 ? "groups.sendTextDialog.volunteersSummary" : "groups.sendTextDialog.volunteersSummarySingular")
-      : Locale.label(preview.totalMembers !== 1 ? "groups.sendTextDialog.eligibleSummary" : "groups.sendTextDialog.eligibleSummarySingular");
+      : isPeopleMode
+        ? Locale.label(preview.totalMembers !== 1 ? "groups.sendTextDialog.peopleSummary" : "groups.sendTextDialog.peopleSummarySingular")
+        : Locale.label(preview.totalMembers !== 1 ? "groups.sendTextDialog.eligibleSummary" : "groups.sendTextDialog.eligibleSummarySingular");
     const noPhoneNotice = preview.noPhoneCount !== 1
       ? Locale.label("groups.sendTextDialog.noPhoneNotice")
       : Locale.label("groups.sendTextDialog.noPhoneNoticeSingular");

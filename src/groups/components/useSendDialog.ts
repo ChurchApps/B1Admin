@@ -7,6 +7,8 @@ export type SendDialogError = { message?: string; status?: number; response?: { 
 
 interface UseSendDialogOptions {
   previewUrl: string | null;
+  // Sent as a POST body when set, for previews keyed by a list of people too long for a URL.
+  previewBody?: Record<string, unknown>;
   sendUrl: string;
   buildPayload: () => Record<string, unknown> | null;
   fallbackError: string;
@@ -24,7 +26,8 @@ interface UseSendDialogResult<TPreview, TResult> {
 }
 
 export function useSendDialog<TPreview = unknown, TResult = unknown>(options: UseSendDialogOptions): UseSendDialogResult<TPreview, TResult> {
-  const { previewUrl, sendUrl, buildPayload, fallbackError, apiName = "MessagingApi", buildError } = options;
+  const { previewUrl, previewBody, sendUrl, buildPayload, fallbackError, apiName = "MessagingApi", buildError } = options;
+  const previewBodyJson = previewBody ? JSON.stringify(previewBody) : "";
   const [sending, setSending] = React.useState(false);
   const [result, setResult] = React.useState<TResult | null>(null);
   const [error, setError] = React.useState("");
@@ -34,11 +37,11 @@ export function useSendDialog<TPreview = unknown, TResult = unknown>(options: Us
   React.useEffect(() => {
     if (!previewUrl) return;
     setLoadingPreview(true);
-    ApiHelper.get(previewUrl, apiName)
+    (previewBodyJson ? ApiHelper.post(previewUrl, JSON.parse(previewBodyJson), apiName) : ApiHelper.get(previewUrl, apiName))
       .then((data: TPreview) => setPreview(data))
       .catch(() => setPreview(null))
       .finally(() => setLoadingPreview(false));
-  }, [previewUrl, apiName]);
+  }, [previewUrl, previewBodyJson, apiName]);
 
   // State alone lets a fast double-click through before the disabled button re-renders.
   const sendingRef = React.useRef(false);

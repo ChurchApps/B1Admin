@@ -1,5 +1,5 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab, Dialog, DialogContent, DialogActions, Button, CircularProgress } from "@mui/material";
+import { Checkbox, FormControlLabel, FormControl, InputLabel, MenuItem, Select, Typography, Alert, TextField, Box, Chip, Stack, Tabs, Tab, Dialog, DialogContent, DialogActions, Button, CircularProgress } from "@mui/material";
 import { MarkEmailRead as MarkEmailReadIcon, VerifiedUser as VerifiedUserIcon } from "@mui/icons-material";
 import type { SelectChangeEvent } from "@mui/material";
 import { ApiHelper, Locale, Permissions, UserHelper } from "@churchapps/apphelper";
@@ -58,6 +58,7 @@ interface SendResult {
   successCount: number;
   failCount: number;
   noEmailCount: number;
+  copySent?: boolean;
 }
 
 interface SendStatus {
@@ -73,6 +74,7 @@ interface Props {
   personId?: string;
   personName?: string;
   email?: string;
+  personIds?: string[];
   onClose: () => void;
 }
 
@@ -87,18 +89,21 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   const [sendStatus, setSendStatus] = React.useState<SendStatus | null>(null);
   const [statusLoaded, setStatusLoaded] = React.useState(false);
   const [requesting, setRequesting] = React.useState(false);
+  const [sendCopy, setSendCopy] = React.useState(false);
 
   const isGroupMode = !!props.groupId;
+  const isPeopleMode = !isGroupMode && !!props.personIds;
   const mergeFields = isGroupMode ? [...MERGE_FIELDS, { key: "{{groupName}}", label: Locale.label("groups.sendEmailDialog.mergeFieldGroupName") }] : MERGE_FIELDS;
   const resolveGroup = (text: string) => (isGroupMode ? text.replaceAll("{{groupName}}", props.groupName || "") : text);
 
   const { sending, result, error, preview, loadingPreview, handleSend } = useSendDialog<PreviewData, SendResult>({
-    previewUrl: props.groupId ? "/emailTemplates/preview/" + props.groupId : null,
+    previewUrl: props.groupId ? "/emailTemplates/preview/" + props.groupId : isPeopleMode ? "/emailTemplates/preview" : null,
+    previewBody: isPeopleMode ? { personIds: props.personIds } : undefined,
     sendUrl: "/emailTemplates/send",
     buildPayload: () => {
       if (!subject.trim() || !htmlContent.trim()) return null;
-      if (isGroupMode) return { groupId: props.groupId, subject: resolveGroup(subject), htmlContent: resolveGroup(htmlContent) };
-      return { personIds: [props.personId], subject, htmlContent };
+      if (isGroupMode) return { groupId: props.groupId, subject: resolveGroup(subject), htmlContent: resolveGroup(htmlContent), sendCopy };
+      return { personIds: isPeopleMode ? props.personIds : [props.personId], subject, htmlContent, sendCopy };
     },
     fallbackError: Locale.label("groups.sendEmailDialog.fallbackError"),
     buildError: (err: SendDialogError) => {
@@ -179,7 +184,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
   );
 
   const renderPreview = () => {
-    if (!isGroupMode) {
+    if (!isGroupMode && !isPeopleMode) {
       return (
         <Box sx={{ mb: 2, display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
           <Typography variant="body2" color="textSecondary">{Locale.label("groups.sendEmailDialog.sendingTo").replace("{email}", props.email || "")}</Typography>
@@ -190,9 +195,8 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
     if (loadingPreview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.loadingRecipients")}</Typography>;
     if (!preview) return <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>{Locale.label("groups.sendEmailDialog.sendDefault")}</Typography>;
 
-    const eligibleSummary = preview.totalMembers !== 1
-      ? Locale.label("groups.sendEmailDialog.eligibleSummary")
-      : Locale.label("groups.sendEmailDialog.eligibleSummarySingular");
+    const summaryKey = isPeopleMode ? "groups.sendEmailDialog.peopleSummary" : "groups.sendEmailDialog.eligibleSummary";
+    const eligibleSummary = Locale.label(preview.totalMembers !== 1 ? summaryKey : summaryKey + "Singular");
     const noEmailNotice = preview.noEmailCount !== 1
       ? Locale.label("groups.sendEmailDialog.noEmailNotice")
       : Locale.label("groups.sendEmailDialog.noEmailNoticeSingular");
@@ -218,6 +222,11 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
         {result.noEmailCount > 0 && (
           <Alert severity="info" sx={{ mt: 1 }}>
             {Locale.label("groups.sendEmailDialog.noEmailSkipped").replace("{count}", result.noEmailCount.toString())}
+          </Alert>
+        )}
+        {sendCopy && result.successCount > 0 && (
+          <Alert severity={result.copySent ? "success" : "warning"} sx={{ mt: 1 }}>
+            {Locale.label(result.copySent ? "groups.sendEmailDialog.copySent" : "groups.sendEmailDialog.copyNotSent")}
           </Alert>
         )}
       </>
@@ -252,7 +261,7 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          {!isGroupMode && renderOpenMailApp()}
+          {!isGroupMode && !isPeopleMode && renderOpenMailApp()}
           <Button onClick={props.onClose}>{Locale.label("common.close")}</Button>
           {!sendStatus.requested && (
             <Button variant="contained" onClick={handleRequestReview} disabled={requesting} data-testid="request-email-review">
@@ -272,7 +281,9 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
       maxWidth="md"
       title={isGroupMode
         ? Locale.label("groups.sendEmailDialog.emailGroupTitle").replace("{groupName}", props.groupName || "")
-        : Locale.label("groups.sendEmailDialog.emailPersonTitle").replace("{personName}", props.personName || "")}
+        : isPeopleMode
+          ? Locale.label("groups.sendEmailDialog.emailPeopleTitle").replace("{count}", (props.personIds?.length || 0).toString())
+          : Locale.label("groups.sendEmailDialog.emailPersonTitle").replace("{personName}", props.personName || "")}
       isComplete={!!result}
       resultContent={renderResult()}
       sending={sending}
@@ -360,6 +371,13 @@ export const SendEmailDialog: React.FC<Props> = (props) => {
               placeholder={Locale.label("groups.sendEmailDialog.composePlaceholder")}
             />
           </Box>
+          {UserHelper.user?.email && (
+            <FormControlLabel
+              sx={{ mt: 1 }}
+              control={<Checkbox checked={sendCopy} onChange={(e) => setSendCopy(e.target.checked)} disabled={sending} data-testid="email-send-copy" />}
+              label={Locale.label("groups.sendEmailDialog.sendCopy").replace("{email}", UserHelper.user.email)}
+            />
+          )}
         </>
       ) : (
         <>
