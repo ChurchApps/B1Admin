@@ -9,7 +9,7 @@ import { AdvancedPeopleSearch, type ActiveFilter } from "./AdvancedPeopleSearch"
 import { AISearch } from "./AISearch";
 
 interface Props {
-  updateSearchResults: (people: PersonInterface[]) => void;
+  updateSearchResults: (people: PersonInterface[] | null) => void;
   updatedFunction?: () => void;
   resetSearchResults?: () => void;
   onClear?: () => void;

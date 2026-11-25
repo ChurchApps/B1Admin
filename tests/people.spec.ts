@@ -335,6 +335,37 @@ test.describe("People Management", () => {
       await expect(alerts.filter({ hasText: "<!DOCTYPE html" })).toHaveCount(0);
     });
 
+    // While Ask is running, the previous list must not sit under "Searching..." as if it were the new answer.
+    test("AI search shows the loading state instead of the previous list while it runs", async ({ page }) => {
+      let answer: () => void = () => {};
+      const held = new Promise<void>((resolve) => { answer = resolve; });
+      await page.route("**/query/people", async (route) => {
+        await held;
+        await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify([{ field: "gender", operator: "equals", value: "Male" }]) });
+      });
+      await page.route("**/people/advancedSearch", async (route) => {
+        await route.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify([{ id: "1", name: { display: "Zacchaeus Askresult", first: "Zacchaeus", last: "Askresult" } }])
+        });
+      });
+
+      const rows = page.locator("table tbody tr");
+      await expect(rows.first()).toBeVisible({ timeout: 10000 });
+
+      await page.locator("#peopleSearch").getByRole("button", { name: "Ask", exact: true }).click();
+      await page.locator("#aiSearchText").fill("Show me men");
+      await page.locator("#aiSearch").getByRole("button", { name: "Search", exact: true }).click();
+
+      await expect(page.locator("#aiSearch").getByRole("button", { name: "Searching", exact: false })).toBeVisible();
+      await expect(page.locator('[aria-busy="true"]')).toBeVisible();
+      await expect(rows).toHaveCount(0);
+
+      answer();
+      await expect(rows.filter({ hasText: "Zacchaeus Askresult" })).toHaveCount(1, { timeout: 10000 });
+    });
+
     test("should open all notes", async ({ page }) => {
       await openPersonRow(page, SEED_PEOPLE.DONALD);
       const notesBtn = page.getByTestId("person-notes-all");
