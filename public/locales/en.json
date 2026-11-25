@@ -2486,6 +2486,7 @@
       "sendTextMessage": "Send text message"
     },
     "personEdit": {
+      "disablePrivateMessages": "Disable private messages",
       "andHomePhone": "and the home phone to",
       "applyQuestion": "Would you like to apply that to the entire",
       "cannotDeleteSelf": "You cannot delete your own person record.",
@@ -2551,6 +2552,7 @@
       "noGiftsYear": "No gifts recorded in {year}.",
       "noHouseholdGiftsYear": "No household gifts recorded in {year}.",
       "noTexts": "Opted out of texts",
+      "noPrivateMessages": "Private messages off",
       "noNotes": "No notes yet.",
       "noRequests": "No requests or registrations yet.",
       "notSubmitted": "Not submitted",
