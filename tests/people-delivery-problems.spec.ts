@@ -53,6 +53,20 @@ test.describe("People - Delivery problems", () => {
     await expect(section.locator("b")).toHaveCount(0);
   });
 
+  test("on a phone the error gets the full width instead of wrapping mid-word in a narrow column", async ({ page }) => {
+    const error = "Push subscription expired or unsubscribed (410 Gone)";
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.route("**/messaging/deliverylogs/person/*/failures", (route) => route.fulfill({ json: [{ attemptTime: new Date().toISOString(), deliveryMethod: "push", deliveryAddress: "device-token", errorMessage: error }] }));
+    await page.goto(`/people/${GEORGE_THOMPSON}`, { timeout: 60000 });
+    const section = page.getByTestId("person-delivery-problems-section");
+    const message = section.getByText(error, { exact: true });
+    await expect(message).toBeVisible({ timeout: 30000 });
+    await expect(section.getByTestId("person-delivery-problem")).toContainText("App notification");
+    const sectionBox = await section.boundingBox();
+    const messageBox = await message.boundingBox();
+    expect(messageBox!.width).toBeGreaterThan(sectionBox!.width * 0.6);
+  });
+
   test("the section is absent when nothing failed", async ({ page }) => {
     const loaded = page.waitForResponse((r) => r.url().includes(`/messaging/deliverylogs/person/${DONALD_CLARK}/failures`));
     await page.goto(`/people/${DONALD_CLARK}`, { timeout: 60000 });

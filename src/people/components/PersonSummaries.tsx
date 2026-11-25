@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { useQueries, useQuery } from "@tanstack/react-query";
-import { Box, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Box, Divider, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CheckCircle as CheckCircleIcon, RadioButtonUnchecked as EmptyCircleIcon } from "@mui/icons-material";
 import { type AttendanceRecordInterface, type DonationInterface, type GroupInterface, type GroupMemberInterface, type MessageInterface, type PersonInterface } from "@churchapps/helpers";
 import { ArrayHelper, ConversationStore, CurrencyHelper, DateHelper, Loading, Locale, UniqueIdHelper, filterVisibleMessages } from "@churchapps/apphelper";
@@ -546,9 +546,32 @@ export const PersonDeliveryProblemsSummary: React.FC<{ personId: string }> = ({ 
     queryKey: [`/deliverylogs/person/${personId}/failures`, "MessagingApi"],
     enabled: !UniqueIdHelper.isMissing(personId)
   });
+  const theme = useTheme();
+  const narrow = useMediaQuery(theme.breakpoints.down("md"));
   const list = failures.data || [];
   if (list.length === 0) return null;
   const title = Locale.label("people.deliveryProblems.title", "Delivery problems");
+  const when = (f: DeliveryFailure) => (f.attemptTime ? DateHelper.prettyDateTime(new Date(f.attemptTime)) : "");
+  // A push address is a device token, which means nothing to staff.
+  const address = (f: DeliveryFailure) => (f.deliveryMethod === "push" ? "" : f.deliveryAddress);
+
+  // On a phone a four-column table leaves the error a few characters wide, so stack each failure instead.
+  if (narrow) {
+    return (
+      <Section id="person-delivery-problems-heading" title={title} testId="person-delivery-problems-section">
+        <Stack divider={<Divider flexItem />} spacing={1}>
+          {list.map((f, i) => (
+            <Box key={i} data-testid="person-delivery-problem">
+              <Typography variant="body2" color="text.secondary">{[when(f), channelLabel(f.deliveryMethod)].filter(Boolean).join(" · ")}</Typography>
+              {address(f) && <Typography variant="body2" sx={{ overflowWrap: "break-word" }}>{address(f)}</Typography>}
+              <Typography variant="body2" sx={{ overflowWrap: "break-word" }}>{f.errorMessage}</Typography>
+            </Box>
+          ))}
+        </Stack>
+      </Section>
+    );
+  }
+
   return (
     <Section id="person-delivery-problems-heading" title={title} testId="person-delivery-problems-section">
       <Box sx={tableScrollSx}>
@@ -564,11 +587,10 @@ export const PersonDeliveryProblemsSummary: React.FC<{ personId: string }> = ({ 
           <TableBody>
             {list.map((f, i) => (
               <TableRow key={i} data-testid="person-delivery-problem">
-                <TableCell sx={{ whiteSpace: "nowrap" }}>{f.attemptTime ? DateHelper.prettyDateTime(new Date(f.attemptTime)) : ""}</TableCell>
+                <TableCell sx={{ whiteSpace: "nowrap" }}>{when(f)}</TableCell>
                 <TableCell>{channelLabel(f.deliveryMethod)}</TableCell>
-                {/* A push address is a device token, which means nothing to staff. */}
-                <TableCell sx={{ overflowWrap: "anywhere" }}>{f.deliveryMethod === "push" ? "" : f.deliveryAddress}</TableCell>
-                <TableCell sx={{ overflowWrap: "anywhere" }}>{f.errorMessage}</TableCell>
+                <TableCell sx={{ overflowWrap: "break-word" }}>{address(f)}</TableCell>
+                <TableCell sx={{ overflowWrap: "break-word" }}>{f.errorMessage}</TableCell>
               </TableRow>
             ))}
           </TableBody>
