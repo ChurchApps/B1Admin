@@ -44,7 +44,10 @@ interface Props {
 const phoneSlotProps = { htmlInput: { "aria-describedby": "errorMsg", "aria-labelledby": "tel-label errorMsg" } };
 const phoneMenuProps = { "aria-label": "phone-number" };
 
-const buildFormDefaults = (p: PersonInterface, localPhones: boolean) => ({
+// disablePrivateMessages is stored on the person (ChurchAppsSupport#1680) ahead of the published PersonInterface.
+type EditablePerson = PersonInterface & { disablePrivateMessages?: boolean };
+
+const buildFormDefaults = (p: EditablePerson, localPhones: boolean) => ({
   ...p,
   birthDate: DateHelper.formatHtml5Date(p?.birthDate) || null,
   anniversary: DateHelper.formatHtml5Date(p?.anniversary) || null,
@@ -462,6 +465,11 @@ export const PersonEdit = memo((props: Props) => {
           <Grid size={12}>
             <Controller name="optedOut" control={control} render={({ field }) => (
               <FormControlLabel control={<Checkbox checked={field.value ?? false} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="opt-out-checkbox" />} label={Locale.label("profile.profilePage.noDirect")} />
+            )} />
+          </Grid>
+          <Grid size={12}>
+            <Controller name="disablePrivateMessages" control={control} render={({ field }) => (
+              <FormControlLabel control={<Checkbox checked={field.value ?? false} onChange={(ev) => field.onChange(ev.target.checked)} data-testid="disable-private-messages-checkbox" />} label={Locale.label("people.personEdit.disablePrivateMessages", "Disable private messages")} />
             )} />
           </Grid>
         </Grid>
