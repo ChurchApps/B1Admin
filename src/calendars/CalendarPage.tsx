@@ -9,6 +9,7 @@ import { EventModal } from "./components/EventModal";
 import { ImportIcsModal } from "./components/ImportIcsModal";
 import { CalendarEdit } from "./components/CalendarEdit";
 import { PrintChurchHeader } from "../components/PrintChurchHeader";
+import { EmbedCodeDialog } from "../components/EmbedCodeDialog";
 import { BackVerb, PageContainer, RecordHeading, RecordLayout, TextAction, eyebrowSx, useRecordView, RecordActions } from "../components/ui";
 
 const printStyles = `@media print {
@@ -36,6 +37,7 @@ export const CalendarPage = () => {
   const [refresh, refresher] = useState({});
   const [showNewEvent, setShowNewEvent] = useState(false);
   const [showImport, setShowImport] = useState(false);
+  const [showEmbed, setShowEmbed] = useState(false);
   const { confirm, ConfirmDialogElement } = useConfirmDelete();
   const denied = useRequirePermission(Permissions.contentApi.content.edit);
   const pendingApprovals = usePendingApprovalsCount();
@@ -96,6 +98,7 @@ export const CalendarPage = () => {
         </>}>
         <TextAction small onClick={() => setShowImport(true)} data-testid="import-ics-button">{Locale.label("calendars.calendarPage.importIcs")}</TextAction>
         <TextAction small onClick={() => window.print()} data-testid="print-calendar-button">{Locale.label("calendars.calendarPage.print")}</TextAction>
+        <TextAction small onClick={() => setShowEmbed(true)} data-testid="calendar-embed-code-button">{Locale.label("site.embed.embedCode")}</TextAction>
       </RecordActions>
       {pendingApprovals > 0 && (
         <Box sx={{ mt: 1 }}>
@@ -185,6 +188,7 @@ export const CalendarPage = () => {
           }}
         />
       )}
+      <EmbedCodeDialog open={showEmbed} onClose={() => setShowEmbed(false)} kind="calendar" id={curatedCalendarId} name={name} />
       {showImport && (
         <ImportIcsModal
           curatedCalendarId={curatedCalendarId}

@@ -5523,6 +5523,25 @@
       "zoomLevel": "Zoom Level",
       "zoomLevelExample": "10 is a good default. Higher is more zoomed in."
     },
+    "embed": {
+      "copied": "Copied",
+      "dialogTitle": "Embed code: {name}",
+      "domainsHelp": "One per line, for example yourchurch.org. Leave empty to turn embedding off.",
+      "domainsLabel": "Websites allowed to embed your pages",
+      "domainsPlaceholder": "yourchurch.org",
+      "domainsTooltip": "Only the websites listed here can show your giving form, forms and calendars inside their own pages. A website's subdomains, such as www, are included.",
+      "embedCode": "Embed code",
+      "givingCode": "Giving form embed code",
+      "givingFrameTitle": "Give to {church}",
+      "givingName": "Giving form",
+      "instructions": "Paste this code into a page on your website, in an HTML or embed block. The frame resizes itself to fit.",
+      "noDomains": "Your website is not on the allowed list yet, so this embed will stay blank there.",
+      "noDomainsLink": "Add your website",
+      "overLimit": "Only {max} websites can be listed. Not saved:",
+      "rejected": "Not a website address, so not saved:",
+      "saved": "Saved. Embeds can take a minute to pick up the change.",
+      "title": "Embed on your website"
+    },
     "emptyState": {
       "addFirstSection": "Add your first section",
       "description": "Add a section to start building your page. You can rearrange and customize sections any time.",

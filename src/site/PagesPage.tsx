@@ -3,14 +3,16 @@ import { Alert, Box, Button, Divider, Grid, Icon, Link as MuiLink, Stack, Switch
 import { Add as AddIcon, ChevronRight as ChevronRightIcon, ExpandMore as ExpandMoreIcon, ViewQuiltOutlined as TemplateIcon } from "@mui/icons-material";
 import { ApiHelper, UserHelper, Locale, Permissions } from "@churchapps/apphelper";
 import { useWindowWidth } from "@react-hook/window-size";
-import { Link, useNavigate } from "react-router-dom";
-import { AddPageModal, NavLinkEdit, GenerateSiteModal, PageLinkEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AddPageModal, EmbedDomainsEdit, NavLinkEdit, GenerateSiteModal, PageLinkEdit, SiteSwitcher, SitesDialog, useSiteSelection } from "./components";
 import { SiteTemplatePicker } from "./admin/templates/SiteTemplatePicker";
 import { PageHelper, EnvironmentHelper } from "../helpers";
+import { EMBED_DOMAINS_FIELD_ID } from "../helpers/embedCode";
 import type { PageLink } from "../helpers";
 import type { GenericSettingInterface, LinkInterface } from "@churchapps/helpers";
 import type { PageInterface } from "../helpers/Interfaces";
 import { SiteNavigation } from "../components/SiteNavigation";
+import { EmbedCodeDialog } from "../components/EmbedCodeDialog";
 import { AppIconButton } from "../components/ui/AppIconButton";
 import { HeaderPrimaryButton, HeaderTextButton, PageContainer, PageHeader, RecordHeading, ResultsBar, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
 import { clearSiteCache } from "./siteCache";
@@ -19,6 +21,7 @@ import { useConfirmDelete, useRequirePermission } from "../hooks";
 export const PagesPage = () => {
   const windowWidth = useWindowWidth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [pageTree, setPageTree] = useState<PageLink[]>([]);
   const [addMode, setAddMode] = useState<string>("");
   const [requestedSlug, setRequestedSlug] = useState<string>("");
@@ -26,6 +29,8 @@ export const PagesPage = () => {
   const [editLink, setEditLink] = useState<LinkInterface | null>(null);
   const [showLogin, setShowLogin] = useState<GenericSettingInterface>();
   const [hidePublicSite, setHidePublicSite] = useState<GenericSettingInterface>();
+  const [embedDomains, setEmbedDomains] = useState<GenericSettingInterface>();
+  const [showGivingEmbed, setShowGivingEmbed] = useState(false);
   const [showSiteTemplates, setShowSiteTemplates] = useState(false);
   const [showGenerateSite, setShowGenerateSite] = useState(false);
   const [showSites, setShowSites] = useState(false);
@@ -120,6 +125,7 @@ export const PagesPage = () => {
       if (loginSetting) setShowLogin(loginSetting[0]);
       const hideSetting = data.find((d: GenericSettingInterface) => d.keyName === "hidePublicSite");
       setHidePublicSite(hideSetting);
+      setEmbedDomains(data.find((d: GenericSettingInterface) => d.keyName === "embedDomains"));
       loadPageTree(hideSetting?.value === "true");
     });
   };
@@ -189,6 +195,13 @@ export const PagesPage = () => {
   useEffect(() => {
     loadData();
   }, [siteId]);
+
+  // The embed code dialog links here when the church has not listed a website yet.
+  useEffect(() => {
+    if (location.hash !== "#" + EMBED_DOMAINS_FIELD_ID) return;
+    const timer = window.setTimeout(() => document.getElementById(EMBED_DOMAINS_FIELD_ID)?.focus(), 0);
+    return () => window.clearTimeout(timer);
+  }, [location.hash, location.key]);
 
   const checked = showLogin?.value === "true" ? true : false;
   const publicSiteHidden = hidePublicSite?.value === "true";
@@ -264,6 +277,7 @@ export const PagesPage = () => {
           onDone={() => setSettingsPage(null)}
         />
       )}
+      <EmbedCodeDialog open={showGivingEmbed} onClose={() => setShowGivingEmbed(false)} kind="giving" />
       {editLink && (
         <NavLinkEdit
           updatedCallback={addLinkCallback}
@@ -356,6 +370,13 @@ export const PagesPage = () => {
                     </Alert>
                   )}
                 </Stack>
+              </Box>
+              <Divider sx={{ my: 3 }} />
+              <Box component="section" aria-labelledby="pages-embed">
+                <RecordHeading id="pages-embed" label={Locale.label("site.embed.title")}>
+                  <TextAction small onClick={() => setShowGivingEmbed(true)} data-testid="giving-embed-code-button">{Locale.label("site.embed.givingCode")}</TextAction>
+                </RecordHeading>
+                <EmbedDomainsEdit setting={embedDomains} onSaved={setEmbedDomains} />
               </Box>
             </Surface>
           </Grid>

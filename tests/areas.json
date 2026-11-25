@@ -42,7 +42,7 @@
     },
     "forms": {
       "src": ["src/forms/**"],
-      "specs": ["forms*.spec.ts", "form-*.spec.ts", "group-linked-forms.spec.ts"]
+      "specs": ["forms*.spec.ts", "form-*.spec.ts", "group-linked-forms.spec.ts", "website-embed-codes.spec.ts"]
     },
     "serving": {
       "src": ["src/serving/**"],
@@ -53,12 +53,12 @@
       "specs": ["sermons.spec.ts"]
     },
     "website": {
-      "src": ["src/site/**", "src/components/gallery/**", "src/components/iconPicker/**"],
+      "src": ["src/site/**", "src/components/gallery/**", "src/components/iconPicker/**", "src/components/EmbedCodeDialog.tsx", "src/helpers/embedCode.ts", "src/helpers/embedDomains.ts"],
       "specs": ["website*.spec.ts", "blog.spec.ts", "sites.spec.ts", "ai-page-candidates.spec.ts", "save-status-tracker.spec.ts", "section-template-picker.spec.ts", "campaigns.spec.ts"]
     },
     "calendars": {
       "src": ["src/calendars/**"],
-      "specs": ["calendar-availability-export.spec.ts", "calendar-conflicts.spec.ts", "calendar-duplicate-event.spec.ts", "group-calendar.spec.ts", "event-*.spec.ts", "rooms-resources.spec.ts"]
+      "specs": ["calendar-availability-export.spec.ts", "calendar-conflicts.spec.ts", "calendar-duplicate-event.spec.ts", "group-calendar.spec.ts", "event-*.spec.ts", "rooms-resources.spec.ts", "website-embed-codes.spec.ts"]
     },
     "registrations": {
       "src": ["src/registrations/**"],
