@@ -1121,3 +1121,105 @@ test.describe.serial("Change who a request is for", () => {
     await expect(page.getByTestId("person-requests-table").locator("tbody tr").filter({ hasText: eventTitle })).toBeVisible({ timeout: 15000 });
   });
 });
+
+// ChurchAppsSupport#1676: staff and the requester talk about a request without deciding it.
+test.describe.serial("Event request discussion", () => {
+  const API = process.env.API_BASE || "http://localhost:8084";
+  const stamp = Date.now();
+  const eventTitle = `Zacchaeus Discussed Request ${stamp}`;
+  const staffMessage = `Please fill out the baptism form first ${stamp}`;
+  const requesterReply = `Done, thank you ${stamp}`;
+  let ctx: APIRequestContext;
+  let staffJwt: string;
+  let requesterJwt: string;
+  let outsiderJwt: string;
+  let eventId: string;
+  let conversationId: string;
+  let page: Page;
+
+  const bearer = (jwt: string) => ({ headers: { Authorization: "Bearer " + jwt } });
+  const churchJwt = async (email: string) => {
+    const body: { userChurches?: { jwt: string; church?: { id?: string } }[] } = await (await ctx.post(`${API}/membership/users/login`, { data: { email, password: "password" } })).json();
+    const churches = body.userChurches || [];
+    return (churches.find((c) => c.church?.id === "CHU00000001") || churches[0]).jwt;
+  };
+  const discussLink = () => page.locator(`[data-testid="discuss-event-${eventId}"]`);
+
+  test.beforeAll(async ({ browser, playwright }) => {
+    ctx = await playwright.request.newContext();
+    staffJwt = await churchJwt("demo@b1.church");
+    // Neither has a calendar permission: volunteer makes the request, counter is an unrelated member.
+    requesterJwt = await churchJwt("volunteer@b1.church");
+    outsiderJwt = await churchJwt("counter@b1.church");
+    const start = new Date();
+    start.setDate(start.getDate() + 13);
+    start.setHours(18, 0, 0, 0);
+    const end = new Date(start);
+    end.setHours(19);
+    eventId = (await (await ctx.post(`${API}/content/events/request`, { ...bearer(requesterJwt), data: { title: eventTitle, start: start.toISOString(), end: end.toISOString(), allDay: false } })).json()).event.id;
+    const context = await browser.newContext({ storageState: STORAGE_STATE_PATH });
+    page = await context.newPage();
+    await login(page);
+  });
+
+  test.afterAll(async () => {
+    try {
+      await ctx.delete(`${API}/content/events/${eventId}`, bearer(staffJwt));
+    } catch { /* best effort */ }
+    await ctx?.dispose();
+    await page?.context().close();
+  });
+
+  test("Discuss posts a message to the requester and leaves the request pending", async () => {
+    await navigateToApprovals(page);
+    const row = page.locator('[data-testid="pending-events-table"] tbody tr').filter({ hasText: eventTitle });
+    await expect(row).toBeVisible({ timeout: 15000 });
+    await expect(discussLink()).toHaveText("Discuss");
+    await discussLink().click();
+    const dialog = page.locator('[data-testid="request-discussion-dialog"]');
+    await expect(dialog).toContainText("Discuss request");
+    await expect(dialog.locator('[data-testid="request-discussion-subject"]')).toContainText(eventTitle);
+    const composer = dialog.locator('textarea[name="noteText"]').first();
+    await composer.fill(staffMessage);
+    const saved = page.waitForResponse((r) => r.url().includes("/messaging/messages") && r.request().method() === "POST" && r.ok());
+    await dialog.locator("button").filter({ has: page.locator('text="send"') }).last().click();
+    await saved;
+    await expect(dialog.getByText(staffMessage)).toBeVisible({ timeout: 15000 });
+    await page.locator('[data-testid="request-discussion-close"]').click();
+    await expect(dialog).toHaveCount(0);
+    await expect(row).toBeVisible();
+    await expect(discussLink()).toHaveText("Discuss (1)", { timeout: 15000 });
+  });
+
+  test("the requester is notified with a link to the request and can read and answer the thread", async () => {
+    const notifications: { message?: string; link?: string }[] = await (await ctx.get(`${API}/messaging/notifications/my`, bearer(requesterJwt))).json();
+    const notice = (notifications || []).find((n) => n.message === `New message: ${eventTitle} (event request)`);
+    expect(notice?.link).toBe(`/mobile/myRequests?request=${eventId}`);
+
+    const threads = await ctx.get(`${API}/messaging/conversations/CHU00000001/eventRequest/${eventId}`, bearer(requesterJwt));
+    expect(threads.status()).toBe(200);
+    conversationId = (await threads.json())[0].id;
+    const messages: { content?: string }[] = await (await ctx.get(`${API}/messaging/messages/conversation/${conversationId}`, bearer(requesterJwt))).json();
+    expect(messages.map((m) => m.content)).toContain(staffMessage);
+
+    const reply = await ctx.post(`${API}/messaging/messages`, { ...bearer(requesterJwt), data: [{ conversationId, content: requesterReply }] });
+    expect(reply.status()).toBe(200);
+  });
+
+  test("a member who did not make the request cannot read, post to or count the thread", async () => {
+    expect((await ctx.get(`${API}/messaging/conversations/CHU00000001/eventRequest/${eventId}`, bearer(outsiderJwt))).status()).toBe(401);
+    expect((await ctx.get(`${API}/messaging/messages/conversation/${conversationId}`, bearer(outsiderJwt))).status()).toBe(401);
+    expect((await ctx.post(`${API}/messaging/messages`, { ...bearer(outsiderJwt), data: [{ conversationId, content: "let me in" }] })).status()).toBe(401);
+    expect(await (await ctx.get(`${API}/messaging/conversations/eventRequests/counts?eventIds=${eventId}`, bearer(outsiderJwt))).json()).toEqual([]);
+  });
+
+  test("the reply shows in the thread, which a notification link opens directly", async () => {
+    await page.goto(`/calendars/approvals?request=${eventId}`);
+    const dialog = page.locator('[data-testid="request-discussion-dialog"]');
+    await expect(dialog.getByText(requesterReply)).toBeVisible({ timeout: 15000 });
+    await expect(dialog.getByText(staffMessage)).toBeVisible();
+    await page.locator('[data-testid="request-discussion-close"]').click();
+    await expect(page).toHaveURL(/\/calendars\/approvals$/);
+    await expect(discussLink()).toHaveText("Discuss (2)", { timeout: 15000 });
+  });
+});
