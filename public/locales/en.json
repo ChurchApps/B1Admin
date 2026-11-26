@@ -2546,7 +2546,8 @@
       "forms": "Forms",
       "groups": "Groups",
       "notes": "Notes",
-      "requests": "Requests & registrations"
+      "requests": "Requests & registrations",
+      "tasks": "Tasks"
     },
     "personPage": {
       "confidentialNotes": "Confidential Notes",
@@ -2558,6 +2559,7 @@
       "allForms": "All forms",
       "allNotes": "All notes",
       "allRequests": "All requests",
+      "allTasks": "All tasks",
       "allYears": "All years",
       "attendanceSummary": "{count} of the last {weeks} weeks",
       "cancelled": "Cancelled",
@@ -2581,6 +2583,7 @@
       "noPrivateMessages": "Private messages off",
       "noNotes": "No notes yet.",
       "noRequests": "No requests or registrations yet.",
+      "noTasks": "No tasks yet.",
       "notSubmitted": "Not submitted",
       "noteCount": "{count} notes",
       "noteCountSingular": "{count} note",
@@ -2594,6 +2597,7 @@
       "showingLatest": "showing latest {count}",
       "statement": "{year} statement",
       "status": "Status",
+      "task": "Task",
       "submitted": "Submitted",
       "text": "Text",
       "textReminders": "Text reminders",
