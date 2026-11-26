@@ -2202,6 +2202,7 @@
     },
     "deliveryProblems": {
       "address": "Address",
+      "all": "All problems",
       "bounce": "Email bounced",
       "channel": "Channel",
       "complaint": "Marked as spam",

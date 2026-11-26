@@ -67,6 +67,38 @@ test.describe("People - Delivery problems", () => {
     expect(messageBox!.width).toBeGreaterThan(sectionBox!.width * 0.6);
   });
 
+  test("shows the three newest failures with \"showing latest 3\" and All problems reveals the rest in place", async ({ page }) => {
+    const methods = ["email", "sms", "push"];
+    const failures = Array.from({ length: 6 }, (_, i) => ({
+      attemptTime: new Date(Date.now() - i * 86400000).toISOString(),
+      deliveryMethod: methods[i % 3],
+      deliveryAddress: methods[i % 3] === "sms" ? "+12175552202" : "george.thompson@email.com",
+      errorMessage: `Failure ${i + 1}`
+    }));
+    await page.route("**/messaging/deliverylogs/person/*/failures", (route) => route.fulfill({ json: failures }));
+    await page.goto(`/people/${GEORGE_THOMPSON}`, { timeout: 60000 });
+    const section = page.getByTestId("person-delivery-problems-section");
+    const rows = section.getByTestId("person-delivery-problem");
+    await expect(rows.first()).toContainText("Failure 1", { timeout: 30000 });
+    if (process.env.PR_SCREENSHOT) await section.screenshot({ path: `.pr-screenshots/${process.env.PR_SCREENSHOT}.png` });
+    await expect(rows).toHaveCount(3);
+    await expect(section).toContainText("showing latest 3");
+    await expect(section).not.toContainText("Failure 4");
+    await section.getByTestId("person-delivery-problems-all").click();
+    await expect(rows).toHaveCount(6);
+    await expect(rows.last()).toContainText("Failure 6");
+    await expect(section.getByTestId("person-delivery-problems-all")).toHaveCount(0);
+    await expect(section).not.toContainText("showing latest");
+  });
+
+  test("a single failure gets no All problems link", async ({ page }) => {
+    await page.goto(`/people/${GEORGE_THOMPSON}`, { timeout: 60000 });
+    const section = page.getByTestId("person-delivery-problems-section");
+    await expect(section.getByTestId("person-delivery-problem")).toHaveCount(1, { timeout: 30000 });
+    await expect(section.getByTestId("person-delivery-problems-all")).toHaveCount(0);
+    await expect(section).not.toContainText("showing latest");
+  });
+
   test("the section is absent when nothing failed", async ({ page }) => {
     const loaded = page.waitForResponse((r) => r.url().includes(`/messaging/deliverylogs/person/${DONALD_CLARK}/failures`));
     await page.goto(`/people/${DONALD_CLARK}`, { timeout: 60000 });
