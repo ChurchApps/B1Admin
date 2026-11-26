@@ -2030,6 +2030,8 @@
         "address": "Home address",
         "birthDate": "Birth date",
         "comments": "Comments",
+        "commentsPrompt": "Comments prompt",
+        "commentsPromptHelp": "Shown inside the Comments box until the guest starts typing.",
         "description": "Choose what the sign-up asks for. First and last names are always required. Everyone who signs up is added to People as a Visitor.",
         "email": "Email",
         "field": "Field",
