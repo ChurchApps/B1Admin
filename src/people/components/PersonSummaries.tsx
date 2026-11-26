@@ -548,8 +548,18 @@ export const PersonDeliveryProblemsSummary: React.FC<{ personId: string }> = ({ 
   });
   const theme = useTheme();
   const narrow = useMediaQuery(theme.breakpoints.down("md"));
+  const [showAll, setShowAll] = React.useState(false);
+  React.useEffect(() => { setShowAll(false); }, [personId]);
   const list = failures.data || [];
   if (list.length === 0) return null;
+  // The Api returns newest first, so the head of the list is the most recent failures.
+  const shown = showAll ? list : list.slice(0, 3);
+  const moreRow = list.length > shown.length && (
+    <VerbRow>
+      <span>{Locale.label("people.personRecord.showingLatest", "showing latest {count}").replace("{count}", String(shown.length))}</span>
+      <ViewAll label={Locale.label("people.deliveryProblems.all", "All problems")} onClick={() => setShowAll(true)} testId="person-delivery-problems-all" />
+    </VerbRow>
+  );
   const title = Locale.label("people.deliveryProblems.title", "Delivery problems");
   const when = (f: DeliveryFailure) => (f.attemptTime ? DateHelper.prettyDateTime(new Date(f.attemptTime)) : "");
   // A push address is a device token, which means nothing to staff.
@@ -559,14 +569,17 @@ export const PersonDeliveryProblemsSummary: React.FC<{ personId: string }> = ({ 
   if (narrow) {
     return (
       <Section id="person-delivery-problems-heading" title={title} testId="person-delivery-problems-section">
-        <Stack divider={<Divider flexItem />} spacing={1}>
-          {list.map((f, i) => (
-            <Box key={i} data-testid="person-delivery-problem">
-              <Typography variant="body2" color="text.secondary">{[when(f), channelLabel(f.deliveryMethod)].filter(Boolean).join(" · ")}</Typography>
-              {address(f) && <Typography variant="body2" sx={{ overflowWrap: "break-word" }}>{address(f)}</Typography>}
-              <Typography variant="body2" sx={{ overflowWrap: "break-word" }}>{f.errorMessage}</Typography>
-            </Box>
-          ))}
+        <Stack spacing={1.5}>
+          <Stack divider={<Divider flexItem />} spacing={1}>
+            {shown.map((f, i) => (
+              <Box key={i} data-testid="person-delivery-problem">
+                <Typography variant="body2" color="text.secondary">{[when(f), channelLabel(f.deliveryMethod)].filter(Boolean).join(" · ")}</Typography>
+                {address(f) && <Typography variant="body2" sx={{ overflowWrap: "break-word" }}>{address(f)}</Typography>}
+                <Typography variant="body2" sx={{ overflowWrap: "break-word" }}>{f.errorMessage}</Typography>
+              </Box>
+            ))}
+          </Stack>
+          {moreRow}
         </Stack>
       </Section>
     );
@@ -574,28 +587,31 @@ export const PersonDeliveryProblemsSummary: React.FC<{ personId: string }> = ({ 
 
   return (
     <Section id="person-delivery-problems-heading" title={title} testId="person-delivery-problems-section">
-      <Box sx={tableScrollSx}>
-        <Table size="small" sx={plainTableSx}>
-          <TableHead>
-            <TableRow>
-              <TableCell>{Locale.label("people.deliveryProblems.date", "Date")}</TableCell>
-              <TableCell>{Locale.label("people.deliveryProblems.channel", "Channel")}</TableCell>
-              <TableCell>{Locale.label("people.deliveryProblems.address", "Address")}</TableCell>
-              <TableCell>{Locale.label("people.deliveryProblems.error", "Error")}</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {list.map((f, i) => (
-              <TableRow key={i} data-testid="person-delivery-problem">
-                <TableCell sx={{ whiteSpace: "nowrap" }}>{when(f)}</TableCell>
-                <TableCell>{channelLabel(f.deliveryMethod)}</TableCell>
-                <TableCell sx={{ overflowWrap: "break-word" }}>{address(f)}</TableCell>
-                <TableCell sx={{ overflowWrap: "break-word" }}>{f.errorMessage}</TableCell>
+      <Stack spacing={1.5}>
+        <Box sx={tableScrollSx}>
+          <Table size="small" sx={plainTableSx}>
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("people.deliveryProblems.date", "Date")}</TableCell>
+                <TableCell>{Locale.label("people.deliveryProblems.channel", "Channel")}</TableCell>
+                <TableCell>{Locale.label("people.deliveryProblems.address", "Address")}</TableCell>
+                <TableCell>{Locale.label("people.deliveryProblems.error", "Error")}</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Box>
+            </TableHead>
+            <TableBody>
+              {shown.map((f, i) => (
+                <TableRow key={i} data-testid="person-delivery-problem">
+                  <TableCell sx={{ whiteSpace: "nowrap" }}>{when(f)}</TableCell>
+                  <TableCell>{channelLabel(f.deliveryMethod)}</TableCell>
+                  <TableCell sx={{ overflowWrap: "break-word" }}>{address(f)}</TableCell>
+                  <TableCell sx={{ overflowWrap: "break-word" }}>{f.errorMessage}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Box>
+        {moreRow}
+      </Stack>
     </Section>
   );
 };
