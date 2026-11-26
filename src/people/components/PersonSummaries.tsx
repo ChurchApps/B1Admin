@@ -3,7 +3,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { useQueries, useQuery } from "@tanstack/react-query";
 import { Box, Divider, Link, Stack, Table, TableBody, TableCell, TableHead, TableRow, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { CheckCircle as CheckCircleIcon, RadioButtonUnchecked as EmptyCircleIcon } from "@mui/icons-material";
-import { type AttendanceRecordInterface, type DonationInterface, type GroupInterface, type GroupMemberInterface, type MessageInterface, type PersonInterface } from "@churchapps/helpers";
+import { type AttendanceRecordInterface, type DonationInterface, type GroupInterface, type GroupMemberInterface, type MessageInterface, type PersonInterface, type TaskInterface } from "@churchapps/helpers";
 import { ArrayHelper, ConversationStore, CurrencyHelper, DateHelper, Loading, Locale, UniqueIdHelper, filterVisibleMessages } from "@churchapps/apphelper";
 import { RecordHeading, StatusBadge, TextAction, VerbRow, numericCellSx, tableScrollSx } from "../../components/ui";
 import { type PersonFormOption } from "./PersonForms";
@@ -525,6 +525,62 @@ export const PersonRequestsSummary: React.FC<RequestsProps> = ({ personId, canVi
   };
 
   return <Section id="person-requests-heading" title={title} testId="person-requests-section">{body()}</Section>;
+};
+
+interface TasksProps { personId: string; onViewAll?: () => void }
+
+// Tasks about this person (open and closed, workflow cards included); the Api returns them newest first.
+export const PersonTasksSummary: React.FC<TasksProps> = ({ personId, onViewAll }) => {
+  const tasks = useQuery<TaskInterface[]>({ queryKey: ["/tasks/person/" + personId, "DoingApi"], enabled: !UniqueIdHelper.isMissing(personId) });
+  const title = Locale.label("people.personNavigation.tasks", "Tasks");
+  const rows = tasks.data || [];
+  const allVerb = onViewAll ? <ViewAll label={Locale.label("people.personRecord.allTasks", "All tasks")} onClick={onViewAll} testId="person-tasks-all" /> : null;
+
+  const body = () => {
+    if (tasks.isLoading) return <Loading size="sm" />;
+    if (tasks.isError) return <LoadError what={title.toLowerCase()} onRetry={() => tasks.refetch()} />;
+    if (rows.length === 0) return <Muted>{Locale.label("people.personRecord.noTasks", "No tasks yet.")}</Muted>;
+    const shown = onViewAll ? rows.slice(0, 3) : rows;
+    return (
+      <Stack spacing={1.5}>
+        <Box sx={tableScrollSx} role="region" aria-label={title} tabIndex={0}>
+          <Table size="small" sx={plainTableSx} data-testid="person-tasks-table">
+            <TableHead>
+              <TableRow>
+                <TableCell>{Locale.label("donation.page.date")}</TableCell>
+                <TableCell>{Locale.label("people.personRecord.task", "Task")}</TableCell>
+                <TableCell align="right">{Locale.label("people.personRecord.status", "Status")}</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {shown.map((t) => {
+                const day = toDay(t.dateCreated);
+                const detail = [t.assignedToLabel, t.workflowId ? Locale.label("people.personRecord.workflow", "Workflow") : ""].filter(Boolean).join(" · ");
+                return (
+                  <TableRow key={t.id} data-testid="person-task-row">
+                    <TableCell>{day ? pretty(day) : "—"}</TableCell>
+                    <TableCell>
+                      <Link component={RouterLink} to={"/serving/tasks/" + t.id} variant="body2">{t.title || "—"}</Link>
+                      {detail && <Typography variant="body2" color="text.secondary">{detail}</Typography>}
+                    </TableCell>
+                    <TableCell align="right"><StatusBadge tone={t.status === "Open" ? "warning" : "success"}>{t.status}</StatusBadge></TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </Box>
+        {allVerb && (
+          <VerbRow>
+            {rows.length > shown.length && <span>{Locale.label("people.personRecord.showingLatest", "showing latest {count}").replace("{count}", String(shown.length))}</span>}
+            {allVerb}
+          </VerbRow>
+        )}
+      </Stack>
+    );
+  };
+
+  return <Section id="person-tasks-heading" title={title} testId="person-tasks-section">{body()}</Section>;
 };
 
 interface DeliveryFailure { attemptTime?: string; deliveryMethod?: string; deliveryAddress?: string; errorMessage?: string }
