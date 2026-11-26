@@ -4,7 +4,7 @@ import { PillTabs, ResultsBar, StatusBadge, tableScrollSx } from "../../../compo
 import { type GroupMemberInterface, type TaskInterface } from "@churchapps/helpers";
 import { ApiHelper, ArrayHelper, DateHelper, Locale, UserHelper, Loading } from "@churchapps/apphelper";
 import { Link } from "react-router-dom";
-import { NewTask } from "./";
+import { NewTask, TaskPartyLink } from "./";
 import UserContext from "../../../UserContext";
 import { useQuery } from "@tanstack/react-query";
 import { newestFirst } from "../taskOrder";
@@ -86,8 +86,8 @@ export const TaskList = memo((props: Props) => {
                   <MuiLink component={Link} to={`/serving/tasks/${task.id}`} underline="hover" sx={{ fontWeight: 600, wordBreak: "break-word" }}>{task.title}</MuiLink>
                   <Typography variant="body2" color="text.secondary">#{task.taskNumber}</Typography>
                 </TableCell>
-                <TableCell sx={{ ...wideCellSx, color: "text.secondary" }}>{task.associatedWithLabel || Locale.label("tasks.taskList.notSpecified")}</TableCell>
-                <TableCell sx={{ ...wideCellSx, color: "text.secondary" }}>{task.assignedToLabel || Locale.label("tasks.taskList.unassigned")}</TableCell>
+                <TableCell sx={{ ...wideCellSx, color: "text.secondary" }}><TaskPartyLink type={task.associatedWithType} id={task.associatedWithId} label={task.associatedWithLabel} fallback={Locale.label("tasks.taskList.notSpecified")} testId="task-list-associated" /></TableCell>
+                <TableCell sx={{ ...wideCellSx, color: "text.secondary" }}><TaskPartyLink type={task.assignedToType} id={task.assignedToId} label={task.assignedToLabel} fallback={Locale.label("tasks.taskList.unassigned")} testId="task-list-assigned" /></TableCell>
                 <TableCell sx={{ ...wideCellSx, color: "text.secondary", whiteSpace: "nowrap" }}>
                   <Tooltip title={DateHelper.prettyDateTime(DateHelper.toDate(task.dateCreated))}>
                     <span>{DateHelper.getDisplayDuration(DateHelper.toDate(task.dateCreated))} {Locale.label("tasks.taskPage.ago")}</span>
