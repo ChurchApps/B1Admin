@@ -43,6 +43,8 @@ export const CheckInPage: React.FC = () => {
   const [attendanceSetting, setAttendanceSetting] = React.useState<GenericSettingInterface | null>(null);
   const [imageUrl, setImageUrl] = React.useState("");
   const [imageSetting, setImageSetting] = React.useState<GenericSettingInterface | null>(null);
+  const [commentsPrompt, setCommentsPrompt] = React.useState("");
+  const [commentsPromptSetting, setCommentsPromptSetting] = React.useState<GenericSettingInterface | null>(null);
   const [showGallery, setShowGallery] = React.useState(false);
   const [groups, setGroups] = React.useState<GroupInterface[]>([]);
   const [saving, setSaving] = React.useState(false);
@@ -75,6 +77,9 @@ export const CheckInPage: React.FC = () => {
     const savedImage = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationImage");
     setImageSetting(savedImage || null);
     setImageUrl(savedImage?.value || "");
+    const savedPrompt = allSettings.find((s: GenericSettingInterface) => s.keyName === "guestRegistrationCommentsPrompt");
+    setCommentsPromptSetting(savedPrompt || null);
+    setCommentsPrompt(savedPrompt?.value || "");
     const allGroups: GroupInterface[] = await ApiHelper.get("/groups", "MembershipApi");
     setGroups([...(allGroups || [])].sort((a, b) => (a.name || "").localeCompare(b.name || "")));
   }, [churchId]);
@@ -99,7 +104,10 @@ export const CheckInPage: React.FC = () => {
       // Public: the sign-up page shows it in place of the icon.
       const img: GenericSettingInterface = imageSetting || { churchId, public: 1, keyName: "guestRegistrationImage" };
       img.value = imageUrl;
-      await ApiHelper.post("/settings", [s, f, g, a, img], "MembershipApi");
+      // Public: the sign-up page shows it inside the Comments box until the guest types.
+      const cp: GenericSettingInterface = commentsPromptSetting || { churchId, public: 1, keyName: "guestRegistrationCommentsPrompt" };
+      cp.value = commentsPrompt.trim();
+      await ApiHelper.post("/settings", [s, f, g, a, img, cp], "MembershipApi");
       setShowSaved(true);
       await loadData();
     } finally {
@@ -172,6 +180,20 @@ export const CheckInPage: React.FC = () => {
                 })}
               </TableBody>
             </Table>
+            {fields.comments !== "off" && (
+              <Box sx={{ mt: 2, maxWidth: 520 }}>
+                <TextField
+                  label={Locale.label("mobile.checkInPage.fields.commentsPrompt")}
+                  helperText={Locale.label("mobile.checkInPage.fields.commentsPromptHelp")}
+                  value={commentsPrompt}
+                  onChange={(e) => setCommentsPrompt(e.target.value)}
+                  size="small"
+                  fullWidth
+                  slotProps={{ htmlInput: { maxLength: 200 } }}
+                  data-testid="guest-registration-comments-prompt"
+                />
+              </Box>
+            )}
             <FormControl size="small" sx={{ mt: 2, minWidth: 280 }}>
               <InputLabel id="guest-registration-group-label" shrink>{Locale.label("mobile.checkInPage.addToGroup")}</InputLabel>
               <Select labelId="guest-registration-group-label" displayEmpty notched label={Locale.label("mobile.checkInPage.addToGroup")} value={groups.some((g) => g.id === groupId) ? groupId : ""} data-testid="guest-registration-group" onChange={(e) => setGroupId(e.target.value)}>

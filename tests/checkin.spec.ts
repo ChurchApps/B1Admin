@@ -125,7 +125,7 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
   let headers: Record<string, string>;
   let originals: any[] = [];
 
-  const GUEST_KEYS = ["enableQRGuestRegistration", "guestRegistrationFields", "guestRegistrationGroupId", "guestRegistrationRecordAttendance", "guestRegistrationImage"];
+  const GUEST_KEYS = ["enableQRGuestRegistration", "guestRegistrationFields", "guestRegistrationGroupId", "guestRegistrationRecordAttendance", "guestRegistrationImage", "guestRegistrationCommentsPrompt"];
   const loadSettings = async () => (await (await ctx.get(`${API}/membership/settings`, { headers })).json()) as any[];
 
   loggedInTest.beforeAll(async () => {
@@ -143,7 +143,7 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
 
   loggedInTest.afterAll(async () => {
     const all = await loadSettings();
-    const fallback: Record<string, string> = { enableQRGuestRegistration: "false", guestRegistrationFields: "{}", guestRegistrationGroupId: "", guestRegistrationRecordAttendance: "false", guestRegistrationImage: "" };
+    const fallback: Record<string, string> = { enableQRGuestRegistration: "false", guestRegistrationFields: "{}", guestRegistrationGroupId: "", guestRegistrationRecordAttendance: "false", guestRegistrationImage: "", guestRegistrationCommentsPrompt: "" };
     const restore = GUEST_KEYS.map((k) => {
       const current = all.find((s) => s.keyName === k);
       const original = originals.find((s) => s.keyName === k);
@@ -350,6 +350,33 @@ loggedInTest.describe("Check-in: QR sign-up fields", () => {
     await page.getByTestId("qr-guest-registration-save").click();
     await saved;
     expect((await loadSettings()).find((s) => s.keyName === "guestRegistrationImage")?.value || "").toBe("");
+  });
+
+  // ChurchAppsSupport#1698: once Comments is included, the church can write the prompt guests see inside the box.
+  loggedInTest("saves a Comments prompt as a public setting once Comments is included", async ({ page }) => {
+    const fieldsRow = (await loadSettings()).find((s) => s.keyName === "guestRegistrationFields");
+    expect((await ctx.post(`${API}/membership/settings`, { headers, data: [{ ...fieldsRow, value: "{}" }] })).ok()).toBeTruthy();
+    await page.goto("/mobile/checkin");
+    const include = page.getByLabel("Include Comments", { exact: true });
+    await expect(include).not.toBeChecked({ timeout: 15000 });
+    await expect(page.getByLabel("Comments prompt")).toHaveCount(0);
+    await page.getByTestId("guest-field-comments").scrollIntoViewIfNeeded();
+    await page.screenshot({ path: test.info().outputPath("before-checkin.png") });
+
+    await include.check();
+    const prompt = page.getByLabel("Comments prompt");
+    await expect(prompt).toBeVisible();
+    await prompt.fill("Enter your visit purpose and comment generally on the service");
+    const saved = page.waitForResponse((r) => r.url().includes("/membership/settings") && r.request().method() === "POST" && r.status() === 200, { timeout: 15000 });
+    await page.getByTestId("qr-guest-registration-save").click();
+    await saved;
+
+    const publicSettings = await (await ctx.get(`${API}/membership/settings/public/${CHURCH_ID}`)).json();
+    expect(publicSettings.guestRegistrationCommentsPrompt).toBe("Enter your visit purpose and comment generally on the service");
+    await page.reload();
+    await expect(page.getByLabel("Comments prompt")).toHaveValue("Enter your visit purpose and comment generally on the service", { timeout: 15000 });
+    await page.getByLabel("Comments prompt").scrollIntoViewIfNeeded();
+    await page.screenshot({ path: test.info().outputPath("after-checkin.png") });
   });
 
   // ChurchAppsSupport#1444: the checklist has a Title row, off by default, that saves with the other fields.
