@@ -12,6 +12,7 @@ import { AccountDeletionRequest } from "./components/AccountDeletionRequest";
 import { GroupJoinRequestTask } from "./components/GroupJoinRequestTask";
 import { TaskReminderEdit } from "./components/TaskReminderEdit";
 import { TaskContact } from "./components/TaskContact";
+import { TaskPartyLink } from "./components/TaskPartyLink";
 import { canEditCards } from "./workflows/permissions";
 import { useConfirmDelete } from "../../hooks";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -193,11 +194,11 @@ export const TaskPage = () => {
       <Box component="dl" sx={{ mt: 3, mb: 0, display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 2, rowGap: 1, typography: "body2", "& dt": { color: "text.secondary", m: 0 }, "& dd": { m: 0, overflowWrap: "anywhere" } }}>
         <dt>{Locale.label("tasks.taskPage.associated")}</dt>
         <dd>
-          <span data-testid="task-associated-label">{task.data.associatedWithLabel || Locale.label("tasks.taskPage.notSpec")}</span>
+          <TaskPartyLink type={task.data.associatedWithType} id={task.data.associatedWithId} label={task.data.associatedWithLabel} fallback={Locale.label("tasks.taskPage.notSpec")} testId="task-associated-label" />
           <TaskContact taskId={task.data.id || ""} associatedWithType={task.data.associatedWithType} associatedWithId={task.data.associatedWithId} personName={task.data.associatedWithLabel} />
         </dd>
         <dt>{Locale.label("tasks.taskPage.assigned")}</dt>
-        <dd data-testid="task-assigned-label">{task.data.assignedToLabel || Locale.label("tasks.taskPage.unassigned")}</dd>
+        <dd><TaskPartyLink type={task.data.assignedToType} id={task.data.assignedToId} label={task.data.assignedToLabel} fallback={Locale.label("tasks.taskPage.unassigned")} testId="task-assigned-label" /></dd>
         <dt>{Locale.label("tasks.taskPage.due")}</dt>
         <dd>
           {task.data.assignmentId
