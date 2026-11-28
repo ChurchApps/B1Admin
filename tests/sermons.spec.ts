@@ -788,3 +788,86 @@ plainTest.describe("Sermons pages without streaming permission", () => {
     }
   });
 });
+
+plainTest("clicking a playlist name shows only that playlist's sermons, and the chip or a second click shows them all again", async ({ page, request }) => {
+  const api = new URL(process.env.API_BASE || "http://localhost:8084");
+  expect(["localhost", "127.0.0.1", "[::1]"]).toContain(api.hostname);
+  const loginResponse = await request.post(new URL("/membership/users/login", api).href, { data: { email: "demo@b1.church", password: "password" } });
+  await expect(loginResponse).toBeOK();
+  const { userChurches }: { userChurches: LoginUserChurchInterface[] } = await loginResponse.json();
+  const demoChurch = userChurches.find(({ church }) => church.id === "CHU00000001")!;
+  const churchId = demoChurch.church.id;
+  const contentApi = new URL("/content/", api).href;
+  const auth = { headers: { Authorization: "Bearer " + (demoChurch.apis?.find(({ keyName }) => keyName === "ContentApi")?.jwt || demoChurch.jwt) } };
+  const marker = `Playlist Filter ${Date.now()}`;
+  const romans = `${marker} Romans`;
+  const advent = `${marker} Advent`;
+  const playlistResponse = await request.post(contentApi + "playlists", { ...auth, data: [{ churchId, title: romans }, { churchId, title: advent }] });
+  await expect(playlistResponse).toBeOK();
+  const playlists: { id: string; title: string }[] = await playlistResponse.json();
+  const romansId = playlists.find(({ title }) => title === romans)!.id;
+  const adventId = playlists.find(({ title }) => title === advent)!.id;
+  let sermons: { id: string; title: string }[] = [];
+
+  try {
+    const sermonResponse = await request.post(contentApi + "sermons", {
+      ...auth,
+      data: [
+        { churchId, title: `${marker} Romans Week 1`, playlistId: romansId, permanentUrl: false },
+        { churchId, title: `${marker} Romans Week 2`, playlistId: romansId, permanentUrl: false },
+        { churchId, title: `${marker} Advent Week 1`, playlistId: adventId, permanentUrl: false },
+        { churchId, title: `${marker} Standalone`, permanentUrl: false }
+      ]
+    });
+    await expect(sermonResponse).toBeOK();
+    sermons = await sermonResponse.json();
+
+    await login(page);
+    await navigateToSermons(page);
+    const row = (title: string) => page.getByRole("row").filter({ hasText: title });
+    const panel = page.getByTestId("playlists-panel");
+    const chip = page.getByTestId("playlist-filter-chip");
+    const selectAll = page.getByRole("checkbox", { name: "Select all visible sermons" });
+    await expect(row(`${marker} Standalone`)).toBeVisible();
+    const total = Number((await page.getByText(/^\d+ of \d+ sermons$/).textContent())!.split(" of ")[1].split(" ")[0]);
+
+    await panel.getByRole("button", { name: romans, exact: true }).click();
+    await expect(panel.getByRole("button", { name: romans, exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(chip).toContainText(romans);
+    await expect(row(`${marker} Romans Week 1`)).toBeVisible();
+    await expect(row(`${marker} Romans Week 2`)).toBeVisible();
+    await expect(row(`${marker} Advent Week 1`)).toHaveCount(0);
+    await expect(row(`${marker} Standalone`)).toHaveCount(0);
+    await expect(page.getByText(new RegExp(`^2 of ${total} sermons$`))).toBeVisible();
+    await selectAll.check();
+    await expect(page.getByRole("button", { name: /^Delete Selected/ })).toHaveText("Delete Selected (2)");
+
+    await panel.getByRole("button", { name: advent, exact: true }).click();
+    await expect(chip).toContainText(advent);
+    await expect(page.getByRole("button", { name: /^Delete Selected/ })).toBeHidden();
+    await expect(row(`${marker} Advent Week 1`)).toBeVisible();
+    await expect(row(`${marker} Romans Week 1`)).toHaveCount(0);
+    await expect(panel.getByRole("button", { name: romans, exact: true })).toHaveAttribute("aria-pressed", "false");
+
+    await chip.click();
+    await expect(chip).toBeHidden();
+    await expect(row(`${marker} Romans Week 1`)).toBeVisible();
+    await expect(row(`${marker} Standalone`)).toBeVisible();
+    await expect(page.getByText(new RegExp(`^${total} of ${total} sermons$`))).toBeVisible();
+
+    await panel.getByRole("button", { name: advent, exact: true }).click();
+    await expect(row(`${marker} Romans Week 1`)).toHaveCount(0);
+    await panel.getByRole("button", { name: advent, exact: true }).click();
+    await expect(chip).toBeHidden();
+    await expect(row(`${marker} Romans Week 1`)).toBeVisible();
+
+    // On a phone the Playlists card comes before the sermon list (#1717).
+    await page.setViewportSize({ width: 390, height: 844 });
+    const panelBox = await panel.boundingBox();
+    const searchBox = await page.getByTestId("sermon-search-input").boundingBox();
+    expect(panelBox!.y).toBeLessThan(searchBox!.y);
+  } finally {
+    for (const { id } of sermons) await request.delete(contentApi + "sermons/" + id, auth);
+    for (const { id } of playlists) await request.delete(contentApi + "playlists/" + id, auth);
+  }
+});
