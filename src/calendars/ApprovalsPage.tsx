@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { ApiHelper, UserHelper, Loading, Locale, DateHelper } from "@churchapps/apphelper";
 import { Permissions, type CuratedCalendarInterface, type IApiPermission, type PersonInterface } from "@churchapps/helpers";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { Box, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel, FormHelperText, MenuItem, Snackbar, Stack, Table, TableBody, TableCell, TableHead, TableRow, TextField, Tooltip, Typography } from "@mui/material";
 import { PermissionDenied } from "../components";
 import { AppIconButton, CountChip, PillTabs, StatusBadge, Surface, TextAction, VerbRow, tableScrollSx } from "../components/ui";
@@ -10,9 +11,13 @@ import { useConfirmDelete } from "../hooks";
 import { CalendarChrome } from "./components/CalendarChrome";
 import { EventModal } from "./components/EventModal";
 import { RequesterDialog } from "./components/RequesterDialog";
+import { RequestDiscussionDialog } from "./components/RequestDiscussionDialog";
 import { type ApprovalEventInterface, type EventBookingInterface } from "./interfaces";
 
 const calendarsAdmin: IApiPermission = { api: "ContentApi", contentType: "Calendars", action: "Admin" };
+
+// One row of /conversations/eventRequests/counts: how many messages a request's discussion holds.
+interface DiscussionCountInterface { eventId: string; postCount: number }
 
 export const ApprovalsPage = () => {
   const [bookings, setBookings] = useState<EventBookingInterface[]>([]);
@@ -24,6 +29,9 @@ export const ApprovalsPage = () => {
   const [approvingId, setApprovingId] = useState("");
   const [editingEventId, setEditingEventId] = useState("");
   const [requesterEventId, setRequesterEventId] = useState("");
+  // A discussion notification links here with ?request=<eventId>, so the thread opens straight away.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [discussEventId, setDiscussEventId] = useState(searchParams.get("request") || "");
   const [publish, setPublish] = useState(false);
   const [curatedCalendarId, setCuratedCalendarId] = useState("");
   const [curatedCalendars, setCuratedCalendars] = useState<CuratedCalendarInterface[] | null>(null);
@@ -56,6 +64,22 @@ export const ApprovalsPage = () => {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
+  // The Api answers for at most 200 requests; both lists are short of that in practice.
+  const discussionIds = events.map((e) => e.id).filter(Boolean).slice(0, 200).join(",");
+  const discussionCounts = useQuery<DiscussionCountInterface[]>({
+    queryKey: ["/conversations/eventRequests/counts?eventIds=" + discussionIds, "MessagingApi"],
+    enabled: canResolve && !!discussionIds
+  });
+
+  const closeDiscussion = () => {
+    setDiscussEventId("");
+    if (searchParams.has("request")) {
+      searchParams.delete("request");
+      setSearchParams(searchParams, { replace: true });
+    }
+    void discussionCounts.refetch();
+  };
 
   // #1546: Reject takes an optional reason, appended to the requester's notification.
   const openReject = (kind: "event" | "booking", id: string) => {
@@ -160,6 +184,15 @@ export const ApprovalsPage = () => {
     </TableCell>
   );
 
+  const discussAction = (id: string) => {
+    const count = discussionCounts.data?.find((c) => c.eventId === id)?.postCount || 0;
+    return (
+      <TextAction small onClick={() => setDiscussEventId(id)} data-testid={`discuss-event-${id}`}>
+        {count > 0 ? Locale.label("calendars.approvals.discussCount").replace("{}", String(count)) : Locale.label("calendars.approvals.discuss")}
+      </TextAction>
+    );
+  };
+
   const eventActions = (id: string) => (
     <>
       <TextAction small onClick={() => setEditingEventId(id)} data-testid={`edit-event-${id}`}>{Locale.label("common.edit")}</TextAction>
@@ -242,6 +275,7 @@ export const ApprovalsPage = () => {
                         {e.approvalStatus === "approved"
                           ? <TextAction small onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
                           : <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>}
+                        {discussAction(e.id || "")}
                         {eventActions(e.id || "")}
                       </VerbRow>
                     </TableCell>
@@ -339,6 +373,7 @@ export const ApprovalsPage = () => {
                             <VerbRow sx={{ justifyContent: "flex-end" }}>
                               <TextAction small onClick={() => resolveEvent(e.id || "", "approve")} data-testid={`approve-event-${e.id}`}>{Locale.label("calendars.approvals.approve")}</TextAction>
                               <TextAction small onClick={() => resolveEvent(e.id || "", "reject")} data-testid={`reject-event-${e.id}`}>{Locale.label("calendars.approvals.reject")}</TextAction>
+                              {discussAction(e.id || "")}
                               {eventActions(e.id || "")}
                             </VerbRow>
                           </TableCell>
@@ -360,6 +395,11 @@ export const ApprovalsPage = () => {
         />
       )}
       {requesterEventId && <RequesterDialog eventId={requesterEventId} onClose={() => setRequesterEventId("")} onUpdated={loadData} />}
+      {discussEventId && (() => {
+        const discussed = events.find((e) => e.id === discussEventId);
+        const requesterName = discussed?.requestedBy ? people[discussed.requestedBy]?.name?.display : undefined;
+        return <RequestDiscussionDialog eventId={discussEventId} eventTitle={discussed?.title} requesterName={requesterName} onClose={closeDiscussion} />;
+      })()}
       <Dialog open={!!approvingId} onClose={() => setApprovingId("")} fullWidth maxWidth="xs" data-testid="approve-booking-dialog">
         <DialogTitle>{Locale.label("calendars.approvals.approveBookingTitle")}</DialogTitle>
         <DialogContent>
